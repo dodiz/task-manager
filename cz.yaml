@@ -1,0 +1,38 @@
+commitizen:
+  name: cz_customize
+  customize:
+    message_template: "{{change_type}}{%if scope %}({{scope}}){% endif %}: {{message}}"
+    example: "feature: this feature enable customize through config file"
+    schema: "<type>(<scope>): <body>"
+    schema_pattern: "(feature|bug fix|refactor)(\\s.*?):(\\s.*)"
+    bump_pattern: "^(break|new|fix|hotfix)"
+    commit_parser: "^(?P<change_type>feature|bug fix|refactor)(?P<scope>):\\s(?P<message>.*)?"
+    changelog_pattern: "^(feature|bug fix|refactor)?(!)?"
+    change_type_map:
+      feature: Feature
+      fix: Bugfix
+      refactor: Refactor
+    bump_map:
+      break: MAJOR
+      feature: MINOR
+      fix: PATCH
+      hotfix: PATCH
+    change_type_order: ["BREAKING CHANGE", "feature", "fix", "refactor", "perf"]
+    info_path: cz_customize_info.txt
+    info: This is customized info
+    questions:
+      - type: list
+        name: change_type
+        choices:
+          - value: feature
+            name: "Feature"
+          - value: fix
+            name: "Bugfix"
+          - value: refactor
+            name: "Refactor"
+          - value: chores
+            name: "Chores"
+        message: Select the type of change you are committing
+      - type: input
+        name: message
+        message: Commit message

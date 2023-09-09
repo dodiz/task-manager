@@ -1,34 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend Mentor - Kanban task management web app solution
 
-## Getting Started
+This is a solution to the [Kanban task management web app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/kanban-task-management-web-app-wgQLt-HlbB). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
-First, run the development server:
+## Table of contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- [Frontend Mentor - Kanban task management web app solution](#frontend-mentor---kanban-task-management-web-app-solution)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+    - [The challenge](#the-challenge)
+    - [Screenshot](#screenshot)
+    - [Links](#links)
+  - [My process](#my-process)
+    - [Built with](#built-with)
+  - [Author](#author)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### The challenge
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Users should be able to:
 
-## Learn More
+- View the optimal layout for the app depending on their device's screen size
+- See hover states for all interactive elements on the page
+- Create, read, update, and delete boards and tasks
+- Receive form validations when trying to create/edit boards and tasks
+- Mark subtasks as complete and move tasks between columns
+- Hide/show the board sidebar
+- Toggle the theme between light/dark modes
+- **Bonus**: Allow users to drag and drop tasks to change their status and re-order them in a column
+- **Bonus**: Keep track of any changes, even after refreshing the browser (`localStorage` could be used for this if you're not building out a full-stack app)
+- **Bonus**: Build this project as a full-stack application
 
-To learn more about Next.js, take a look at the following resources:
+### Screenshot
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![](./preview.jpg)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
 
-## Deploy on Vercel
+Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
+
+### Links
+
+- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+
+## My process
+
+### Built with
+
+- Semantic HTML5 markup
+- CSS custom properties
+- Mobile-first workflow
+- [React](https://reactjs.org/) - JS library
+- [Typescript](https://www.typescriptlang.org/) - For type checking
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind] (https://tailwindcss.com/) - For styles
+
+## Author
+
+- Website - [Add your name here](https://www.your-site.com)
+- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
+- Twitter - [@yourusername](https://www.twitter.com/yourusername)
+
+**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
