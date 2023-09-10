@@ -7,6 +7,7 @@ export const ArrowDownIcon: FC<ComponentProps<"svg">> = (props) => {
       height="7"
       xmlns="http://www.w3.org/2000/svg"
       stroke="#635FC7"
+      viewBox="0 0 10 7"
       strokeWidth="2"
       fill="none"
       {...props}

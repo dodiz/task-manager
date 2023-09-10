@@ -1,7 +1,6 @@
 @import "@/variables";
 
 .group {
-  display: block;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -23,20 +22,10 @@
   width: 100%;
   transition: border-color 0.3s;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   &.error {
     border-color: $accent-200;
-  }
-  .input {
-    color: $dark-400;
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    width: 100%;
-    &::placeholder {
-      color: rgba($dark-400, 0.25);
-    }
   }
   .errorMessage {
     color: $accent-200;
