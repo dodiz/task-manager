@@ -1,7 +1,10 @@
 @import "@/variables";
 .button {
   border-radius: 2.4rem;
-  padding: 1.4rem 4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.4rem 2.4rem;
   user-select: none;
   white-space: nowrap;
   font-weight: 700;

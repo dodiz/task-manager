@@ -8,3 +8,4 @@ export * from "./Checkbox";
 export * from "./Form";
 export * from "./Sidebar";
 export * from "./Toggle";
+export * from "./Header";
