@@ -31,7 +31,7 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
   const toggleSidebar = useCallback(() => {
     setIsSidebarHidden((prev) => !prev);
     localStorage.setItem("isSidebarHidden", String(!isSidebarHidden));
-  }, []);
+  }, [isSidebarHidden]);
 
   return (
     <ThemeContext.Provider
