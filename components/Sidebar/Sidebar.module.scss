@@ -3,10 +3,12 @@
 .container {
   height: 100vh;
   width: 300px;
-  background-color: $light-100;
   display: flex;
+  overflow: hidden;
+  transition: width 0.1s ease-in-out;
   flex-direction: column;
   justify-content: space-between;
+  background-color: $light-100;
   .logo {
     margin: 3.3rem 0 0 3.3rem;
   }
@@ -56,7 +58,7 @@
     background-color: $light-200;
     border-radius: 0.5rem;
   }
-  .hide {
+  .hideLabel {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -66,5 +68,28 @@
     margin: 2.4rem;
     margin-bottom: 3.8rem;
     cursor: pointer;
+  }
+  .show {
+    display: none;
+    position: fixed;
+    bottom: 5rem;
+    left: 0;
+    background: red;
+    padding: 2rem 2.5rem;
+    border-radius: 0 50px 50px 0;
+    background-color: $primary-200;
+    cursor: pointer;
+  }
+  &.hidden {
+    width: 0;
+    .show {
+      display: block;
+    }
+  }
+  &.dark {
+    background-color: $dark-200;
+    .theme {
+      background-color: $dark-300;
+    }
   }
 }

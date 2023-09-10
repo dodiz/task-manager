@@ -1,16 +1,19 @@
 import { FC, useState } from "react";
 import classNames from "classnames";
-import styles from "./Sidebar.module.scss";
 import {
   BoardIcon,
   HideIcon,
+  LogoDark,
   LogoLight,
   MoonIcon,
   PlusIcon,
+  ShowIcon,
   SunIcon,
   Toggle,
   Typography,
 } from "@/components";
+import { useTheme } from "@/hooks";
+import styles from "./Sidebar.module.scss";
 
 const boards = [
   {
@@ -28,12 +31,22 @@ const boards = [
 ];
 
 export const Sidebar: FC = () => {
-  const [toggle, setToggle] = useState(false);
+  const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();
   const [selectedBoard, setSelectedBoard] = useState(1);
   return (
-    <aside className={styles.container}>
+    <aside
+      className={classNames(
+        styles.container,
+        isDark && styles.dark,
+        isSidebarHidden && styles.hidden
+      )}
+    >
       <div>
-        <LogoLight className={styles.logo} />
+        {isDark ? (
+          <LogoDark className={styles.logo} />
+        ) : (
+          <LogoLight className={styles.logo} />
+        )}
         <div className={styles.boardTitle}>
           <Typography variant="s">ALL BOARDS (3)</Typography>
         </div>
@@ -61,11 +74,14 @@ export const Sidebar: FC = () => {
       <div>
         <div className={styles.theme}>
           <SunIcon />
-          <Toggle checked={toggle} onClick={() => setToggle((p) => !p)} />
+          <Toggle checked={isDark} onClick={toggleTheme} />
           <MoonIcon />
         </div>
-        <div className={styles.hide}>
+        <div className={styles.hideLabel} onClick={toggleSidebar}>
           <HideIcon /> Hide Sidebar
+        </div>
+        <div className={styles.show} onClick={toggleSidebar}>
+          <ShowIcon />
         </div>
       </div>
     </aside>
