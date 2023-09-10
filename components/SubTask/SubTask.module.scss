@@ -1,0 +1,28 @@
+@import "@/variables";
+
+.container {
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  background: $light-200;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-wrap: no-wrap;
+  &:hover {
+    background-color: rgba($primary-200, 0.25);
+  }
+  .checkbox {
+    pointer-events: none;
+  }
+  .label {
+    color: $dark-400;
+    font-size: 1.2rem;
+    font-weight: 700;
+    user-select: none;
+    &.completed {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+  }
+}
