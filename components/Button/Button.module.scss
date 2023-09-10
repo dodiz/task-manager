@@ -1,0 +1,44 @@
+@import "@/variables";
+.button {
+  border-radius: 2.4rem;
+  padding: 1.4rem 4rem;
+  user-select: none;
+  white-space: nowrap;
+  font-weight: 700;
+  line-height: normal;
+  &.small {
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-size: 1.3rem;
+  }
+}
+
+.primary {
+  @extend .button;
+  font-size: 1.5rem;
+  background-color: $primary-200;
+  color: $light-100;
+  &:hover {
+    background-color: $primary-100;
+  }
+}
+
+.secondary {
+  @extend .button;
+  background-color: #635fc71a;
+  color: $primary-200;
+  font-size: 1.3rem;
+  &:hover {
+    background-color: #635fc740;
+  }
+}
+
+.destructive {
+  @extend .button;
+  background-color: $accent-200;
+  color: $light-100;
+  font-size: 1.3rem;
+  &:hover {
+    background-color: $accent-100;
+  }
+}
