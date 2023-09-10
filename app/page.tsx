@@ -1,7 +1,10 @@
+"use client";
+import { Sidebar } from "@/components";
+
 export default function Page() {
   return (
-    <main>
-      <h1>Task manager</h1>
+    <main className="min-h-full bg-light-200">
+      <Sidebar />
     </main>
   );
 }

@@ -1,0 +1,24 @@
+@import "@/variables";
+.toggle {
+  padding: 0.4rem;
+  background-color: $primary-200;
+  border-radius: 50px;
+  width: 4rem;
+  cursor: pointer;
+  position: relative;
+  height: 1.4rem;
+  box-sizing: content-box;
+  .toggleButton {
+    position: absolute;
+    margin: 0 0.34rem;
+    left: 0;
+    width: 1.4rem;
+    height: 1.4rem;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    &.checked {
+      left: 2.6rem;
+    }
+  }
+}

@@ -1,0 +1,70 @@
+@import "@/variables";
+
+.container {
+  height: 100vh;
+  width: 300px;
+  background-color: $light-100;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .logo {
+    margin: 3.3rem 0 0 3.3rem;
+  }
+  .boardTitle {
+    margin-left: 3.2rem;
+    margin-top: 5.2rem;
+  }
+  .boards {
+    margin-top: 1.9rem;
+    display: flex;
+    flex-direction: column;
+    margin-right: 2.4rem;
+    .board {
+      transition: all 0.3s ease-in-out;
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      padding: 1.5rem 0 1.5rem 3.2rem;
+      cursor: pointer;
+      color: $light-400;
+      font-feature-settings: "clig" off, "liga" off;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 0 10rem 10rem 0;
+      &.active {
+        background-color: $primary-200;
+        color: $light-100;
+      }
+    }
+    .newBoard {
+      color: $primary-200;
+      .newBoardLabel {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+  .theme {
+    margin: 2.4rem;
+    display: flex;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.4rem;
+    background-color: $light-200;
+    border-radius: 0.5rem;
+  }
+  .hide {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: $light-400;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 2.4rem;
+    margin-bottom: 3.8rem;
+    cursor: pointer;
+  }
+}

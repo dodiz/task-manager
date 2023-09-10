@@ -12,3 +12,6 @@ export * from "./LogoDark";
 export * from "./LogoLight";
 export * from "./LogoMobile";
 export * from "./ShowIcon";
+export * from "./PlusIcon";
+export * from "./SunIcon";
+export * from "./MoonIcon";
