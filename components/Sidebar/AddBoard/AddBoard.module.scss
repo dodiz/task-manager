@@ -1,3 +1,5 @@
+@import "@/variables";
+
 .container {
   display: flex;
   flex-direction: column;
@@ -12,5 +14,11 @@
     display: flex;
     align-items: center;
     gap: 1.6rem;
+    .deleteColumn {
+      cursor: pointer;
+      &:hover {
+        fill: $accent-200;
+      }
+    }
   }
 }

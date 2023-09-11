@@ -8,18 +8,17 @@
   padding: 1.4rem 2.4rem;
   user-select: none;
   white-space: nowrap;
-  font-weight: 700;
+  font-weight: 900;
   line-height: normal;
-  &.small {
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
-    font-size: 1.3rem;
+  font-size: 1.3rem;
+  &:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
   }
 }
 
 .primary {
   @extend .button;
-  font-size: 1.5rem;
   background-color: $primary-200;
   color: $light-100;
   &:hover {
@@ -27,13 +26,20 @@
   }
 }
 
+.primary-large {
+  @extend .primary;
+  font-size: 1.5rem;
+}
+
 .secondary {
   @extend .button;
-  background-color: #635fc71a;
+  background-color: rgba($primary-200, 0.1);
   color: $primary-200;
-  font-size: 1.3rem;
   &:hover {
-    background-color: #635fc740;
+    background-color: rgba($primary-200, 0.25);
+  }
+  &.dark {
+    background-color: $light-100;
   }
 }
 
@@ -41,7 +47,6 @@
   @extend .button;
   background-color: $accent-200;
   color: $light-100;
-  font-size: 1.3rem;
   &:hover {
     background-color: $accent-100;
   }

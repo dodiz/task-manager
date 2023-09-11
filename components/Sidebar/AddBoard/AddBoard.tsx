@@ -18,14 +18,18 @@ export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      columns: [] as string[],
+      columns: [""],
     },
     validationSchema: toFormikValidationSchema(
       z.object({
         name: z.string({
-          required_error: "Board name must be a string",
+          required_error: "Can't be empty",
         }),
-        columns: z.array(z.string()),
+        columns: z.array(
+          z.string({
+            required_error: "Can't be empty",
+          })
+        ),
       })
     ),
     onSubmit: (values) => addBoard.mutate(values),
@@ -37,26 +41,31 @@ export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
         <Typography variant="l">Add New Board</Typography>
         <Input
           name="name"
-          onChange={formik.handleChange}
           value={formik.values.name}
           label="Board Name"
-          placeholder=""
-          error={formik.errors.name}
+          placeholder="e.g. Web Design"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name ? formik.errors.name : ""}
         />
         <div className={styles.columns}>
           <Typography variant="text-sm">Board Columns</Typography>
           {formik.values.columns.map((column, index) => (
             <div key={index} className={styles.column}>
               <Input
-                name="column"
+                name={`columns.${index}`}
                 value={column}
-                onChange={({ target }) => {
-                  const columns = [...formik.values.columns];
-                  columns[index] = target.value;
-                  formik.setFieldValue("columns", columns);
-                }}
+                placeholder="e.g. Todo"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  (formik.touched.columns as boolean[] | undefined)?.[index]
+                    ? formik.errors.columns?.[index]
+                    : ""
+                }
               />
               <CrossIcon
+                className={styles.deleteColumn}
                 onClick={() => {
                   formik.setFieldValue(
                     "columns",
@@ -67,6 +76,7 @@ export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
             </div>
           ))}
           <Button
+            type="button"
             variant="secondary"
             onClick={() =>
               formik.setFieldValue("columns", [...formik.values.columns, ""])
@@ -75,7 +85,7 @@ export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
             <PlusIcon /> Add New Column
           </Button>
         </div>
-        <Button onClick={formik.handleSubmit}>Create New Board</Button>
+        <Button onClick={() => formik.handleSubmit()}>Create New Board</Button>
       </div>
     </Dialog>
   );

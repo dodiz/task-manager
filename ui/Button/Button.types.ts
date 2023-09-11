@@ -1,7 +1,6 @@
-import { PropsWithChildren } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 
 export type ButtonProps = PropsWithChildren & {
-  variant?: "primary" | "secondary" | "destructive";
+  variant?: "primary" | "primary-large" | "secondary" | "destructive";
   small?: boolean;
-  onClick?: () => void;
-};
+} & ComponentProps<"button">;

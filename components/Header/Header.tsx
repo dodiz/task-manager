@@ -19,7 +19,7 @@ export const Header = () => {
         <Typography variant="xl">Plaform Launch</Typography>
       </div>
       <div className={styles.right}>
-        <Button>
+        <Button variant="primary-large" disabled>
           <PlusIcon /> Add New Task
         </Button>
         <DotsIcon />
