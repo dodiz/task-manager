@@ -5,6 +5,7 @@ import {
   LogoLight,
   PlusIcon,
   Typography,
+  DotsIcon,
 } from "@/components";
 import { useTheme } from "@/hooks";
 import styles from "./Header.module.scss";
@@ -17,10 +18,11 @@ export const Header = () => {
         {isSidebarHidden ? isDark ? <LogoDark /> : <LogoLight /> : null}
         <Typography variant="xl">Plaform Launch</Typography>
       </div>
-      <div>
+      <div className={styles.right}>
         <Button>
           <PlusIcon /> Add New Task
         </Button>
+        <DotsIcon />
       </div>
     </header>
   );

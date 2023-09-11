@@ -11,4 +11,9 @@
     background-color: $dark-200;
     border-color: $dark-100;
   }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 2.4rem;
+  }
 }
