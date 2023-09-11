@@ -1,0 +1,17 @@
+{
+  "tailwindCSS.rootFontSize": 10,
+  "material-icon-theme.folders.associations": {
+    "_components": "React-components",
+    "_hooks": "Hook",
+    "_utils": "utils",
+    "ui": "Views"
+  },
+  "material-icon-theme.hidesExplorerArrows": false,
+  "material-icon-theme.files.associations": {
+    "layout.tsx": "Next",
+    "page.tsx": "Next",
+    "not-found.tsx": "Next",
+    "loading.tsx": "Next"
+  },
+  "material-icon-theme.folders.color": "#dca150"
+}
