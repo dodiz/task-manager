@@ -1,7 +1,7 @@
 import type { Config } from "drizzle-kit";
 
 const config = {
-  schema: "./server/db/Boards.schema.ts",
+  schema: "./server/db/schema.ts",
   out: "./drizzle",
   driver: "better-sqlite",
   dbCredentials: {

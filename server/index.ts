@@ -1,25 +1,45 @@
-import { publicProcedure, router } from "./trpc";
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
 import { z } from "zod";
-import { Boards } from "@/server/db/Boards.schema";
-import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 
-const sqlite = new Database("sqlite.db");
-const db = drizzle(sqlite);
-migrate(db, { migrationsFolder: "./drizzle" });
+import { publicProcedure, router } from "./trpc";
+import { boards, columns } from "./db/schema";
+import { db } from "./db";
 
 export const appRouter = router({
-  getBoards: publicProcedure.query(() => {
-    const results = db.select().from(Boards).all();
+  getBoards: publicProcedure.query(async () => {
+    const results = await db.query.boards.findMany();
     return results;
   }),
   addBoard: publicProcedure
-    .input(z.object({ name: z.string() }))
-    .mutation(async ({ input }) => {
-      return db.insert(Boards).values({ name: input.name }).run();
+    .input(z.object({ name: z.string(), columns: z.array(z.string()) }))
+    .mutation(async ({ input: { name, columns: columnsData } }) => {
+      const { lastInsertRowid } = db.insert(boards).values({ name }).run();
+      columnsData.forEach((name) => {
+        db.insert(columns)
+          .values({ name, boardId: Number(lastInsertRowid) })
+          .run();
+      });
+      return { id: lastInsertRowid };
     }),
-  getBoardById: publicProcedure.input(String).query(async ({ input }) => {}),
+  getBoard: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      const board = await db.query.boards.findFirst({
+        where: (boards, { eq }) => eq(boards.id, input.id),
+        with: {
+          columns: {
+            columns: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+      return board;
+    }),
 });
 
 export type AppRouter = typeof appRouter;
