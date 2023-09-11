@@ -1,0 +1,14 @@
+@import "@/variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  .label {
+    color: $accent-200;
+  }
+  .options {
+    display: flex;
+    gap: 1.6rem;
+  }
+}

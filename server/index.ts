@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { eq } from "drizzle-orm";
 import { publicProcedure, router } from "./trpc";
 import { boards, columns } from "./db/schema";
 import { db } from "./db";
@@ -40,6 +41,11 @@ export const appRouter = router({
       });
       return board;
     }),
+  deleteBoard: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(({ input: { id } }) =>
+      db.delete(boards).where(eq(boards.id, id))
+    ),
 });
 
 export type AppRouter = typeof appRouter;

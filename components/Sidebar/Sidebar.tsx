@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import classNames from "classnames";
+import { AddBoard } from "@/components";
 import { useTheme } from "@/hooks";
 import { api } from "@/utils/api";
 import {
@@ -17,7 +18,6 @@ import {
   Typography,
 } from "@/ui";
 import styles from "./Sidebar.module.scss";
-import { AddBoard } from "./AddBoard";
 
 export const Sidebar: FC = () => {
   const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();
