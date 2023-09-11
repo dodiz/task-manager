@@ -53,7 +53,7 @@ Users should be able to:
 #### Backend and utils
 
 - [TRPC] (https://trpc.io/) - For server-client communication
-- [Prisma] (https://www.prisma.io/) - For database management
+- [Drizzle] (https://orm.drizzle.team/) - DB ORM
 - [NextAuth] (https://next-auth.js.org/) - For authentication
 - [Formik] (https://formik.org/) - For form management
 - [Zod] (https://zod.dev/) - For validation
