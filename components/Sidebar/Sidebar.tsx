@@ -1,6 +1,9 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import classNames from "classnames";
+import { useTheme } from "@/hooks";
+import styles from "./Sidebar.module.scss";
+import { api } from "@/utils/api";
 import {
   BoardIcon,
   HideIcon,
@@ -12,10 +15,7 @@ import {
   SunIcon,
   Toggle,
   Typography,
-} from "@/components";
-import { useTheme } from "@/hooks";
-import styles from "./Sidebar.module.scss";
-import { api } from "@/utils/api";
+} from "@/ui";
 
 export const Sidebar: FC = () => {
   const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();

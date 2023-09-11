@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { useTheme } from "@/hooks";
 import {
   Button,
   LogoDark,
@@ -6,8 +7,7 @@ import {
   PlusIcon,
   Typography,
   DotsIcon,
-} from "@/components";
-import { useTheme } from "@/hooks";
+} from "@/ui";
 import styles from "./Header.module.scss";
 
 export const Header = () => {

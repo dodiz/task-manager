@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import classNames from "classnames";
-import { ArrowDownIcon } from "@/components";
+import { ArrowDownIcon } from "@/ui";
 import styles from "./Select.module.scss";
 import { SelectProps } from "./Select.types";
 import formStyles from "../Form.module.scss";

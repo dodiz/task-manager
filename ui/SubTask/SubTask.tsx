@@ -1,8 +1,8 @@
 import { FC } from "react";
 import classNames from "classnames";
+import { Checkbox } from "@/ui";
 import { SubTaskProps } from "./SubTask.types";
 import styles from "./SubTask.module.scss";
-import { Checkbox } from "@/components";
 
 export const SubTask: FC<SubTaskProps> = ({ completed, onClick, label }) => {
   return (
