@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import Link from "next/link";
 import classNames from "classnames";
 import {
   BoardIcon,
@@ -14,24 +15,11 @@ import {
 } from "@/components";
 import { useTheme } from "@/hooks";
 import styles from "./Sidebar.module.scss";
-
-const boards = [
-  {
-    id: 1,
-    title: "Platform Launch",
-  },
-  {
-    id: 2,
-    title: "Marketing Plan",
-  },
-  {
-    id: 3,
-    title: "Roadmap",
-  },
-];
+import { api } from "@/utils/api";
 
 export const Sidebar: FC = () => {
   const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();
+  const { data } = api.getBoards.useQuery();
   const [selectedBoard, setSelectedBoard] = useState(1);
   return (
     <>
@@ -52,18 +40,20 @@ export const Sidebar: FC = () => {
             <Typography variant="s">ALL BOARDS (3)</Typography>
           </div>
           <div className={styles.boards}>
-            {boards.map((board) => (
-              <div
-                onClick={() => setSelectedBoard(board.id)}
-                key={board.id}
-                className={classNames(
-                  styles.board,
-                  selectedBoard === board.id && styles.active
-                )}
-              >
-                <BoardIcon /> {board.title}
-              </div>
-            ))}
+            {data?.boards &&
+              data.boards.map((board) => (
+                <Link
+                  href={`/${board.id}`}
+                  onClick={() => setSelectedBoard(board.id)}
+                  key={board.id}
+                  className={classNames(
+                    styles.board,
+                    selectedBoard === board.id && styles.active
+                  )}
+                >
+                  <BoardIcon /> {board.name}
+                </Link>
+              ))}
             <div className={classNames(styles.board, styles.newBoard)}>
               <BoardIcon />
               <div className={styles.newBoardLabel}>
