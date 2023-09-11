@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  .column {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+  }
+}

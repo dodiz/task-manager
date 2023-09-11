@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
-import styles from "./Sidebar.module.scss";
 import { api } from "@/utils/api";
 import {
   BoardIcon,
@@ -16,13 +16,21 @@ import {
   Toggle,
   Typography,
 } from "@/ui";
+import styles from "./Sidebar.module.scss";
+import { AddBoard } from "./AddBoard";
 
 export const Sidebar: FC = () => {
   const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();
-  const { data } = api.getBoards.useQuery();
-  const [selectedBoard, setSelectedBoard] = useState(1);
+  const { data: boards } = api.getBoards.useQuery();
+  const [showAddBoard, setShowAddBoard] = useState(false);
+
+  const { id } = useParams();
+
   return (
     <>
+      {showAddBoard && (
+        <AddBoard show={showAddBoard} onHide={() => setShowAddBoard(false)} />
+      )}
       <aside
         className={classNames(
           styles.container,
@@ -40,21 +48,23 @@ export const Sidebar: FC = () => {
             <Typography variant="s">ALL BOARDS (3)</Typography>
           </div>
           <div className={styles.boards}>
-            {data?.boards &&
-              data.boards.map((board) => (
+            {boards &&
+              boards.map((board) => (
                 <Link
                   href={`/${board.id}`}
-                  onClick={() => setSelectedBoard(board.id)}
                   key={board.id}
                   className={classNames(
                     styles.board,
-                    selectedBoard === board.id && styles.active
+                    +id === board.id && styles.active
                   )}
                 >
                   <BoardIcon /> {board.name}
                 </Link>
               ))}
-            <div className={classNames(styles.board, styles.newBoard)}>
+            <div
+              onClick={() => setShowAddBoard(true)}
+              className={classNames(styles.board, styles.newBoard)}
+            >
               <BoardIcon />
               <div className={styles.newBoardLabel}>
                 <PlusIcon /> Create new board
