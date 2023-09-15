@@ -1,27 +1,29 @@
 import { FC } from "react";
-import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { Dialog, Typography, Input, Button, PlusIcon, CrossIcon } from "@/ui";
 import { api } from "@/utils/api";
+import { EditBoardProps } from "./AddBoard.types";
 import styles from "./AddBoard.module.scss";
-import { AddBoardProps } from "./AddBoard.types";
 
-export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
-  const router = useRouter();
+export const EditBoard: FC<EditBoardProps> = ({ show, onHide, boardId }) => {
   const getBoards = api.getBoards.useQuery();
-  const addBoard = api.addBoard.useMutation({
-    onSuccess: ({ id }) => {
+  const { data: board } = api.getBoard.useQuery({ id: boardId });
+  const editBoard = api.updateBoard.useMutation({
+    onSuccess: () => {
       getBoards.refetch();
       onHide();
-      router.push(`/${id}`);
     },
   });
   const formik = useFormik({
     initialValues: {
-      name: "",
-      columns: [""],
+      name: board?.name ?? "",
+      columns: board?.columns.map(column => ({
+        name: column.name,
+        id: column.id,
+        action: "update"
+      })) ?? [],
     },
     validationSchema: toFormikValidationSchema(
       z.object({
@@ -29,13 +31,23 @@ export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
           required_error: "Can't be empty",
         }),
         columns: z.array(
-          z.string({
-            required_error: "Can't be empty",
+          z.object({
+            name: z.string({
+              required_error: "Can't be empty",
+            }),
+            id: z.number(),
           })
         ),
       })
     ),
-    onSubmit: (values) => addBoard.mutate(values),
+    onSubmit: (values) =>
+      editBoard.mutate({
+        id: boardId,
+        name: values.name,
+        columns: values.columns
+          .filter((c) => c.id === -1)
+          .map((column) => column.name),
+      }),
   });
 
   return (

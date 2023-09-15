@@ -1,8 +1,8 @@
 "use client";
 import { FC, PropsWithChildren, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { api } from "@/utils/api";
 import { httpBatchLink } from "@trpc/react-query";
+import { api } from "@/utils/api";
 
 export const QueryProvider: FC<PropsWithChildren> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient());

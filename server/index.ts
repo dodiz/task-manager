@@ -46,6 +46,23 @@ export const appRouter = router({
     .mutation(({ input: { id } }) =>
       db.delete(boards).where(eq(boards.id, id))
     ),
+  updateBoard: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        columns: z.array(
+          z.object({
+            action: z.enum(["add", "remove", "update"]),
+            id: z.number().optional(),
+            name: z.string().optional(),
+          })
+        ),
+      })
+    )
+    .mutation(({ input: { id, name } }) =>
+      db.update(boards).set({ name }).where(eq(boards.id, id))
+    ),
 });
 
 export type AppRouter = typeof appRouter;

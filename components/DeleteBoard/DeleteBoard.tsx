@@ -1,4 +1,4 @@
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FC } from "react";
 import { Dialog, Typography, Button } from "@/ui";
 import { api } from "@/utils/api";
@@ -6,6 +6,7 @@ import styles from "./DeleteBoard.module.scss";
 import { DeleteBoardProps } from "./DeleteBoard.types";
 
 export const DeleteBoard: FC<DeleteBoardProps> = ({ show, onHide }) => {
+  const router = useRouter();
   const getBoards = api.getBoards.useQuery();
   const { id } = useParams();
   const { data } = api.getBoard.useQuery({ id: +id });
@@ -13,6 +14,7 @@ export const DeleteBoard: FC<DeleteBoardProps> = ({ show, onHide }) => {
     onSuccess: () => {
       getBoards.refetch();
       onHide();
+      router.push("/");
     },
   });
 
