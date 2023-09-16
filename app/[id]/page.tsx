@@ -1,9 +1,9 @@
 "use client";
+import { useMemo } from "react";
+import classNames from "classnames";
 import { useTheme } from "@/hooks";
 import { Button, LoadingSpinner, PlusIcon, Typography } from "@/ui";
 import { api } from "@/utils/api";
-import classNames from "classnames";
-import { useMemo } from "react";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const { isDark } = useTheme();
@@ -11,7 +11,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     data: board,
     isLoading,
     isError,
-  } = api.getBoard.useQuery({ id: +id }, { enabled: !!id });
+  } = api.boards.getById.useQuery({ id: +id }, { enabled: !!id });
 
   const containerClassName = useMemo(() => {
     return `${isDark ? "bg-dark-300" : "bg-light-200"} h-full`;

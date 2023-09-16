@@ -7,10 +7,10 @@ import styles from "./DeleteBoard.module.scss";
 
 export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const router = useRouter();
-  const getBoards = api.getBoards.useQuery();
+  const getBoards = api.boards.getAll.useQuery();
   const { id } = useParams();
-  const { data } = api.getBoard.useQuery({ id: +id });
-  const deleteBoard = api.deleteBoard.useMutation({
+  const { data } = api.boards.getById.useQuery({ id: +id });
+  const deleteBoard = api.boards.remove.useMutation({
     onSuccess: () => {
       getBoards.refetch();
       onHide();

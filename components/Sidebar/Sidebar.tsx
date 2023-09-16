@@ -21,7 +21,7 @@ import styles from "./Sidebar.module.scss";
 
 export const Sidebar: FC = () => {
   const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();
-  const { data: boards } = api.getBoards.useQuery();
+  const { data: boards } = api.boards.getAll.useQuery();
   const [showAddBoard, setShowAddBoard] = useState(false);
 
   const { id } = useParams();

@@ -10,8 +10,8 @@ import styles from "./Modals.module.scss";
 
 export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const router = useRouter();
-  const getBoards = api.getBoards.useQuery();
-  const addBoard = api.addBoard.useMutation({
+  const getBoards = api.boards.getAll.useQuery();
+  const addBoard = api.boards.add.useMutation({
     onSuccess: ({ id }) => {
       getBoards.refetch();
       onHide();
