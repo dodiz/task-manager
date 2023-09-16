@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useParams } from "next/navigation";
 import classNames from "classnames";
-import { DeleteBoard, EditBoard } from "@/components";
+import { DeleteBoardModal, EditBoardModal, AddTaskModal } from "@/components";
 import { useTheme } from "@/hooks";
 import {
   Button,
@@ -14,24 +14,31 @@ import {
 import { api } from "@/utils/api";
 import styles from "./Header.module.scss";
 
-export const Header = () => {
+export const Header: FC = () => {
   const { isDark, isSidebarHidden } = useTheme();
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
+  const [isAddingTask, setIsAddingTask] = useState(false);
   const { id } = useParams();
   const { data: board } = api.getBoard.useQuery({ id: +id }, { enabled: !!id });
   return (
     <>
       {isDeletingBoard && (
-        <DeleteBoard
+        <DeleteBoardModal
           show={isDeletingBoard}
           onHide={() => setIsDeletingBoard(false)}
         />
       )}
       {isEditingBoard && (
-        <EditBoard
+        <EditBoardModal
           show={isEditingBoard}
           onHide={() => setIsEditingBoard(false)}
+        />
+      )}
+      {isAddingTask && (
+        <AddTaskModal
+          show={isAddingTask}
+          onHide={() => setIsAddingTask(false)}
         />
       )}
       <header className={classNames(styles.container, isDark && styles.dark)}>

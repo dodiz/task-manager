@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import classNames from "classnames";
-import { AddBoard } from "@/components";
+import { AddBoardModal } from "@/components";
 import { useTheme } from "@/hooks";
 import { api } from "@/utils/api";
 import {
@@ -29,7 +29,10 @@ export const Sidebar: FC = () => {
   return (
     <>
       {showAddBoard && (
-        <AddBoard show={showAddBoard} onHide={() => setShowAddBoard(false)} />
+        <AddBoardModal
+          show={showAddBoard}
+          onHide={() => setShowAddBoard(false)}
+        />
       )}
       <aside
         className={classNames(

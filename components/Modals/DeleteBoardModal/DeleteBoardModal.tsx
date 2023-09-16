@@ -2,10 +2,10 @@ import { useParams, useRouter } from "next/navigation";
 import { FC } from "react";
 import { Dialog, Typography, Button } from "@/ui";
 import { api } from "@/utils/api";
+import { ModalProps } from "../Modal.types";
 import styles from "./DeleteBoard.module.scss";
-import { DeleteBoardProps } from "./DeleteBoard.types";
 
-export const DeleteBoard: FC<DeleteBoardProps> = ({ show, onHide }) => {
+export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const router = useRouter();
   const getBoards = api.getBoards.useQuery();
   const { id } = useParams();

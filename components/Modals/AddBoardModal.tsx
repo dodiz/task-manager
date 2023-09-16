@@ -5,10 +5,10 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { Dialog, Typography, Input, Button, PlusIcon, CrossIcon } from "@/ui";
 import { api } from "@/utils/api";
-import styles from "./AddBoard.module.scss";
-import { AddBoardProps } from "./AddBoard.types";
+import { ModalProps } from "./Modal.types";
+import styles from "./Modals.module.scss";
 
-export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
+export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const router = useRouter();
   const getBoards = api.getBoards.useQuery();
   const addBoard = api.addBoard.useMutation({
