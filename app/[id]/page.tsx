@@ -11,7 +11,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     data: board,
     isLoading,
     isError,
-  } = api.getBoard.useQuery({ id: +id });
+  } = api.getBoard.useQuery({ id: +id }, { enabled: !!id });
 
   const containerClassName = useMemo(() => {
     return `${isDark ? "bg-dark-300" : "bg-light-200"} h-full`;

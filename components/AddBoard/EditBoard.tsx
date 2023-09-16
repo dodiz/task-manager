@@ -11,7 +11,10 @@ import styles from "./AddBoard.module.scss";
 export const EditBoard: FC<EditBoardProps> = ({ show, onHide }) => {
   const getBoards = api.getBoards.useQuery();
   const { id } = useParams();
-  const { data: board, refetch } = api.getBoard.useQuery({ id: +id });
+  const { data: board, refetch } = api.getBoard.useQuery(
+    { id: +id },
+    { enabled: !!id }
+  );
   const editBoard = api.updateBoard.useMutation({
     onSuccess: () => {
       getBoards.refetch();
@@ -140,7 +143,7 @@ export const EditBoard: FC<EditBoardProps> = ({ show, onHide }) => {
             <PlusIcon /> Add New Column
           </Button>
         </div>
-        <Button>Create New Board</Button>
+        <Button>Save Changes</Button>
       </form>
     </Dialog>
   );

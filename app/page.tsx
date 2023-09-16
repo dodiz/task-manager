@@ -15,9 +15,11 @@ export default function Page() {
         <Typography variant="l">
           The board is empty. Create a new column to get started.
         </Typography>
-        <Button>
-          <PlusIcon /> Add New Column
-        </Button>
+        <div>
+          <Button>
+            <PlusIcon /> Add New Column
+          </Button>
+        </div>
       </div>
     </div>
   );

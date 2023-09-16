@@ -19,7 +19,7 @@ export const Header = () => {
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const { id } = useParams();
-  const { data: board } = api.getBoard.useQuery({ id: +id });
+  const { data: board } = api.getBoard.useQuery({ id: +id }, { enabled: !!id });
   return (
     <>
       {isDeletingBoard && (
