@@ -40,20 +40,22 @@ export const Header = () => {
           <Button variant="primary-large" disabled>
             <PlusIcon /> Add New Task
           </Button>
-          <Dropdown
-            items={[
-              {
-                label: "Edit Board",
-                variant: "primary",
-                onClick: () => setIsEditingBoard(true),
-              },
-              {
-                label: "Delete Board",
-                onClick: () => setIsDeletingBoard(true),
-                variant: "danger",
-              },
-            ]}
-          />
+          {board && (
+            <Dropdown
+              items={[
+                {
+                  label: "Edit Board",
+                  variant: "primary",
+                  onClick: () => setIsEditingBoard(true),
+                },
+                {
+                  label: "Delete Board",
+                  onClick: () => setIsDeletingBoard(true),
+                  variant: "danger",
+                },
+              ]}
+            />
+          )}
         </div>
       </header>
     </>
