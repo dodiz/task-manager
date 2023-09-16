@@ -8,7 +8,7 @@ export const boards = sqliteTable("boards", {
 
 export const columns = sqliteTable("columns", {
   id: integer("id").primaryKey(),
-  name: text("name"),
+  name: text("name").notNull(),
   boardId: integer("board_id")
     .references(() => boards.id, {
       onDelete: "cascade",

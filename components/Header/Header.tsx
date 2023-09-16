@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import classNames from "classnames";
-import { DeleteBoard } from "@/components";
+import { DeleteBoard, EditBoard } from "@/components";
 import { useTheme } from "@/hooks";
 import {
   Button,
@@ -10,14 +11,13 @@ import {
   Typography,
   Dropdown,
 } from "@/ui";
-import styles from "./Header.module.scss";
 import { api } from "@/utils/api";
-import { useState } from "react";
+import styles from "./Header.module.scss";
 
 export const Header = () => {
   const { isDark, isSidebarHidden } = useTheme();
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
-  const [_, setIsEditingBoard] = useState(false);
+  const [isEditingBoard, setIsEditingBoard] = useState(false);
   const { id } = useParams();
   const { data: board } = api.getBoard.useQuery({ id: +id });
   return (
@@ -28,9 +28,12 @@ export const Header = () => {
           onHide={() => setIsDeletingBoard(false)}
         />
       )}
-      {/**
-       * TODO: Add EditBoard component
-       */}
+      {isEditingBoard && (
+        <EditBoard
+          show={isEditingBoard}
+          onHide={() => setIsEditingBoard(false)}
+        />
+      )}
       <header className={classNames(styles.container, isDark && styles.dark)}>
         <div className="flex gap-4">
           {isSidebarHidden ? isDark ? <LogoDark /> : <LogoLight /> : null}

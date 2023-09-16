@@ -3,6 +3,4 @@ export type AddBoardProps = {
   onHide: () => void;
 };
 
-export type EditBoardProps = AddBoardProps & {
-  boardId: number;
-};
+export type EditBoardProps = AddBoardProps;
