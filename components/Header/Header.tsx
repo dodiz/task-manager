@@ -34,7 +34,9 @@ export const Header = () => {
       <header className={classNames(styles.container, isDark && styles.dark)}>
         <div className="flex gap-4">
           {isSidebarHidden ? isDark ? <LogoDark /> : <LogoLight /> : null}
-          <Typography variant="xl">{board?.name}</Typography>
+          <Typography variant="xl">
+            {board?.name || "Select a board"}
+          </Typography>
         </div>
         <div className={styles.right}>
           <Button variant="primary-large" disabled>

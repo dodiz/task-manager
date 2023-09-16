@@ -45,14 +45,14 @@ export const AddBoard: FC<AddBoardProps> = ({ show, onHide }) => {
         <Input
           name="name"
           value={formik.values.name}
-          label="Board Name"
+          label="Name"
           placeholder="e.g. Web Design"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.name ? formik.errors.name : ""}
         />
         <div className={styles.columns}>
-          <Typography variant="text-sm">Board Columns</Typography>
+          <Typography variant="text-sm">Columns</Typography>
           {formik.values.columns.map((column, index) => (
             <div key={index} className={styles.column}>
               <Input

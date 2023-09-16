@@ -1,7 +1,6 @@
 @import "@/variables";
 .button {
   border-radius: 2.4rem;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +8,7 @@
   padding: 1.4rem 2.4rem;
   user-select: none;
   white-space: nowrap;
-  font-weight: 900;
+  font-weight: 700;
   line-height: normal;
   font-size: 1.3rem;
   &:disabled {

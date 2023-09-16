@@ -5,6 +5,9 @@
   font-size: 2.4rem;
   line-height: 3rem;
   color: $dark-400;
+  &.dark {
+    color: $light-100;
+  }
 }
 
 .l {
@@ -12,6 +15,9 @@
   font-size: 1.8rem;
   line-height: 2.3rem;
   color: $dark-400;
+  &.dark {
+    color: $light-100;
+  }
 }
 
 .m {
@@ -39,10 +45,9 @@
 .textSm {
   font-weight: bold;
   font-size: 1.2rem;
-  color: $dark-200;
+  color: $light-400;
   line-height: 1.5rem;
-}
-
-.dark {
-  color: $light-100;
+  &.dark {
+    color: $light-100;
+  }
 }
