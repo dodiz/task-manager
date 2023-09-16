@@ -9,7 +9,11 @@ export const boards = sqliteTable("boards", {
 export const columns = sqliteTable("columns", {
   id: integer("id").primaryKey(),
   name: text("name"),
-  boardId: integer("board_id"),
+  boardId: integer("board_id")
+    .references(() => boards.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
 });
 
 export const BoardsRelations = relations(boards, ({ many }) => ({
