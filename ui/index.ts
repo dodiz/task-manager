@@ -7,3 +7,4 @@ export * from "./Form";
 export * from "./Toggle";
 export * from "./Dialog";
 export * from "./Dropdown";
+export * from "./LoadingSpinner";

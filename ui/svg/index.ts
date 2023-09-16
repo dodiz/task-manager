@@ -16,3 +16,4 @@ export * from "./PlusIcon";
 export * from "./SunIcon";
 export * from "./MoonIcon";
 export * from "./DotsIcon";
+export * from "./SpinnerIcon";
