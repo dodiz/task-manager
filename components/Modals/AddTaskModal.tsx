@@ -17,9 +17,9 @@ import { ModalProps } from "./Modal.types";
 import styles from "./Modals.module.scss";
 
 export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
-  const { id } = useParams();
+  const { boardId } = useParams();
   const { data: board, refetch: refetchBoard } = api.boards.getById.useQuery({
-    id: +id,
+    id: +boardId,
   });
   const addTask = api.tasks.add.useMutation({
     onSuccess: () => {

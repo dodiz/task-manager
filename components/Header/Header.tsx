@@ -19,10 +19,10 @@ export const Header: FC = () => {
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
-  const { id } = useParams();
+  const { boardId } = useParams();
   const { data: board } = api.boards.getById.useQuery(
-    { id: +id },
-    { enabled: !!id }
+    { id: +boardId },
+    { enabled: !!boardId }
   );
   return (
     <>

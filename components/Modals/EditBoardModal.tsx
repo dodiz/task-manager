@@ -10,10 +10,10 @@ import styles from "./Modals.module.scss";
 
 export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const getBoards = api.boards.getAll.useQuery();
-  const { id } = useParams();
+  const { boardId } = useParams();
   const { data: board, refetch } = api.boards.getById.useQuery(
-    { id: +id },
-    { enabled: !!id }
+    { id: +boardId },
+    { enabled: !!boardId }
   );
   const editBoard = api.boards.update.useMutation({
     onSuccess: () => {
@@ -56,7 +56,7 @@ export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
     ),
     enableReinitialize: true,
     onSubmit: (values) => {
-      editBoard.mutate({ id: +id, ...values });
+      editBoard.mutate({ id: +boardId, ...values });
     },
   });
 

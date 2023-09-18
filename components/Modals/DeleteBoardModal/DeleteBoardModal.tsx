@@ -8,8 +8,8 @@ import styles from "./DeleteBoard.module.scss";
 export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const router = useRouter();
   const getBoards = api.boards.getAll.useQuery();
-  const { id } = useParams();
-  const { data } = api.boards.getById.useQuery({ id: +id });
+  const { boardId } = useParams();
+  const { data } = api.boards.getById.useQuery({ id: +boardId });
   const deleteBoard = api.boards.remove.useMutation({
     onSuccess: () => {
       getBoards.refetch();
@@ -33,7 +33,7 @@ export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
         <div className={styles.options}>
           <Button
             variant="destructive"
-            onClick={() => deleteBoard.mutate({ id: +id })}
+            onClick={() => deleteBoard.mutate({ id: +boardId })}
           >
             Delete
           </Button>

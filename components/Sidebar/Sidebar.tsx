@@ -24,7 +24,7 @@ export const Sidebar: FC = () => {
   const { data: boards } = api.boards.getAll.useQuery();
   const [showAddBoard, setShowAddBoard] = useState(false);
 
-  const { id } = useParams();
+  const { boardId } = useParams();
 
   return (
     <>
@@ -58,7 +58,7 @@ export const Sidebar: FC = () => {
                   key={board.id}
                   className={classNames(
                     styles.board,
-                    +id === board.id && styles.active
+                    +boardId === board.id && styles.active
                   )}
                 >
                   <BoardIcon /> {board.name}

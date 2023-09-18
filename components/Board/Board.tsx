@@ -33,7 +33,6 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
       </div>
     );
   }
-
   return (
     <div className={classNames(styles.wrapper, isDark && styles.dark)}>
       {board!.columns.length ? (
@@ -61,6 +60,9 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                     key={task.id}
                     onClick={() => {}}
                     label={task.name}
+                    subCompleted={
+                      task.subTasks.filter((t) => t.completed).length
+                    }
                   />
                 ))}
               </div>
