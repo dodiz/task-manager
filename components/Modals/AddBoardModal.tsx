@@ -40,7 +40,7 @@ export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <div className={styles.container}>
+      <form className={styles.container} onSubmit={formik.handleSubmit}>
         <Typography variant="l">Add New Board</Typography>
         <Input
           name="name"
@@ -88,8 +88,8 @@ export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
             <PlusIcon /> Add New Column
           </Button>
         </div>
-        <Button onClick={() => formik.handleSubmit()}>Create New Board</Button>
-      </div>
+        <Button>Create New Board</Button>
+      </form>
     </Dialog>
   );
 };

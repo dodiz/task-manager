@@ -5,7 +5,13 @@ import styles from "./Select.module.scss";
 import { SelectProps } from "./Select.types";
 import formStyles from "../Form.module.scss";
 
-export const Select: FC<SelectProps> = ({ label, items, onChange, value }) => {
+export const Select: FC<SelectProps> = ({
+  label,
+  items,
+  onChange,
+  value,
+  placeholder,
+}) => {
   const [show, setShow] = useState(false);
   return (
     <label
@@ -20,7 +26,7 @@ export const Select: FC<SelectProps> = ({ label, items, onChange, value }) => {
           show && styles.show
         )}
       >
-        {value}
+        {placeholder || value}
         <ArrowDownIcon className={styles.arrow} />
       </div>
       <div className={classNames(styles.items, show && styles.show)}>

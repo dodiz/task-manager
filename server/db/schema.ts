@@ -19,6 +19,7 @@ export const columns = sqliteTable("columns", {
 export const tasks = sqliteTable("tasks", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
+  description: text("description"),
   columnId: integer("column_id")
     .references(() => columns.id, {
       onDelete: "cascade",

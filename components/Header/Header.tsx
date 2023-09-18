@@ -52,7 +52,11 @@ export const Header: FC = () => {
           </Typography>
         </div>
         <div className={styles.right}>
-          <Button variant="primary-large" disabled>
+          <Button
+            variant="primary-large"
+            disabled={!board}
+            onClick={() => setIsAddingTask(true)}
+          >
             <PlusIcon /> Add New Task
           </Button>
           {board && (
