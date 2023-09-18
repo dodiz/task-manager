@@ -1,4 +1,5 @@
 @import "@/variables";
+
 .container {
   cursor: pointer;
   position: relative;
@@ -16,7 +17,7 @@
     flex-direction: column;
     gap: 0.8rem;
     border: 1px solid $light-300;
-    background: var(--light-100, #fff);
+    background: $light-100;
     box-shadow: 0px 10px 20px 0px rgba($dark-100, 0.25);
     .item {
       color: $light-400;
@@ -26,6 +27,16 @@
     }
     &.show {
       display: flex;
+    }
+  }
+  &.dark {
+    .selectBox {
+      color: $light-100;
+      background-color: $dark-200;
+    }
+    .items {
+      background-color: $dark-300;
+      border: 0;
     }
   }
 }
