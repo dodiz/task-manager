@@ -1,18 +1,21 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 import { ArrowDownIcon } from "@/ui";
 import styles from "./Select.module.scss";
 import { SelectProps } from "./Select.types";
 import formStyles from "../Form.module.scss";
 
-export const Select: FC<SelectProps> = ({
-  label,
+export const Select = <T,>({
   items,
-  onChange,
-  value,
+  valueField,
+  labelField,
+  onSelect,
+  selected,
+  label,
   placeholder,
-}) => {
+}: SelectProps<T>) => {
   const [show, setShow] = useState(false);
+
   return (
     <label
       onClick={() => setShow((p) => !p)}
@@ -26,17 +29,17 @@ export const Select: FC<SelectProps> = ({
           show && styles.show
         )}
       >
-        {placeholder || value}
+        {selected ? labelField(selected) : placeholder}
         <ArrowDownIcon className={styles.arrow} />
       </div>
       <div className={classNames(styles.items, show && styles.show)}>
         {items.map((item) => (
           <div
-            onClick={() => onChange(item)}
-            key={item}
+            onClick={() => onSelect(item)}
+            key={item[valueField] as string | number}
             className={styles.item}
           >
-            {item}
+            {labelField(item)}
           </div>
         ))}
       </div>

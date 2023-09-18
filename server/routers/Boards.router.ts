@@ -35,6 +35,14 @@ export const boardsRouter = router({
               id: true,
               name: true,
             },
+            with: {
+              tasks: {
+                columns: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
           },
         },
       });

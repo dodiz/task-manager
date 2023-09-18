@@ -1,0 +1,59 @@
+@import "@/variables";
+.wrapper {
+  background-color: $light-200;
+  height: 100%;
+  &.dark {
+    background-color: $dark-300;
+  }
+  .empty {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .columns {
+    display: flex;
+    gap: 2.4rem;
+    padding: 3.2rem;
+    .column {
+      width: 28rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.4rem;
+      .columnHeader {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        .columnDot {
+          width: 1.5rem;
+          height: 1.5rem;
+          border-radius: 50%;
+        }
+      }
+      .tasks {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+    }
+  }
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @extend .wrapper;
+}
+
+.errorWrapper {
+  @extend .wrapper;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  justify-content: center;
+  align-items: center;
+}

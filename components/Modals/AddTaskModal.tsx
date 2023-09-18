@@ -32,7 +32,10 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
       name: "",
       description: "",
       subTasks: [""],
-      columnId: null as number | null,
+      column: null as {
+        id: number;
+        name: string;
+      } | null,
     },
     validationSchema: toFormikValidationSchema(
       z.object({
@@ -45,15 +48,23 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
             required_error: "Can't be empty",
           })
         ),
-        columnId: z.number(),
+        column: z.object(
+          {
+            id: z.number(),
+            name: z.string(),
+          },
+          {
+            invalid_type_error: "Can't be empty",
+          }
+        ),
       })
     ),
-    onSubmit: ({ name, description, subTasks, columnId }) =>
+    onSubmit: ({ name, description, subTasks, column }) =>
       addTask.mutate({
         name,
         description,
         subTasks,
-        columnId: columnId!,
+        columnId: column!.id,
       }),
   });
 
@@ -115,13 +126,19 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
           >
             <PlusIcon /> Add New SubTask
           </Button>
-          <Select
-            placeholder="Select a status"
-            label="Status"
-            items={board?.columns.map((c) => c.name) ?? []}
-            onChange={() => {}}
-            value=""
-          />
+          {board?.columns && (
+            <Select
+              items={board.columns}
+              valueField="id"
+              labelField={(item) => item.name}
+              placeholder="Select a status"
+              label="Status"
+              onSelect={(column) => {
+                formik.setFieldValue("column", column);
+              }}
+              selected={formik.values.column}
+            />
+          )}
         </div>
         <Button>Create Task</Button>
       </form>

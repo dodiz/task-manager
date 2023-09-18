@@ -1,7 +1,11 @@
-export type SelectProps = {
+export type SelectProps<T> = {
+  items: T[];
+  valueField: keyof T;
+  labelField: (item: T) => string;
+  selected: T | null;
+  onSelect: (item: T) => void;
   label?: string;
-  items: string[];
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
+  placeholder: string;
+  disabled?: boolean;
+  error?: string;
 };
