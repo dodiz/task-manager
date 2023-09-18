@@ -5,12 +5,19 @@ import { Typography } from "@/ui";
 import { TaskCardProps } from "./TaskCard.types";
 import styles from "./TaskCard.module.scss";
 
-export const TaskCard: FC<TaskCardProps> = ({ label, onClick }) => {
+export const TaskCard: FC<TaskCardProps> = ({
+  label,
+  onClick,
+  subCompleted,
+}) => {
   const { isDark } = useTheme();
   return (
-    <div className={classNames(styles.container, isDark && styles.dark)}>
+    <div
+      onClick={onClick}
+      className={classNames(styles.container, isDark && styles.dark)}
+    >
       <Typography variant="m">{label}</Typography>
-      <Typography variant="text">0 / 3 subtasks</Typography>
+      <Typography variant="text">{subCompleted} / 3 subtasks</Typography>
     </div>
   );
 };

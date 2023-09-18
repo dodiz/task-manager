@@ -41,6 +41,9 @@ export const boardsRouter = router({
                   id: true,
                   name: true,
                 },
+                with: {
+                  subTasks: true,
+                },
               },
             },
           },

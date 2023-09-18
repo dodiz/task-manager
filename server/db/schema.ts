@@ -33,6 +33,7 @@ export const subTasks = sqliteTable("sub_task", {
   taskId: integer("task_id").references(() => tasks.id, {
     onDelete: "cascade",
   }),
+  completed: integer("completed").notNull().default(0),
 });
 
 export const boardsRelations = relations(boards, ({ many }) => ({
