@@ -2,7 +2,8 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { boards, columns } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { publicProcedure, router } from "@/server/trpc";
+import { publicProcedure, router } from "@/server";
+import { inferProcedureOutput } from "@trpc/server";
 
 export const boardsRouter = router({
   getAll: publicProcedure.query(async () => {
@@ -31,16 +32,8 @@ export const boardsRouter = router({
         where: (boards, { eq }) => eq(boards.id, input.id),
         with: {
           columns: {
-            columns: {
-              id: true,
-              name: true,
-            },
             with: {
               tasks: {
-                columns: {
-                  id: true,
-                  name: true,
-                },
                 with: {
                   subTasks: true,
                 },

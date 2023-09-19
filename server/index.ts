@@ -1,5 +1,11 @@
 import { boardsRouter, tasksRouter } from "@/server/routers";
-import { router } from "@/server/trpc";
+import { initTRPC } from "@trpc/server";
+
+const t = initTRPC.create();
+
+export const router = t.router;
+export const publicProcedure = t.procedure;
+export const protectedProcedure = t.procedure;
 
 export const appRouter = router({
   boards: boardsRouter,

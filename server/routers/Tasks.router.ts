@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "@/server/trpc";
+import { protectedProcedure, router } from "@/server";
 import { db } from "@/server/db";
 import { subTasks, tasks } from "@/server/db/schema";
 

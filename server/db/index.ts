@@ -4,6 +4,7 @@ import * as schema from "@/server/db/schema";
 
 const sqlite = new Database("sqlite.db");
 const db = drizzle(sqlite, { schema });
+
 /**
  * @todo check migration
  * import { migrate } from "drizzle-orm/better-sqlite3/migrator";
