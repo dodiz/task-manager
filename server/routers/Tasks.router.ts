@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 import { protectedProcedure, router } from "@/server";
 import { db } from "@/server/db";
 import { subTasks, tasks } from "@/server/db/schema";
@@ -31,7 +32,15 @@ export const tasksRouter = router({
         });
       }
     ),
-  remove: protectedProcedure.query(async () => {}),
-  update: protectedProcedure.query(async () => {}),
-  move: protectedProcedure.query(async () => {}),
+  completeSubTask: protectedProcedure
+    .input(z.object({ id: z.number(), completed: z.boolean() }))
+    .mutation(({ input: { id, completed } }) => {
+      return db
+        .update(subTasks)
+        .set({ completed: completed ? 1 : 0 })
+        .where(eq(subTasks.id, id));
+    }),
+  remove: protectedProcedure.mutation(async () => {}),
+  update: protectedProcedure.mutation(async () => {}),
+  move: protectedProcedure.mutation(async () => {}),
 });
