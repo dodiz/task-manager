@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { protectedProcedure, router } from "@/server";
+import { protectedProcedure, router } from "@/server/app";
 import { db } from "@/server/db";
 import { subTasks, tasks } from "@/server/db/schema";
 

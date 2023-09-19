@@ -2,8 +2,7 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { boards, columns } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { publicProcedure, router } from "@/server";
-import { inferProcedureOutput } from "@trpc/server";
+import { publicProcedure, router } from "@/server/app";
 
 export const boardsRouter = router({
   getAll: publicProcedure.query(async () => {
