@@ -16,6 +16,11 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     isError,
     refetch,
   } = api.boards.getById.useQuery({ id: boardId }, { enabled: !!boardId });
+  const { mutate: moveTask } = api.tasks.move.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
 
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
   const selectedTask = useMemo(() => {
@@ -69,7 +74,19 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
         {board!.columns.length ? (
           <div className={styles.columns}>
             {board!.columns.map((column, i) => (
-              <div key={column.id} className={styles.column}>
+              <div
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const taskId = +e.dataTransfer.getData("taskId");
+                  moveTask({
+                    taskId,
+                    columnId: column.id,
+                  });
+                }}
+                key={column.id}
+                className={styles.column}
+              >
                 <div className={styles.columnHeader}>
                   <div
                     className={classNames(
@@ -89,6 +106,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                   {column.tasks.map((task) => (
                     <TaskCard
                       key={task.id}
+                      id={task.id}
                       onClick={() => setSelectedTaskId(task.id)}
                       label={task.name}
                       subCompleted={
