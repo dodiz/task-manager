@@ -9,11 +9,19 @@
   border-radius: 0.4rem;
   cursor: pointer;
   text-wrap: no-wrap;
-  &:hover {
-    background-color: rgba($primary-200, 0.25);
-  }
   .checkbox {
-    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.1rem solid rgba(130, 143, 163, 0.25);
+    background-color: $light-100;
+    border-radius: 0.2rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    cursor: pointer;
+    .checkIcon {
+      display: none;
+    }
   }
   .label {
     color: $dark-400;
@@ -24,5 +32,23 @@
       text-decoration: line-through;
       opacity: 0.5;
     }
+  }
+  &.dark {
+    background-color: $dark-300;
+    .label {
+      color: $light-100;
+    }
+    .checkbox {
+      background-color: $dark-200;
+    }
+  }
+  .checkbox.checked {
+    background-color: $primary-200;
+    .checkIcon {
+      display: block;
+    }
+  }
+  &:hover {
+    background-color: rgba($primary-200, 0.25);
   }
 }
