@@ -42,5 +42,14 @@ export const tasksRouter = router({
     }),
   remove: protectedProcedure.mutation(async () => {}),
   update: protectedProcedure.mutation(async () => {}),
-  move: protectedProcedure.mutation(async () => {}),
+  move: protectedProcedure
+    .input(
+      z.object({
+        taskId: z.number(),
+        columnId: z.number(),
+      })
+    )
+    .mutation(({ input: { taskId, columnId } }) => {
+      return db.update(tasks).set({ columnId }).where(eq(tasks.id, taskId));
+    }),
 });

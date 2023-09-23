@@ -26,6 +26,15 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     return task;
   }, [board, selectedTaskId]);
 
+  const columns = useMemo(() => {
+    return board?.columns || [];
+  }, [board]);
+
+  const selectedColumn = useMemo(() => {
+    if (!board || !selectedTask) return null;
+    return board.columns.find((c) => selectedTask.columnId === c.id) || null;
+  }, [selectedTask, board]);
+
   if (isLoading) {
     return (
       <div className={classNames(styles.loadingWrapper, isDark && styles.dark)}>
@@ -48,6 +57,8 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     <>
       {selectedTask && (
         <ViewTaskModal
+          columns={columns}
+          selectedColumn={selectedColumn}
           show={!!selectedTask}
           onHide={() => setSelectedTaskId(null)}
           task={selectedTask}

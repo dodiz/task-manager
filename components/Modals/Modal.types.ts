@@ -1,4 +1,4 @@
-import { Task } from "@/server/types";
+import { Column, Task } from "@/server/types";
 
 export type ModalProps = {
   show: boolean;
@@ -8,4 +8,6 @@ export type ModalProps = {
 export type ViewTaskModalProps = ModalProps & {
   task: Task;
   onTaskUpdate: () => void;
+  columns: Column[];
+  selectedColumn: Column | null;
 };
