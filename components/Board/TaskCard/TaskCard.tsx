@@ -9,6 +9,7 @@ export const TaskCard: FC<TaskCardProps> = ({
   label,
   onClick,
   subCompleted,
+  subTotal,
 }) => {
   const { isDark } = useTheme();
   return (
@@ -17,7 +18,9 @@ export const TaskCard: FC<TaskCardProps> = ({
       className={classNames(styles.container, isDark && styles.dark)}
     >
       <Typography variant="m">{label}</Typography>
-      <Typography variant="text">{subCompleted} / 3 subtasks</Typography>
+      <Typography variant="text">
+        {subCompleted} / {subTotal} subtasks
+      </Typography>
     </div>
   );
 };

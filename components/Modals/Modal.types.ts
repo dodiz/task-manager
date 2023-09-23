@@ -7,4 +7,5 @@ export type ModalProps = {
 
 export type ViewTaskModalProps = ModalProps & {
   task: Task;
+  onTaskUpdate: () => void;
 };

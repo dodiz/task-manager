@@ -1,6 +1,5 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import classNames from "classnames";
-import { Task } from "@/server/types";
 import { useTheme } from "@/hooks";
 import { Button, LoadingSpinner, PlusIcon, Typography } from "@/ui";
 import { api } from "@/utils/api";
@@ -15,9 +14,17 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     data: board,
     isLoading,
     isError,
+    refetch,
   } = api.boards.getById.useQuery({ id: boardId }, { enabled: !!boardId });
 
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const selectedTask = useMemo(() => {
+    if (!selectedTaskId) return null;
+    const task = board?.columns
+      .flatMap((c) => c.tasks)
+      .find((t) => t.id === selectedTaskId);
+    return task;
+  }, [board, selectedTaskId]);
 
   if (isLoading) {
     return (
@@ -42,8 +49,9 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
       {selectedTask && (
         <ViewTaskModal
           show={!!selectedTask}
-          onHide={() => setSelectedTask(null)}
+          onHide={() => setSelectedTaskId(null)}
           task={selectedTask}
+          onTaskUpdate={refetch}
         />
       )}
       <div className={classNames(styles.wrapper, isDark && styles.dark)}>
@@ -70,11 +78,12 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                   {column.tasks.map((task) => (
                     <TaskCard
                       key={task.id}
-                      onClick={() => setSelectedTask(task)}
+                      onClick={() => setSelectedTaskId(task.id)}
                       label={task.name}
                       subCompleted={
                         task.subTasks.filter((t) => t.completed).length
                       }
+                      subTotal={task.subTasks.length}
                     />
                   ))}
                 </div>
