@@ -37,8 +37,8 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
   if (isError) {
     return (
       <div className={classNames(styles.errorWrapper, isDark && styles.dark)}>
-        <Typography variant="l">Something went wrong.</Typography>
-        <Typography variant="text">
+        <Typography variant="title-l">Something went wrong.</Typography>
+        <Typography variant="body">
           No board was found with id "{boardId}"
         </Typography>
       </div>
@@ -70,7 +70,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                         : "bg-yellow-200"
                     )}
                   />
-                  <Typography variant="s">
+                  <Typography variant="title-s">
                     {column.name?.toUpperCase()} ({column.tasks.length})
                   </Typography>
                 </div>
@@ -92,7 +92,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
           </div>
         ) : (
           <div className={styles.empty}>
-            <Typography variant="l">
+            <Typography variant="title-l">
               The board is empty. Create a new column to get started.
             </Typography>
             <div className="flex justify-center">

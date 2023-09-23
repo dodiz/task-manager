@@ -71,7 +71,7 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
   return (
     <Dialog show={show} onHide={onHide}>
       <form onSubmit={formik.handleSubmit} className={styles.container}>
-        <Typography variant="l">Add Task</Typography>
+        <Typography variant="title-l">Add Task</Typography>
         <Input
           name="name"
           value={formik.values.name}
@@ -91,7 +91,7 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
           error={formik.touched.description ? formik.errors.description : ""}
         />
         <div className={styles.columns}>
-          <Typography variant="text-sm">Subtasks</Typography>
+          <Typography variant="body-sm">Subtasks</Typography>
           {formik.values.subTasks.map((subTask, index) => (
             <div key={index} className={styles.column}>
               <Input

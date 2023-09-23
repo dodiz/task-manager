@@ -7,7 +7,7 @@ export const EditTaskModal: FC<ModalProps> = ({ show, onHide }) => {
   return (
     <Dialog show={show} onHide={onHide}>
       <form className={styles.container}>
-        <Typography variant="l">Edit task</Typography>
+        <Typography variant="title-l">Edit task</Typography>
         <Input
           name="name"
           value={"formik.values.name"}
@@ -18,7 +18,7 @@ export const EditTaskModal: FC<ModalProps> = ({ show, onHide }) => {
           error={""}
         />
         <div className={styles.columns}>
-          <Typography variant="text-sm">Columns</Typography>
+          <Typography variant="body-sm">Columns</Typography>
           {[].map((column, index) => (
             <div key={index} className={styles.column}>
               <Input

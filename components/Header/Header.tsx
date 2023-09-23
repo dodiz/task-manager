@@ -47,7 +47,7 @@ export const Header: FC = () => {
       <header className={classNames(styles.container, isDark && styles.dark)}>
         <div className="flex gap-4">
           {isSidebarHidden ? isDark ? <LogoDark /> : <LogoLight /> : null}
-          <Typography variant="xl">
+          <Typography variant="title-xl">
             {board?.name || "Select a board"}
           </Typography>
         </div>

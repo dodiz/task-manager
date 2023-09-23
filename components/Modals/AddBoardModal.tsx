@@ -41,7 +41,7 @@ export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   return (
     <Dialog show={show} onHide={onHide}>
       <form className={styles.container} onSubmit={formik.handleSubmit}>
-        <Typography variant="l">Add New Board</Typography>
+        <Typography variant="title-l">Add New Board</Typography>
         <Input
           name="name"
           value={formik.values.name}
@@ -52,7 +52,7 @@ export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
           error={formik.touched.name ? formik.errors.name : ""}
         />
         <div className={styles.columns}>
-          <Typography variant="text-sm">Columns</Typography>
+          <Typography variant="body-sm">Columns</Typography>
           {formik.values.columns.map((column, index) => (
             <div key={index} className={styles.column}>
               <Input

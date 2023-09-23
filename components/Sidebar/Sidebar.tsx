@@ -48,7 +48,9 @@ export const Sidebar: FC = () => {
             <LogoLight className={styles.logo} />
           )}
           <div className={styles.boardTitle}>
-            <Typography variant="s">ALL BOARDS ({boards?.length})</Typography>
+            <Typography variant="title-s">
+              ALL BOARDS ({boards?.length})
+            </Typography>
           </div>
           <div className={styles.boards}>
             {boards &&

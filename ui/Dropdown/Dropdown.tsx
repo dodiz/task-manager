@@ -23,7 +23,7 @@ export const Dropdown: FC<DropdownProps> = ({ items }) => {
         {items.map(({ label, onClick, variant }, i) => (
           <div key={i} onClick={onClick}>
             <Typography
-              variant="text"
+              variant="body"
               className={classNames(
                 styles.item,
                 variant === "danger" && styles.danger

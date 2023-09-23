@@ -63,7 +63,7 @@ export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   return (
     <Dialog show={show} onHide={onHide}>
       <form onSubmit={formik.handleSubmit} className={styles.container}>
-        <Typography variant="l">Edit Board</Typography>
+        <Typography variant="title-l">Edit Board</Typography>
         <Input
           name="name"
           value={formik.values.name}
@@ -74,7 +74,7 @@ export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
           error={formik.touched.name ? formik.errors.name : ""}
         />
         <div className={styles.columns}>
-          <Typography variant="text-sm">Board Columns</Typography>
+          <Typography variant="body-sm">Board Columns</Typography>
           {formik.values.prevColumns
             .filter((column) => column.action !== "delete")
             .map((column, index) => (

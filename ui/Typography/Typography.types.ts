@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
 export type TypographyProps = PropsWithChildren & {
-  variant: "xl" | "l" | "m" | "s" | "text" | "text-sm";
+  variant: "title-xl" | "title-l" | "title-m" | "title-s" | "body" | "body-sm";
   className?: string;
 };

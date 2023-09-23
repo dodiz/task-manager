@@ -21,12 +21,10 @@ export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   return (
     <Dialog show={show} onHide={onHide}>
       <div className={styles.container}>
-        <div>
-          <Typography className={styles.label} variant="l">
-            Delete this board?
-          </Typography>
-        </div>
-        <Typography variant="text">
+        <Typography className={styles.label} variant="title-l">
+          Delete this board?
+        </Typography>
+        <Typography variant="body">
           Are you sure you want to delete the '{data?.name}' board? This action
           will remove all columns and tasks and cannot be reversed.
         </Typography>

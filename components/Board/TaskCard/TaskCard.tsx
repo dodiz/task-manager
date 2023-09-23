@@ -17,8 +17,8 @@ export const TaskCard: FC<TaskCardProps> = ({
       onClick={onClick}
       className={classNames(styles.container, isDark && styles.dark)}
     >
-      <Typography variant="m">{label}</Typography>
-      <Typography variant="text">
+      <Typography variant="title-m">{label}</Typography>
+      <Typography variant="body">
         {subCompleted} / {subTotal} subtasks
       </Typography>
     </div>

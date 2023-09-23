@@ -18,9 +18,9 @@ export const ViewTaskModal: FC<ViewTaskModalProps> = ({
   return (
     <Dialog onHide={onHide} show={show}>
       <div className={styles.container}>
-        <Typography variant="l">{task.name}</Typography>
-        <Typography variant="text">{task.description}</Typography>
-        <Typography variant="text">
+        <Typography variant="title-l">{task.name}</Typography>
+        <Typography variant="body">{task.description}</Typography>
+        <Typography variant="body">
           SubTasks ({task.subTasks.filter((s) => s.completed).length} of{" "}
           {task.subTasks.length})
         </Typography>
