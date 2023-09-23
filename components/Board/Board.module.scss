@@ -24,6 +24,12 @@
       display: flex;
       flex-direction: column;
       gap: 2.4rem;
+      transition: all 0.2s ease-in-out;
+      &.dropping {
+        padding: 0.4rem;
+        border-radius: 0.8rem;
+        box-shadow: 0 0 2rem rgba($light-400, 0.5);
+      }
       .columnHeader {
         display: flex;
         align-items: center;

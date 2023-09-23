@@ -1,5 +1,6 @@
 import { FC, useMemo, useState } from "react";
 import classNames from "classnames";
+import { Column } from "@/server/types";
 import { useTheme } from "@/hooks";
 import { Button, LoadingSpinner, PlusIcon, Typography } from "@/ui";
 import { api } from "@/utils/api";
@@ -23,6 +24,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
   });
 
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const [droppingColumn, setDroppingColumn] = useState<Column | null>(null);
   const selectedTask = useMemo(() => {
     if (!selectedTaskId) return null;
     const task = board?.columns
@@ -75,7 +77,11 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
           <div className={styles.columns}>
             {board!.columns.map((column, i) => (
               <div
-                onDragOver={(e) => e.preventDefault()}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDroppingColumn(column);
+                }}
+                onDragLeave={() => setDroppingColumn(null)}
                 onDrop={(e) => {
                   e.preventDefault();
                   const taskId = +e.dataTransfer.getData("taskId");
@@ -83,9 +89,13 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                     taskId,
                     columnId: column.id,
                   });
+                  setDroppingColumn(null);
                 }}
                 key={column.id}
-                className={styles.column}
+                className={classNames(
+                  styles.column,
+                  droppingColumn === column && styles.dropping
+                )}
               >
                 <div className={styles.columnHeader}>
                   <div
