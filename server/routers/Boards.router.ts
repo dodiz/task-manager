@@ -36,8 +36,10 @@ export const boardsRouter = router({
         where: (boards, { eq }) => eq(boards.id, input.id),
         with: {
           columns: {
+            orderBy: (columns, { asc }) => asc(columns.id),
             with: {
               tasks: {
+                orderBy: (tasks, { asc }) => asc(tasks.id),
                 with: {
                   subTasks: {
                     orderBy: (subTasks, { asc }) => asc(subTasks.id),
@@ -77,7 +79,7 @@ export const boardsRouter = router({
       const columnsToUpdate = prevColumns.filter(
         (column) => column.action === "update"
       );
-      db.transaction(async (tx) => {
+      return db.transaction(async (tx) => {
         const removeRequests = columnsToRemove.map((column) =>
           tx.delete(columns).where(eq(columns.id, column.id))
         );
