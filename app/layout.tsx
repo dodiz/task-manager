@@ -1,8 +1,8 @@
 "use client";
+
 import "@/styles/globals.css";
 import { ReactNode } from "react";
 import dynamic from "next/dynamic";
-import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header, Sidebar } from "@/components";
 import { QueryProvider } from "@/app/QueryProvider";
@@ -22,17 +22,12 @@ const font = Plus_Jakarta_Sans({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: "Task manager",
-  description: "Task manager",
-};
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <QueryProvider>
-        <body className={font.className}>
-          <main className="min-h-full flex">
+      <body className={font.className}>
+        <main className="min-h-full flex">
+          <QueryProvider>
             <ThemeProvider>
               <Sidebar />
               <div className="flex-1 flex flex-col">
@@ -40,9 +35,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <div className="flex-1">{children}</div>
               </div>
             </ThemeProvider>
-          </main>
-        </body>
-      </QueryProvider>
+          </QueryProvider>
+        </main>
+      </body>
     </html>
   );
 }
