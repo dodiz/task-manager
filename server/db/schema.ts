@@ -1,13 +1,13 @@
 import { relations } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 
-export const boards = sqliteTable("boards", {
-  id: integer("id").primaryKey(),
+export const boards = pgTable("boards", {
+  id: serial("id").primaryKey(),
   name: text("name"),
 });
 
-export const columns = sqliteTable("columns", {
-  id: integer("id").primaryKey(),
+export const columns = pgTable("columns", {
+  id: serial("id").primaryKey(),
   name: text("name").notNull(),
   boardId: integer("board_id")
     .references(() => boards.id, {
@@ -16,8 +16,8 @@ export const columns = sqliteTable("columns", {
     .notNull(),
 });
 
-export const tasks = sqliteTable("tasks", {
-  id: integer("id").primaryKey(),
+export const tasks = pgTable("tasks", {
+  id: serial("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
   columnId: integer("column_id")
@@ -27,8 +27,8 @@ export const tasks = sqliteTable("tasks", {
     .notNull(),
 });
 
-export const subTasks = sqliteTable("sub_task", {
-  id: integer("id").primaryKey(),
+export const subTasks = pgTable("sub_task", {
+  id: serial("id").primaryKey(),
   name: text("name").notNull(),
   taskId: integer("task_id").references(() => tasks.id, {
     onDelete: "cascade",

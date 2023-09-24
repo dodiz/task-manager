@@ -3,9 +3,9 @@ import type { Config } from "drizzle-kit";
 const config = {
   schema: "./server/db/schema.ts",
   out: "./drizzle",
-  driver: "better-sqlite",
+  driver: "pg",
   dbCredentials: {
-    url: "sqlite.db",
+    connectionString: "postgres://admin:admin@localhost:5432/task-manager",
   },
 } satisfies Config;
 

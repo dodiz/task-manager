@@ -12,13 +12,18 @@ export const boardsRouter = router({
   add: publicProcedure
     .input(z.object({ name: z.string(), columns: z.array(z.string()) }))
     .mutation(async ({ input: { name, columns: columnsData } }) => {
-      const { lastInsertRowid } = db.insert(boards).values({ name }).run();
-      columnsData.forEach((name) => {
-        db.insert(columns)
-          .values({ name, boardId: Number(lastInsertRowid) })
-          .run();
-      });
-      return { id: lastInsertRowid };
+      /**
+       * @todo add transaction here
+       */
+      const row = await db
+        .insert(boards)
+        .values({ name })
+        .returning({ id: boards.id });
+      const boardId = row[0].id;
+      for (let i = 0; i < columnsData.length; i++) {
+        await db.insert(columns).values({ name: columnsData[i], boardId });
+      }
+      return { id: boardId };
     }),
   getById: publicProcedure
     .input(

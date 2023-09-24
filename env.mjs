@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const server = z.object({
     NODE_ENV: z.enum(["development", "test", "production"]),
+    DB_URL: z.string().url(),
 });
 
 const client = z.object(
@@ -17,6 +18,7 @@ const client = z.object(
  */
 const processEnv = {
     NODE_ENV: process.env.NODE_ENV,
+    DB_URL: process.env.DB_URL,
 };
 
 const merged = server.merge(client);

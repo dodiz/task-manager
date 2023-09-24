@@ -19,16 +19,21 @@ export const tasksRouter = router({
         input: { name, description, subTasks: subTasksList, columnId },
       }) => {
         return db.transaction(async (tx) => {
-          const { lastInsertRowid } = await tx
+          const rows = await tx
             .insert(tasks)
-            .values({ name, description, columnId });
-          await tx.insert(subTasks).values(
-            subTasksList.map((name) => ({
-              name,
-              taskId: Number(lastInsertRowid),
-            }))
-          );
-          return { id: lastInsertRowid };
+            .values({ name, description, columnId })
+            .returning({
+              id: tasks.id,
+            });
+          const taskId = rows[0].id;
+          if (subTasksList.length > 0)
+            await tx.insert(subTasks).values(
+              subTasksList.map((name) => ({
+                name,
+                taskId,
+              }))
+            );
+          return { id: taskId };
         });
       }
     ),
@@ -40,7 +45,9 @@ export const tasksRouter = router({
         .set({ completed: completed ? 1 : 0 })
         .where(eq(subTasks.id, id));
     }),
-  remove: protectedProcedure.mutation(async () => {}),
+  remove: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(({ input: { id } }) => db.delete(tasks).where(eq(tasks.id, id))),
   update: protectedProcedure.mutation(async () => {}),
   move: protectedProcedure
     .input(
