@@ -39,7 +39,9 @@ export const boardsRouter = router({
             with: {
               tasks: {
                 with: {
-                  subTasks: true,
+                  subTasks: {
+                    orderBy: (subTasks, { asc }) => asc(subTasks.id),
+                  },
                 },
               },
             },
