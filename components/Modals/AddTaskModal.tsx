@@ -74,9 +74,9 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
       <form onSubmit={formik.handleSubmit} className={styles.container}>
         <Typography variant="title-l">Add Task</Typography>
         <Input
+          label="Title"
           name="name"
           value={formik.values.name}
-          label="Name"
           placeholder="e.g. Groceries"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

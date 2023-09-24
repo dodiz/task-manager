@@ -1,12 +1,12 @@
 import { FC, useMemo, useState } from "react";
 import classNames from "classnames";
 import { Column, Task } from "@/server/types";
-import { DeleteTaskModal, ViewTaskModal } from "@/components";
+import { DeleteTaskModal, EditTaskModal, ViewTaskModal } from "@/components";
 import { useTheme } from "@/hooks";
 import { Button, LoadingSpinner, PlusIcon, Typography } from "@/ui";
 import { api } from "@/utils/api";
-import { BoardProps } from "./Board.types";
 import { TaskCard } from "./TaskCard";
+import { BoardProps } from "./Board.types";
 import styles from "./Board.module.scss";
 
 export const Board: FC<BoardProps> = ({ boardId }) => {
@@ -67,14 +67,31 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     <>
       {selectedTask && (
         <ViewTaskModal
-          onTaskDelete={() => setDeletingTaskId(selectedTask.id)}
-          onTaskEdit={() => setEditingTask(selectedTask)}
+          onTaskDelete={() => {
+            setDeletingTaskId(selectedTask.id);
+            setSelectedTaskId(null);
+          }}
+          onTaskEdit={() => {
+            setEditingTask(selectedTask);
+            setSelectedTaskId(null);
+          }}
           columns={columns}
           selectedColumn={selectedColumn}
           show={!!selectedTask}
           onHide={() => setSelectedTaskId(null)}
           task={selectedTask}
           onTaskUpdate={refetch}
+        />
+      )}
+      {editingTask && (
+        <EditTaskModal
+          show={!!editingTask}
+          onHide={() => setEditingTask(null)}
+          task={editingTask}
+          onTaskUpdate={() => {
+            setEditingTask(null);
+            refetch();
+          }}
         />
       )}
       {deletingTaskId && (

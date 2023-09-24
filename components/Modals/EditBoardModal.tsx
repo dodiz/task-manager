@@ -9,19 +9,16 @@ import { ModalProps } from "./Modal.types";
 import styles from "./Modals.module.scss";
 
 export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
-  const getBoards = api.boards.getAll.useQuery();
+  const { refetch: refetchAll } = api.boards.getAll.useQuery();
   const { boardId } = useParams();
-  const { data: board, refetch: refetchAllBoards } =
-    api.boards.getById.useQuery({ id: +boardId }, { enabled: !!boardId });
-  const { refetch: refetchBoard } = api.boards.getById.useQuery(
+  const { data: board, refetch: refetch } = api.boards.getById.useQuery(
     { id: +boardId },
     { enabled: !!boardId }
   );
   const editBoard = api.boards.update.useMutation({
     onSuccess: () => {
-      getBoards.refetch();
-      refetchAllBoards();
-      refetchBoard();
+      refetch();
+      refetchAll();
       onHide();
     },
   });

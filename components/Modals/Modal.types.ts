@@ -13,3 +13,8 @@ export type ViewTaskModalProps = ModalProps & {
   onTaskDelete: () => void;
   onTaskEdit: () => void;
 };
+
+export type EditTaskModalProps = ModalProps & {
+  task: Task;
+  onTaskUpdate: () => void;
+};

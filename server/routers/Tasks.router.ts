@@ -48,7 +48,46 @@ export const tasksRouter = router({
   remove: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(({ input: { id } }) => db.delete(tasks).where(eq(tasks.id, id))),
-  update: protectedProcedure.mutation(async () => {}),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        newSubTasks: z.array(z.string()),
+        prevSubTasks: z.array(
+          z.object({
+            action: z.enum(["delete", "update"]),
+            id: z.number(),
+            name: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input: { id, name, newSubTasks, prevSubTasks } }) => {
+      const subTasksToRemove = prevSubTasks.filter(
+        (subTask) => subTask.action === "delete"
+      );
+      const subTasksToUpdate = prevSubTasks.filter(
+        (subTask) => subTask.action === "update"
+      );
+      return db.transaction(async (tx) => {
+        const removeRequests = subTasksToRemove.map((subTask) =>
+          tx.delete(subTasks).where(eq(subTasks.id, subTask.id))
+        );
+        const updateRequests = subTasksToUpdate.map((subTask) =>
+          tx
+            .update(subTasks)
+            .set({ name: subTask.name })
+            .where(eq(subTasks.id, subTask.id))
+        );
+        if (newSubTasks.length > 0)
+          tx.insert(subTasks).values(
+            newSubTasks.map((subTask) => ({ name: subTask, boardId: id }))
+          );
+        await Promise.all([...updateRequests, ...removeRequests]);
+        await tx.update(tasks).set({ name }).where(eq(tasks.id, id));
+      });
+    }),
   move: protectedProcedure
     .input(
       z.object({
