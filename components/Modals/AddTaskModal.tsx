@@ -135,6 +135,7 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
               onSelect={(column) => {
                 formik.setFieldValue("column", column);
               }}
+              error={formik.touched.column ? formik.errors.column : ""}
               selected={formik.values.column}
             />
           )}

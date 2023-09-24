@@ -14,6 +14,7 @@ export const Select = <T,>({
   selected,
   label,
   placeholder,
+  error,
 }: SelectProps<T>) => {
   const [show, setShow] = useState(false);
   const { isDark } = useTheme();
@@ -31,11 +32,17 @@ export const Select = <T,>({
       <div
         className={classNames(
           formStyles.inputWrapper,
+          error && formStyles.error,
           styles.selectBox,
           show && styles.show
         )}
       >
         {selected ? labelField(selected) : placeholder}
+        {error && (
+          <p className={classNames(formStyles.errorMessage, styles.error)}>
+            {error}
+          </p>
+        )}
         <ArrowDownIcon className={styles.arrow} />
       </div>
       <div className={classNames(styles.items, show && styles.show)}>

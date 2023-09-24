@@ -7,6 +7,10 @@
   .selectBox.show {
     border-color: $primary-200;
   }
+  .error {
+    position: absolute;
+    right: 3.5rem;
+  }
   .items {
     border-radius: 0.8rem;
     position: absolute;
