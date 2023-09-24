@@ -42,7 +42,7 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
         name: z.string({
           required_error: "Can't be empty",
         }),
-        description: z.string(),
+        description: z.string().optional(),
         subTasks: z.array(
           z.string({
             required_error: "Can't be empty",
@@ -88,7 +88,6 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
           placeholder="e.g. Design a website for a client"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.description ? formik.errors.description : ""}
         />
         <div className={styles.columns}>
           <Typography variant="body-sm">Subtasks</Typography>
