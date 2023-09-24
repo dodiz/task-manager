@@ -32,6 +32,8 @@ commitizen:
             name: "Refactor"
           - value: chores
             name: "Chores"
+          - value: docs
+            name: "Docs"
         message: Select the type of change you are committing
       - type: input
         name: message

@@ -9,6 +9,7 @@ This is a solution to the [Kanban task management web app challenge on Frontend 
   - [The challenge](#the-challenge)
   - [Preview](#preview)
   - [Links](#links)
+  - [How to run](#how-to-run)
   - [Built with](#built-with)
     - [Javascript main stack](#javascript-main-stack)
     - [Styling](#styling)
@@ -25,7 +26,7 @@ Users should be able to:
 - Mark subtasks as complete and move tasks between columns (also via drag and drop)
 - Hide/show the board sidebar
 - Toggle the theme between light/dark modes
-- Keep track of any changes using local storage or database if user is logged in
+- Keep track of any changes via backend
 
 ### Preview
 
@@ -33,7 +34,20 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [TBD](https://your-solution-url.com)
+- Solution URL: [Task manager](https://task-manager-ten-pi.vercel.app/1)
+
+### How to run
+
+- Download [Node.js](https://nodejs.org/en/download/)
+- Download [pnpm](https://pnpm.io/installation)
+- Clone the repo
+- For a local database, download `Docker` and run `docker-compose up -d` to start a postgres container
+- Check the `.env.example` to add the required environment variables
+- Run `pnpm install` to install dependencies
+- Run `pnpm db:migrate` for initial database setup
+  - You might get an env variable error, add NODE_ENV=development to the .env file
+- Run `pnpm dev` to start the development server
+- Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Built with
 
@@ -48,12 +62,11 @@ Users should be able to:
 - [Tailwind] (https://tailwindcss.com/) - For page styles
 - CSS custom properties for ui components
 - [classnames] (https://www.npmjs.com/package/classnames) for conditional styling
-- Mobile-first workflow
 
 #### Backend and utils
 
 - [TRPC] (https://trpc.io/) - For server-client communication
-- [Drizzle] (https://orm.drizzle.team/) - DB ORM
+- [Drizzle] (https://orm.drizzle.team/) - DB ORM, postgres, supabase
 - [NextAuth] (https://next-auth.js.org/) - For authentication
 - [Formik] (https://formik.org/) - For form management
 - [Zod] (https://zod.dev/) - For validation
