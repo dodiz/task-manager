@@ -24,7 +24,9 @@ export const TaskCard: FC<TaskCardProps> = ({
     >
       <Typography variant="title-m">{label}</Typography>
       <Typography variant="body">
-        {subCompleted} / {subTotal} subtasks
+        {subTotal === 0
+          ? "No subtasks"
+          : `${subCompleted} of ${subTotal} subtasks`}
       </Typography>
     </div>
   );
