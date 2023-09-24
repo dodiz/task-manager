@@ -7,45 +7,36 @@ import {
   useCallback,
   useState,
 } from "react";
+import { setCookie, getCookie } from "cookies-next";
 
 export const ThemeContext = createContext({
-  theme: "light",
   isDark: false,
   isSidebarHidden: false,
   toggleTheme: () => {},
   toggleSidebar: () => {},
 });
 
-const IS_CLIENT = typeof window !== "undefined";
-
 export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [theme, setTheme] = useState(
-    IS_CLIENT ? localStorage.getItem("theme") || "light" : "light"
-  );
-  const [isSidebarHidden, setIsSidebarHidden] = useState(
-    IS_CLIENT
-      ? localStorage.getItem("isSidebarHidden") === "true" || false
-      : false
-  );
+  const initialTheme = getCookie("theme") || "light";
+  const initialSidebarStatus = getCookie("isSidebarHidden") === "true";
+
+  const [isDark, setIsDark] = useState(initialTheme === "dark");
+  const [isSidebarHidden, setIsSidebarHidden] = useState(initialSidebarStatus);
 
   const toggleTheme = useCallback(() => {
-    if (!IS_CLIENT) return;
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  }, [theme]);
+    setCookie("theme", isDark ? "light" : "dark");
+    setIsDark(!isDark);
+  }, [isDark]);
 
   const toggleSidebar = useCallback(() => {
-    if (!IS_CLIENT) return;
+    setCookie("isSidebarHidden", (!isSidebarHidden).toString());
     setIsSidebarHidden((prev) => !prev);
-    localStorage.setItem("isSidebarHidden", String(!isSidebarHidden));
   }, [isSidebarHidden]);
 
   return (
     <ThemeContext.Provider
       value={{
-        isDark: theme !== "light",
-        theme,
+        isDark,
         toggleTheme,
         toggleSidebar,
         isSidebarHidden,
