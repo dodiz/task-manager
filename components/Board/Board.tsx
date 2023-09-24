@@ -1,13 +1,13 @@
 import { FC, useMemo, useState } from "react";
 import classNames from "classnames";
-import { Column } from "@/server/types";
+import { Column, Task } from "@/server/types";
+import { DeleteTaskModal, ViewTaskModal } from "@/components";
 import { useTheme } from "@/hooks";
 import { Button, LoadingSpinner, PlusIcon, Typography } from "@/ui";
 import { api } from "@/utils/api";
 import { BoardProps } from "./Board.types";
 import { TaskCard } from "./TaskCard";
 import styles from "./Board.module.scss";
-import { ViewTaskModal } from "@/components";
 
 export const Board: FC<BoardProps> = ({ boardId }) => {
   const { isDark } = useTheme();
@@ -24,7 +24,10 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
   });
 
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [droppingColumn, setDroppingColumn] = useState<Column | null>(null);
+
   const selectedTask = useMemo(() => {
     if (!selectedTaskId) return null;
     const task = board?.columns
@@ -64,12 +67,21 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     <>
       {selectedTask && (
         <ViewTaskModal
+          onTaskDelete={() => setDeletingTaskId(selectedTask.id)}
+          onTaskEdit={() => setEditingTask(selectedTask)}
           columns={columns}
           selectedColumn={selectedColumn}
           show={!!selectedTask}
           onHide={() => setSelectedTaskId(null)}
           task={selectedTask}
           onTaskUpdate={refetch}
+        />
+      )}
+      {deletingTaskId && (
+        <DeleteTaskModal
+          show={!!deletingTaskId}
+          onHide={() => setDeletingTaskId(null)}
+          taskId={deletingTaskId}
         />
       )}
       <div className={classNames(styles.wrapper, isDark && styles.dark)}>

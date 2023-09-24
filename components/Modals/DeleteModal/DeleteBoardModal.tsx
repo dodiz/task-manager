@@ -3,14 +3,14 @@ import { FC } from "react";
 import { Dialog, Typography, Button } from "@/ui";
 import { api } from "@/utils/api";
 import { ModalProps } from "../Modal.types";
-import styles from "./DeleteBoard.module.scss";
+import styles from "./DeleteModal.module.scss";
 
 export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
   const router = useRouter();
   const getBoards = api.boards.getAll.useQuery();
   const { boardId } = useParams();
   const { data } = api.boards.getById.useQuery({ id: +boardId });
-  const deleteBoard = api.boards.remove.useMutation({
+  const { mutate: deleteBoard } = api.boards.remove.useMutation({
     onSuccess: () => {
       getBoards.refetch();
       onHide();
@@ -31,7 +31,7 @@ export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
         <div className={styles.options}>
           <Button
             variant="destructive"
-            onClick={() => deleteBoard.mutate({ id: +boardId })}
+            onClick={() => deleteBoard({ id: +boardId })}
           >
             Delete
           </Button>

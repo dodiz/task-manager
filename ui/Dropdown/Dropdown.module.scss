@@ -11,12 +11,17 @@
     display: none;
     right: 0;
     top: 200%;
+    width: max-content;
     border-radius: 0.8rem;
     background-color: $light-100;
     padding: 1.6rem;
     flex-direction: column;
     gap: 1.6rem;
     box-shadow: 0 0.4rem 0.8rem rgba($dark-100, 0.1);
+    &.center {
+      left: 50%;
+      transform: translateX(-50%);
+    }
     .item {
       width: 16rem;
       cursor: pointer;

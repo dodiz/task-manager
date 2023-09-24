@@ -1,16 +1,18 @@
 import { FC } from "react";
-import { Dialog, Select, SubTask, Typography } from "@/ui";
-import { ViewTaskModalProps } from "./Modal.types";
+import { Dialog, Dropdown, Select, SubTask, Typography } from "@/ui";
 import { api } from "@/utils/api";
+import { ViewTaskModalProps } from "./Modal.types";
 import styles from "./Modals.module.scss";
 
 export const ViewTaskModal: FC<ViewTaskModalProps> = ({
   show,
-  onHide,
   task,
-  onTaskUpdate,
   columns,
   selectedColumn,
+  onHide,
+  onTaskUpdate,
+  onTaskDelete,
+  onTaskEdit,
 }) => {
   const { mutate: completeTask } = api.tasks.completeSubTask.useMutation({
     onSuccess: () => {
@@ -26,7 +28,24 @@ export const ViewTaskModal: FC<ViewTaskModalProps> = ({
   return (
     <Dialog onHide={onHide} show={show}>
       <div className={styles.container}>
-        <Typography variant="title-l">{task.name}</Typography>
+        <div className={styles.header}>
+          <Typography variant="title-l">{task.name}</Typography>
+          <Dropdown
+            align="center"
+            items={[
+              {
+                label: "Edit Task",
+                variant: "primary",
+                onClick: onTaskEdit,
+              },
+              {
+                label: "Delete Task",
+                onClick: onTaskDelete,
+                variant: "danger",
+              },
+            ]}
+          />
+        </div>
         <Typography variant="body">{task.description}</Typography>
         <Typography variant="body">
           SubTasks ({task.subTasks.filter((s) => s.completed).length} of{" "}

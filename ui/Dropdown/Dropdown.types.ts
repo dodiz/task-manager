@@ -4,4 +4,5 @@ export type DropdownProps = {
     label: string;
     variant?: "danger" | "primary";
   }[];
+  align?: "center" | "right";
 };

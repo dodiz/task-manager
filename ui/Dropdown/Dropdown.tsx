@@ -5,7 +5,7 @@ import { DotsIcon, Typography } from "@/ui";
 import { DropdownProps } from "./Dropdown.types";
 import styles from "./Dropdown.module.scss";
 
-export const Dropdown: FC<DropdownProps> = ({ items }) => {
+export const Dropdown: FC<DropdownProps> = ({ items, align }) => {
   const { isDark } = useTheme();
   const [show, setShow] = useState(false);
   const ref = useClickOutside(() => setShow(false));
@@ -17,7 +17,8 @@ export const Dropdown: FC<DropdownProps> = ({ items }) => {
         className={classNames(
           styles.items,
           isDark && styles.dark,
-          show && styles.show
+          show && styles.show,
+          align === "center" && styles.center
         )}
       >
         {items.map(({ label, onClick, variant }, i) => (

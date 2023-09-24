@@ -77,7 +77,7 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
           name="name"
           value={formik.values.name}
           label="Name"
-          placeholder="e.g. Web Design"
+          placeholder="e.g. Groceries"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.name ? formik.errors.name : ""}

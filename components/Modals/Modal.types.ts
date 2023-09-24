@@ -7,7 +7,9 @@ export type ModalProps = {
 
 export type ViewTaskModalProps = ModalProps & {
   task: Task;
-  onTaskUpdate: () => void;
   columns: Column[];
   selectedColumn: Column | null;
+  onTaskUpdate: () => void;
+  onTaskDelete: () => void;
+  onTaskEdit: () => void;
 };
