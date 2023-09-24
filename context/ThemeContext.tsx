@@ -16,19 +16,27 @@ export const ThemeContext = createContext({
   toggleSidebar: () => {},
 });
 
+const IS_CLIENT = typeof window !== "undefined";
+
 export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(
+    IS_CLIENT ? localStorage.getItem("theme") || "light" : "light"
+  );
   const [isSidebarHidden, setIsSidebarHidden] = useState(
-    localStorage.getItem("isSidebarHidden") === "true" || false
+    IS_CLIENT
+      ? localStorage.getItem("isSidebarHidden") === "true" || false
+      : false
   );
 
   const toggleTheme = useCallback(() => {
+    if (!IS_CLIENT) return;
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   }, [theme]);
 
   const toggleSidebar = useCallback(() => {
+    if (!IS_CLIENT) return;
     setIsSidebarHidden((prev) => !prev);
     localStorage.setItem("isSidebarHidden", String(!isSidebarHidden));
   }, [isSidebarHidden]);
