@@ -1,6 +1,9 @@
 import { ComponentProps } from "react";
 
-export type InputProps = {
+type GenericInputProps = {
   label?: string;
   error?: string;
-} & ComponentProps<"input">;
+};
+
+export type InputProps = GenericInputProps & ComponentProps<"input">;
+export type TextareaProps = GenericInputProps & ComponentProps<"textarea">;

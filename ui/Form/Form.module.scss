@@ -30,7 +30,8 @@
       font-weight: 500;
       font-size: 1.3rem;
     }
-    .input {
+    .input,
+    .textarea {
       background: transparent;
       border: none;
       outline: none;
@@ -40,6 +41,11 @@
         color: rgba($dark-400, 0.25);
         font-weight: 600;
       }
+    }
+    .textarea {
+      resize: none;
+      height: 11rem;
+      line-height: 2.3rem;
     }
   }
   &.focus {
@@ -53,7 +59,8 @@
     }
     .inputWrapper {
       background-color: $dark-200;
-      .input {
+      .input,
+      .textarea {
         color: $light-100;
         &::placeholder {
           color: rgba($light-100, 0.25);

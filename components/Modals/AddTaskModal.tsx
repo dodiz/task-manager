@@ -11,6 +11,7 @@ import {
   PlusIcon,
   CrossIcon,
   Select,
+  Textarea,
 } from "@/ui";
 import { api } from "@/utils/api";
 import { ModalProps } from "./Modal.types";
@@ -81,7 +82,7 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
           onBlur={formik.handleBlur}
           error={formik.touched.name ? formik.errors.name : ""}
         />
-        <Input
+        <Textarea
           name="description"
           value={formik.values.description}
           label="Description"
