@@ -20,12 +20,12 @@ This is a solution to the [Kanban task management web app challenge on Frontend 
 
 Users should be able to:
 
-- View the optimal layout for the app depending on their device's screen size
 - Create, read, update, and delete boards and tasks
 - Receive form validations when trying to create/edit boards and tasks
 - Mark subtasks as complete and move tasks between columns (also via drag and drop)
 - Hide/show the board sidebar
 - Toggle the theme between light/dark modes
+- Mobile responsive
 - Keep track of any changes via backend
 
 ### Preview
@@ -67,7 +67,7 @@ Users should be able to:
 
 - [TRPC] (https://trpc.io/) - For server-client communication
 - [Drizzle] (https://orm.drizzle.team/) - DB ORM, postgres, supabase
-- [NextAuth] (https://next-auth.js.org/) - For authentication
+- [NextAuth] (https://next-auth.js.org/) - For authentication (TODO...)
 - [Formik] (https://formik.org/) - For form management
 - [Zod] (https://zod.dev/) - For validation
 
