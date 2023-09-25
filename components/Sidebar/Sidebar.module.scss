@@ -26,6 +26,9 @@
   transform: translateX(-50%);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 26rem;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $light-100;
   &.showMobile {
     z-index: 1;
     opacity: 1;
@@ -34,7 +37,6 @@
     z-index: 1;
     opacity: 1;
     height: 100vh;
-    width: 30rem;
     position: sticky;
     left: 0;
     top: 0;
@@ -46,9 +48,9 @@
       display: none;
     }
   }
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: $light-100;
+  @include desktop() {
+    width: 30rem;
+  }
   .logo {
     margin: 3.3rem 0 0 3.3rem;
     display: none;
