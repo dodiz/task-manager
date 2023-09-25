@@ -90,9 +90,11 @@ export const boardsRouter = router({
             .where(eq(columns.id, column.id))
         );
         if (newColumns.length > 0)
-          tx.insert(columns).values(
-            newColumns.map((column) => ({ name: column, boardId: id }))
-          );
+          await tx
+            .insert(columns)
+            .values(
+              newColumns.map((column) => ({ name: column, boardId: id }))
+            );
         await Promise.all([...updateRequests, ...removeRequests]);
         await tx.update(boards).set({ name }).where(eq(boards.id, id));
       });

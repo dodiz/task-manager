@@ -47,22 +47,29 @@ export const ViewTaskModal: FC<ViewTaskModalProps> = ({
           />
         </div>
         <Typography variant="body">{task.description}</Typography>
-        <Typography variant="body">
-          SubTasks ({task.subTasks.filter((s) => s.completed).length} of{" "}
-          {task.subTasks.length})
-        </Typography>
-        <div className={styles.columns}>
-          {task.subTasks.map((subTask) => (
-            <SubTask
-              key={subTask.id}
-              onClick={() =>
-                completeTask({ id: subTask.id, completed: !subTask.completed })
-              }
-              label={subTask.name}
-              completed={!!subTask.completed}
-            />
-          ))}
-        </div>
+        {task.subTasks.length > 0 && (
+          <>
+            <Typography variant="body">
+              SubTasks ({task.subTasks.filter((s) => s.completed).length} of{" "}
+              {task.subTasks.length})
+            </Typography>
+            <div className={styles.columns}>
+              {task.subTasks.map((subTask) => (
+                <SubTask
+                  key={subTask.id}
+                  onClick={() =>
+                    completeTask({
+                      id: subTask.id,
+                      completed: !subTask.completed,
+                    })
+                  }
+                  label={subTask.name}
+                  completed={!!subTask.completed}
+                />
+              ))}
+            </div>
+          </>
+        )}
         <Select
           labelField={(column) => column.name}
           valueField="id"

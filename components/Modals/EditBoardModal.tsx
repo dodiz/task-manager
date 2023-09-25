@@ -86,7 +86,7 @@ export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={
-                    formik.touched.prevColumns?.[index].name
+                    formik.touched.prevColumns?.[index]?.name
                       ? //@ts-ignore
                         formik.errors.prevColumns?.[index]!.name
                       : ""

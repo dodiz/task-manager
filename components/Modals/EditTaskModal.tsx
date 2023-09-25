@@ -98,7 +98,7 @@ export const EditTaskModal: FC<EditTaskModalProps> = ({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={
-                    formik.touched.prevSubTasks?.[index].name
+                    formik.touched.prevSubTasks?.[index]?.name
                       ? //@ts-ignore
                         formik.errors.prevSubTasks?.[index]!.name
                       : ""

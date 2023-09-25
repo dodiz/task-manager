@@ -53,6 +53,7 @@ export const tasksRouter = router({
       z.object({
         id: z.number(),
         name: z.string(),
+        description: z.string(),
         newSubTasks: z.array(z.string()),
         prevSubTasks: z.array(
           z.object({
@@ -63,31 +64,40 @@ export const tasksRouter = router({
         ),
       })
     )
-    .mutation(async ({ input: { id, name, newSubTasks, prevSubTasks } }) => {
-      const subTasksToRemove = prevSubTasks.filter(
-        (subTask) => subTask.action === "delete"
-      );
-      const subTasksToUpdate = prevSubTasks.filter(
-        (subTask) => subTask.action === "update"
-      );
-      return db.transaction(async (tx) => {
-        const removeRequests = subTasksToRemove.map((subTask) =>
-          tx.delete(subTasks).where(eq(subTasks.id, subTask.id))
+    .mutation(
+      async ({
+        input: { id, name, description, newSubTasks, prevSubTasks },
+      }) => {
+        const subTasksToRemove = prevSubTasks.filter(
+          (subTask) => subTask.action === "delete"
         );
-        const updateRequests = subTasksToUpdate.map((subTask) =>
-          tx
-            .update(subTasks)
-            .set({ name: subTask.name })
-            .where(eq(subTasks.id, subTask.id))
+        const subTasksToUpdate = prevSubTasks.filter(
+          (subTask) => subTask.action === "update"
         );
-        if (newSubTasks.length > 0)
-          tx.insert(subTasks).values(
-            newSubTasks.map((subTask) => ({ name: subTask, boardId: id }))
+        return db.transaction(async (tx) => {
+          const removeRequests = subTasksToRemove.map((subTask) =>
+            tx.delete(subTasks).where(eq(subTasks.id, subTask.id))
           );
-        await Promise.all([...updateRequests, ...removeRequests]);
-        await tx.update(tasks).set({ name }).where(eq(tasks.id, id));
-      });
-    }),
+          const updateRequests = subTasksToUpdate.map((subTask) =>
+            tx
+              .update(subTasks)
+              .set({ name: subTask.name })
+              .where(eq(subTasks.id, subTask.id))
+          );
+          if (newSubTasks.length > 0)
+            await tx
+              .insert(subTasks)
+              .values(
+                newSubTasks.map((subTask) => ({ name: subTask, taskId: id }))
+              );
+          await Promise.all([...updateRequests, ...removeRequests]);
+          await tx
+            .update(tasks)
+            .set({ name, description: description || "" })
+            .where(eq(tasks.id, id));
+        });
+      }
+    ),
   move: protectedProcedure
     .input(
       z.object({
