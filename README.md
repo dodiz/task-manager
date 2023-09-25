@@ -42,7 +42,7 @@ Users should be able to:
 - Download [pnpm](https://pnpm.io/installation)
 - Clone the repo
 - For a local database, download `Docker` and run `docker-compose up -d` to start a postgres container
-- Check the `.env.example` to add the required environment variables
+- Check `.env.example` to add the required environment variables to a `.env` file
 - Run `pnpm install` to install dependencies
 - Run `pnpm db:migrate` for initial database setup
   - You might get an env variable error, add NODE_ENV=development to the .env file
