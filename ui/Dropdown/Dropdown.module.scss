@@ -8,6 +8,7 @@
   }
   .items {
     position: absolute;
+    z-index: 2;
     display: none;
     right: 0;
     top: 200%;

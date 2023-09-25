@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "@/hooks";
-import { Button, PlusIcon, Typography } from "@/ui";
+import { Typography } from "@/ui";
 
 export default function Page() {
   const { isDark } = useTheme();
