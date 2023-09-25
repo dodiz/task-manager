@@ -34,7 +34,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Task manager](https://task-manager-ten-pi.vercel.app/1)
+- Solution URL: [Task manager](https://task-manager-ten-pi.vercel.app)
 
 ### How to run
 
