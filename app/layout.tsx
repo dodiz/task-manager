@@ -25,6 +25,9 @@ const font = Plus_Jakarta_Sans({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <title>Task Manager</title>
+      </head>
       <body className={font.className}>
         <main className="min-h-full flex">
           <QueryProvider>

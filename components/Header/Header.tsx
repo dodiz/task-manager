@@ -10,12 +10,14 @@ import {
   PlusIcon,
   Typography,
   Dropdown,
+  LogoMobile,
+  ArrowDownIcon,
 } from "@/ui";
 import { api } from "@/utils/api";
 import styles from "./Header.module.scss";
 
 export const Header: FC = () => {
-  const { isDark, isSidebarHidden } = useTheme();
+  const { isDark, isSidebarHidden, toggleSidebarMobile } = useTheme();
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
@@ -45,11 +47,20 @@ export const Header: FC = () => {
         />
       )}
       <header className={classNames(styles.container, isDark && styles.dark)}>
-        <div className="flex gap-4">
-          {isSidebarHidden ? isDark ? <LogoDark /> : <LogoLight /> : null}
+        <div className={styles.left}>
+          <div className={styles.logo}>
+            {isSidebarHidden ? isDark ? <LogoDark /> : <LogoLight /> : null}
+          </div>
           <Typography variant="title-xl">
             {board?.name || "Select a board"}
           </Typography>
+        </div>
+        <div className={styles.leftMobile} onClick={toggleSidebarMobile}>
+          <LogoMobile />
+          <Typography variant="title-l" className={styles.titleMobile}>
+            {board?.name || "Select a board"}{" "}
+          </Typography>
+          <ArrowDownIcon className={styles.arrow} />
         </div>
         <div className={styles.right}>
           <Button
@@ -57,7 +68,7 @@ export const Header: FC = () => {
             disabled={!board}
             onClick={() => setIsAddingTask(true)}
           >
-            <PlusIcon /> Add New Task
+            <PlusIcon /> <div className={styles.addTaskLabel}>Add New Task</div>
           </Button>
           {board && (
             <Dropdown

@@ -1,19 +1,74 @@
 @import "@/variables";
+@import "@/styles/_mixins.scss";
 
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  &:not(.show) {
+    display: none;
+  }
+  @include tablet() {
+    display: none;
+  }
+}
 .container {
-  height: 100vh;
-  width: 300px;
-  display: flex;
+  position: fixed;
+  border-radius: 0.8rem;
+  opacity: 0;
+  top: 12rem;
+  transition: z-index 0.3s, opacity 0.3s;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 26rem;
+  &.showMobile {
+    z-index: 1;
+    opacity: 1;
+  }
+  @include tablet() {
+    z-index: 1;
+    opacity: 1;
+    height: 100vh;
+    width: 300px;
+    position: static;
+    left: unset;
+    transform: unset;
+    border-radius: 0;
+    border-right: 0.1rem solid $light-300;
+    display: flex;
+    &.hidden {
+      display: none;
+    }
+  }
   flex-direction: column;
   justify-content: space-between;
   background-color: $light-100;
-  border-right: 0.1rem solid $light-300;
   .logo {
     margin: 3.3rem 0 0 3.3rem;
+    display: none;
+    @include tablet() {
+      display: block;
+    }
+  }
+  .logoMobile {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    @include tablet() {
+      display: none;
+    }
   }
   .boardTitle {
-    margin-left: 3.2rem;
-    margin-top: 5.2rem;
+    margin-left: 2.4rem;
+    margin-top: 1.6rem;
+    @include tablet() {
+      margin-left: 3.2rem;
+      margin-top: 5.2rem;
+    }
   }
   .boards {
     margin-top: 1.9rem;
@@ -58,7 +113,7 @@
     border-radius: 0.5rem;
   }
   .hideLabel {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 1.5rem;
     color: $light-400;
@@ -67,9 +122,9 @@
     margin: 2.4rem;
     margin-bottom: 3.8rem;
     cursor: pointer;
-  }
-  &.hidden {
-    display: none;
+    @include tablet() {
+      display: flex;
+    }
   }
   &.dark {
     background-color: $dark-200;
@@ -81,7 +136,7 @@
 }
 
 .showButton {
-  display: block;
+  display: none;
   position: fixed;
   bottom: 2.4rem;
   left: 0;
@@ -90,7 +145,10 @@
   border-radius: 0 50px 50px 0;
   background-color: $primary-200;
   cursor: pointer;
-  &.hidden {
-    display: none;
+  @include tablet() {
+    display: block;
+    &.hidden {
+      display: none;
+    }
   }
 }

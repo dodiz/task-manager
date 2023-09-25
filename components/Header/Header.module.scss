@@ -1,19 +1,51 @@
 @import "@/variables";
+@import "@/styles/_mixins.scss";
 
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 3.3rem 2.4rem;
   border-bottom: 0.1rem solid $light-300;
+  padding: 1.6rem;
   background-color: $light-100;
+  @include tablet {
+    padding: 3.3rem 2.4rem;
+  }
   &.dark {
     background-color: $dark-200;
     border-color: $dark-100;
+  }
+  .left {
+    align-items: center;
+    gap: 2rem;
+    display: none;
+    @include tablet() {
+      display: flex;
+    }
+  }
+  .leftMobile {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    .titleMobile {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 13rem;
+    }
+    @include tablet() {
+      display: none;
+    }
   }
   .right {
     display: flex;
     align-items: center;
     gap: 1.6rem;
+    .addTaskLabel {
+      display: none;
+      @include tablet() {
+        display: block;
+      }
+    }
   }
 }

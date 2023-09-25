@@ -20,14 +20,27 @@ import {
 import styles from "./Sidebar.module.scss";
 
 export const Sidebar: FC = () => {
-  const { isDark, toggleTheme, toggleSidebar, isSidebarHidden } = useTheme();
-  const { data: boards } = api.boards.getAll.useQuery();
-  const [showAddBoard, setShowAddBoard] = useState(false);
-
   const { boardId } = useParams();
+  const { data: boards } = api.boards.getAll.useQuery();
+  const {
+    isDark,
+    toggleTheme,
+    toggleSidebar,
+    isSidebarHidden,
+    showSidebarMobile,
+    toggleSidebarMobile,
+  } = useTheme();
+  const [showAddBoard, setShowAddBoard] = useState(false);
 
   return (
     <>
+      <div
+        className={classNames(
+          styles.backdrop,
+          showSidebarMobile && styles.show
+        )}
+        onClick={toggleSidebarMobile}
+      />
       {showAddBoard && (
         <AddBoardModal
           show={showAddBoard}
@@ -38,15 +51,18 @@ export const Sidebar: FC = () => {
         className={classNames(
           styles.container,
           isDark && styles.dark,
-          isSidebarHidden && styles.hidden
+          isSidebarHidden && styles.hidden,
+          showSidebarMobile && styles.showMobile
         )}
       >
         <div>
-          {isDark ? (
-            <LogoDark className={styles.logo} />
-          ) : (
-            <LogoLight className={styles.logo} />
-          )}
+          <div className={styles.logo}>
+            {isDark ? (
+              <LogoDark className={styles.logoImage} />
+            ) : (
+              <LogoLight className={styles.logoImage} />
+            )}
+          </div>
           <div className={styles.boardTitle}>
             <Typography variant="title-s">
               ALL BOARDS ({boards?.length})

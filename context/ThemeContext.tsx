@@ -12,6 +12,8 @@ import { setCookie, getCookie } from "cookies-next";
 export const ThemeContext = createContext({
   isDark: false,
   isSidebarHidden: false,
+  showSidebarMobile: false,
+  toggleSidebarMobile: () => {},
   toggleTheme: () => {},
   toggleSidebar: () => {},
 });
@@ -22,6 +24,7 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const [isDark, setIsDark] = useState(initialTheme === "dark");
   const [isSidebarHidden, setIsSidebarHidden] = useState(initialSidebarStatus);
+  const [showSidebarMobile, setShowSidebarMobile] = useState(false);
 
   const toggleTheme = useCallback(() => {
     setCookie("theme", isDark ? "light" : "dark");
@@ -33,12 +36,18 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsSidebarHidden((prev) => !prev);
   }, [isSidebarHidden]);
 
+  const toggleSidebarMobile = useCallback(() => {
+    setShowSidebarMobile((prev) => !prev);
+  }, [setShowSidebarMobile]);
+
   return (
     <ThemeContext.Provider
       value={{
         isDark,
         toggleTheme,
         toggleSidebar,
+        showSidebarMobile,
+        toggleSidebarMobile,
         isSidebarHidden,
       }}
     >

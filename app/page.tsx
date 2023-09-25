@@ -12,14 +12,9 @@ export default function Page() {
       } h-full flex items-center justify-center`}
     >
       <div className="flex flex-col gap-8 items-center">
-        <Typography variant="title-l">
-          The board is empty. Create a new column to get started.
+        <Typography variant="title-m">
+          Select or add a board to get started
         </Typography>
-        <div>
-          <Button>
-            <PlusIcon /> Add New Column
-          </Button>
-        </div>
       </div>
     </div>
   );
