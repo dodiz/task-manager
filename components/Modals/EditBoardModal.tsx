@@ -75,36 +75,37 @@ export const EditBoardModal: FC<ModalProps> = ({ show, onHide }) => {
         />
         <div className={styles.columns}>
           <Typography variant="body-sm">Board Columns</Typography>
-          {formik.values.prevColumns
-            .filter((column) => column.action !== "delete")
-            .map((column, index) => (
-              <div key={index} className={styles.column}>
-                <Input
-                  name={`prevColumns.${index}.name`}
-                  value={column.name}
-                  placeholder="e.g. Todo"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.prevColumns?.[index]?.name
-                      ? //@ts-ignore
-                        formik.errors.prevColumns?.[index]!.name
-                      : ""
-                  }
-                />
-                <CrossIcon
-                  className={styles.deleteColumn}
-                  onClick={() => {
-                    formik.setFieldValue(
-                      "prevColumns",
-                      formik.values.prevColumns.map((column, i) =>
-                        i === index ? { ...column, action: "delete" } : column
-                      )
-                    );
-                  }}
-                />
-              </div>
-            ))}
+          {formik.values.prevColumns.map(
+            (column, index) =>
+              column.action !== "delete" && (
+                <div key={index} className={styles.column}>
+                  <Input
+                    name={`prevColumns.${index}.name`}
+                    value={column.name}
+                    placeholder="e.g. Todo"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.prevColumns?.[index]?.name
+                        ? //@ts-ignore
+                          formik.errors.prevColumns?.[index]!.name
+                        : ""
+                    }
+                  />
+                  <CrossIcon
+                    className={styles.deleteColumn}
+                    onClick={() => {
+                      formik.setFieldValue(
+                        "prevColumns",
+                        formik.values.prevColumns.map((column, i) =>
+                          i === index ? { ...column, action: "delete" } : column
+                        )
+                      );
+                    }}
+                  />
+                </div>
+              )
+          )}
           {formik.values.newColumns.map((column, index) => (
             <div key={index} className={styles.column}>
               <Input

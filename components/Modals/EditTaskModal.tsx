@@ -87,36 +87,39 @@ export const EditTaskModal: FC<EditTaskModalProps> = ({
         />
         <div className={styles.columns}>
           <Typography variant="body-sm">SubTasks</Typography>
-          {formik.values.prevSubTasks
-            .filter((subTask) => subTask.action !== "delete")
-            .map((subTask, index) => (
-              <div key={index} className={styles.column}>
-                <Input
-                  name={`prevSubTasks.${index}.name`}
-                  value={subTask.name}
-                  placeholder="e.g. Todo"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.prevSubTasks?.[index]?.name
-                      ? //@ts-ignore
-                        formik.errors.prevSubTasks?.[index]!.name
-                      : ""
-                  }
-                />
-                <CrossIcon
-                  className={styles.deleteColumn}
-                  onClick={() => {
-                    formik.setFieldValue(
-                      "prevSubTasks",
-                      formik.values.prevSubTasks.map((subTask, i) =>
-                        i === index ? { ...subTask, action: "delete" } : subTask
-                      )
-                    );
-                  }}
-                />
-              </div>
-            ))}
+          {formik.values.prevSubTasks.map(
+            (subTask, index) =>
+              subTask.action !== "delete" && (
+                <div key={index} className={styles.column}>
+                  <Input
+                    name={`prevSubTasks.${index}.name`}
+                    value={subTask.name}
+                    placeholder="e.g. Todo"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.prevSubTasks?.[index]?.name
+                        ? //@ts-ignore
+                          formik.errors.prevSubTasks?.[index]!.name
+                        : ""
+                    }
+                  />
+                  <CrossIcon
+                    className={styles.deleteColumn}
+                    onClick={() => {
+                      formik.setFieldValue(
+                        "prevSubTasks",
+                        formik.values.prevSubTasks.map((subTask, i) =>
+                          i === index
+                            ? { ...subTask, action: "delete" }
+                            : subTask
+                        )
+                      );
+                    }}
+                  />
+                </div>
+              )
+          )}
           {formik.values.newSubTasks.map((subTask, index) => (
             <div key={index} className={styles.column}>
               <Input
