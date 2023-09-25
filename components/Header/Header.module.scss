@@ -8,9 +8,9 @@
   padding: 1.6rem;
   gap: 1rem;
   background-color: $light-100;
+  justify-content: space-between;
   @include tablet {
     padding: 3.3rem 2.4rem;
-    justify-content: space-between;
   }
   &.dark {
     background-color: $dark-200;

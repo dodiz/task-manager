@@ -29,13 +29,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <title>Task Manager</title>
       </head>
       <body className={font.className}>
-        <main className="min-h-full flex">
+        <main className="h-full flex">
           <QueryProvider>
             <ThemeProvider>
               <Sidebar />
-              <div className="flex-1 flex flex-col">
+              <div className="flex-1 flex flex-col h-full overflow-clip">
                 <Header />
-                <div className="flex-1">{children}</div>
+                <div className="flex-1 overflow-auto">{children}</div>
               </div>
             </ThemeProvider>
           </QueryProvider>
