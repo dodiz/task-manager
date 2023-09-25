@@ -5,7 +5,16 @@ import { httpBatchLink } from "@trpc/react-query";
 import { api } from "@/utils/api";
 
 export const QueryProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+          },
+        },
+      })
+  );
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [

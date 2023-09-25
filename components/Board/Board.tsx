@@ -58,8 +58,9 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
       <div className={classNames(styles.errorWrapper, isDark && styles.dark)}>
         <Typography variant="title-l">Something went wrong.</Typography>
         <Typography variant="body">
-          No board was found with id "{boardId}"
+          No board was found with id "{boardId}".
         </Typography>
+        <Typography variant="body">Database might be offline.</Typography>
       </div>
     );
   }

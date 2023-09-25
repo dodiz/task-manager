@@ -21,7 +21,7 @@ import styles from "./Sidebar.module.scss";
 
 export const Sidebar: FC = () => {
   const { boardId } = useParams();
-  const { data: boards } = api.boards.getAll.useQuery();
+  const { data: boards, isError } = api.boards.getAll.useQuery();
   const {
     isDark,
     toggleTheme,
@@ -83,8 +83,12 @@ export const Sidebar: FC = () => {
                 </Link>
               ))}
             <div
-              onClick={() => setShowAddBoard(true)}
-              className={classNames(styles.board, styles.newBoard)}
+              onClick={() => !isError && setShowAddBoard(true)}
+              className={classNames(
+                styles.board,
+                styles.newBoard,
+                isError && styles.disabled
+              )}
             >
               <BoardIcon />
               <div className={styles.newBoardLabel}>
