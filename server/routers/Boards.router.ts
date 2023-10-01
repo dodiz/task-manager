@@ -1,39 +1,39 @@
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { boards, columns } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { publicProcedure, router } from "@/server/app";
+import { protectedProcedure, router } from "@/server/app";
 
 export const boardsRouter = router({
-  getAll: publicProcedure.query(async () => {
-    const results = await db.query.boards.findMany();
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const results = await db.query.boards.findMany({
+      where: (boards, { eq }) => eq(boards.userId, ctx.userId),
+    });
     return results;
   }),
-  add: publicProcedure
+  add: protectedProcedure
     .input(z.object({ name: z.string(), columns: z.array(z.string()) }))
-    .mutation(async ({ input: { name, columns: columnsData } }) => {
-      /**
-       * @todo add transaction here
-       */
+    .mutation(async ({ ctx, input: { name, columns: columnsData } }) => {
       const row = await db
         .insert(boards)
-        .values({ name })
+        .values({ name, userId: ctx.userId })
         .returning({ id: boards.id });
       const boardId = row[0].id;
-      for (let i = 0; i < columnsData.length; i++) {
-        await db.insert(columns).values({ name: columnsData[i], boardId });
-      }
+      await db
+        .insert(columns)
+        .values(columnsData.map((name) => ({ name, boardId })));
       return { id: boardId };
     }),
-  getById: publicProcedure
+  getById: protectedProcedure
     .input(
       z.object({
         id: z.number(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const board = await db.query.boards.findFirst({
-        where: (boards, { eq }) => eq(boards.id, input.id),
+        where: (boards, { eq, and }) =>
+          and(eq(boards.id, input.id), eq(boards.userId, ctx.userId)),
         with: {
           columns: {
             orderBy: (columns, { asc }) => asc(columns.id),
@@ -52,12 +52,14 @@ export const boardsRouter = router({
       });
       return board;
     }),
-  remove: publicProcedure
+  remove: protectedProcedure
     .input(z.object({ id: z.number() }))
-    .mutation(({ input: { id } }) =>
-      db.delete(boards).where(eq(boards.id, id))
+    .mutation(({ ctx, input: { id } }) =>
+      db
+        .delete(boards)
+        .where(and(eq(boards.id, id), eq(boards.userId, ctx.userId)))
     ),
-  update: publicProcedure
+  update: protectedProcedure
     .input(
       z.object({
         id: z.number(),

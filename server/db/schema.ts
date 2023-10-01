@@ -4,6 +4,7 @@ import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 export const boards = pgTable("boards", {
   id: serial("id").primaryKey(),
   name: text("name"),
+  userId: text("user_id"),
 });
 
 export const columns = pgTable("columns", {
