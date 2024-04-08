@@ -14,12 +14,12 @@ export const boardsRouter = router({
   add: protectedProcedure
     .input(z.object({ name: z.string(), columns: z.array(z.string()) }))
     .mutation(async ({ ctx, input: { name, columns: columnsData } }) => {
-      const row = await db
+      const row = await ctx.db
         .insert(boards)
         .values({ name, userId: ctx.userId })
         .returning({ id: boards.id });
       const boardId = row[0].id;
-      await db
+      await ctx.db
         .insert(columns)
         .values(columnsData.map((name) => ({ name, boardId })));
       return { id: boardId };
@@ -55,7 +55,7 @@ export const boardsRouter = router({
   remove: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(({ ctx, input: { id } }) =>
-      db
+      ctx.db
         .delete(boards)
         .where(and(eq(boards.id, id), eq(boards.userId, ctx.userId)))
     ),
@@ -74,14 +74,14 @@ export const boardsRouter = router({
         ),
       })
     )
-    .mutation(async ({ input: { id, name, newColumns, prevColumns } }) => {
+    .mutation(async ({ ctx, input: { id, name, newColumns, prevColumns } }) => {
       const columnsToRemove = prevColumns.filter(
         (column) => column.action === "delete"
       );
       const columnsToUpdate = prevColumns.filter(
         (column) => column.action === "update"
       );
-      return db.transaction(async (tx) => {
+      return ctx.db.transaction(async (tx) => {
         const removeRequests = columnsToRemove.map((column) =>
           tx.delete(columns).where(eq(columns.id, column.id))
         );
