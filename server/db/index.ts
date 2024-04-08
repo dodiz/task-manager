@@ -1,15 +1,13 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-import * as schema from "@/server/db/schema";
-import { env } from "@/env.mjs";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
+import { env } from "@/env";
+import * as schema from "./schema";
 
-const client = postgres(env.DB_URL);
-const db = drizzle(client, { schema });
-
+const client = neon(env.DATABASE_URI);
 /**
- * @todo check migration
- * import { migrate } from "drizzle-orm/better-sqlite3/migrator";
- * migrate(db, { migrationsFolder: "./drizzle" });
+ * @todo remove ts-ignore once drizzle fixes this
  */
-
-export { db };
+//@ts-ignore
+export const db = drizzle(client, {
+  schema,
+});

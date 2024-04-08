@@ -1,14 +1,14 @@
 import type { Config } from "drizzle-kit";
 import "dotenv/config";
 
-if (!process.env.DB_URL) throw new Error("DB_URL not set");
+if (!process.env.DATABASE_URI) throw new Error("DATABASE_URI not set");
 
 const config = {
   schema: "./server/db/schema.ts",
   out: "./drizzle",
   driver: "pg",
   dbCredentials: {
-    connectionString: process.env.DB_URL,
+    connectionString: process.env.DATABASE_URI,
   },
 } satisfies Config;
 
