@@ -14,12 +14,12 @@ export const boardsRouter = router({
   add: protectedProcedure
     .input(z.object({ name: z.string(), columns: z.array(z.string()) }))
     .mutation(async ({ ctx, input: { name, columns: columnsData } }) => {
-      const row = await ctx.db
+      const row = await db
         .insert(boards)
         .values({ name, userId: ctx.userId })
         .returning({ id: boards.id });
       const boardId = row[0].id;
-      await ctx.db
+      await db
         .insert(columns)
         .values(columnsData.map((name) => ({ name, boardId })));
       return { id: boardId };
@@ -55,7 +55,7 @@ export const boardsRouter = router({
   remove: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(({ ctx, input: { id } }) =>
-      ctx.db
+      db
         .delete(boards)
         .where(and(eq(boards.id, id), eq(boards.userId, ctx.userId)))
     ),
@@ -81,7 +81,7 @@ export const boardsRouter = router({
       const columnsToUpdate = prevColumns.filter(
         (column) => column.action === "update"
       );
-      return ctx.db.transaction(async (tx) => {
+      return db.transaction(async (tx) => {
         const removeRequests = columnsToRemove.map((column) =>
           tx.delete(columns).where(eq(columns.id, column.id))
         );

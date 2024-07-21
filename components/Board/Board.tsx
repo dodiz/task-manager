@@ -16,7 +16,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     isLoading,
     isError,
     refetch,
-  } = api.boards.getById.useQuery({ id: boardId }, { enabled: !!boardId });
+  } = api.boards.getById.useQuery({ id: boardId });
   const { mutate: moveTask } = api.tasks.move.useMutation({
     onSuccess: () => {
       refetch();

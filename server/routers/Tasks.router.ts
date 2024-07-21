@@ -16,10 +16,9 @@ export const tasksRouter = router({
     )
     .mutation(
       async ({
-        ctx,
         input: { name, description, subTasks: subTasksList, columnId },
       }) => {
-        return ctx.db.transaction(async (tx) => {
+        return db.transaction(async (tx) => {
           const rows = await tx
             .insert(tasks)
             .values({ name, description, columnId })
@@ -40,17 +39,15 @@ export const tasksRouter = router({
     ),
   completeSubTask: protectedProcedure
     .input(z.object({ id: z.number(), completed: z.boolean() }))
-    .mutation(({ ctx, input: { id, completed } }) => {
-      return ctx.db
+    .mutation(({ input: { id, completed } }) => {
+      return db
         .update(subTasks)
         .set({ completed: completed ? 1 : 0 })
         .where(eq(subTasks.id, id));
     }),
   remove: protectedProcedure
     .input(z.object({ id: z.number() }))
-    .mutation(({ ctx, input: { id } }) =>
-      ctx.db.delete(tasks).where(eq(tasks.id, id))
-    ),
+    .mutation(({ input: { id } }) => db.delete(tasks).where(eq(tasks.id, id))),
   update: protectedProcedure
     .input(
       z.object({
@@ -69,7 +66,6 @@ export const tasksRouter = router({
     )
     .mutation(
       async ({
-        ctx,
         input: { id, name, description, newSubTasks, prevSubTasks },
       }) => {
         const subTasksToRemove = prevSubTasks.filter(
@@ -78,7 +74,7 @@ export const tasksRouter = router({
         const subTasksToUpdate = prevSubTasks.filter(
           (subTask) => subTask.action === "update"
         );
-        return ctx.db.transaction(async (tx) => {
+        return db.transaction(async (tx) => {
           const removeRequests = subTasksToRemove.map((subTask) =>
             tx.delete(subTasks).where(eq(subTasks.id, subTask.id))
           );
