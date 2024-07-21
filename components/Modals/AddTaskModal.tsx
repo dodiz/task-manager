@@ -3,16 +3,14 @@ import { FC } from "react";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
-import {
-  Dialog,
-  Typography,
-  Input,
-  Button,
-  PlusIcon,
-  CrossIcon,
-  Select,
-  Textarea,
-} from "@/ui";
+import { PlusIcon } from "@/icons/plus-icon";
+import { CrossIcon } from "@/icons/cross-icon";
+import { Dialog } from "@/ui/dialog";
+import { Typography } from "@/ui/typography";
+import { Input } from "@/ui/form/input";
+import { Button } from "@/ui/button";
+import { Select } from "@/ui/form/select";
+import { Textarea } from "@/ui/form/textarea";
 import { api } from "@/utils/api";
 import { ModalProps } from "./Modal.types";
 import styles from "./Modals.module.scss";

@@ -1,14 +1,14 @@
-import { FC, useMemo } from "react";
+import { type PropsWithChildren, useMemo } from "react";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
-import { TypographyProps } from "./Typography.types";
-import styles from "./Typography.module.scss";
+import styles from "./typography.module.scss";
 
-export const Typography: FC<TypographyProps> = ({
-  children,
-  variant,
-  className,
-}) => {
+type TypographyProps = PropsWithChildren & {
+  variant: "title-xl" | "title-l" | "title-m" | "title-s" | "body" | "body-sm";
+  className?: string;
+};
+
+export function Typography({ children, variant, className }: TypographyProps) {
   const { isDark } = useTheme();
 
   const typography = useMemo(() => {
@@ -73,4 +73,4 @@ export const Typography: FC<TypographyProps> = ({
   }, [variant, children, className, isDark]);
 
   return typography;
-};
+}

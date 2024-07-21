@@ -1,11 +1,15 @@
-import { useEffect, useCallback, type FC } from "react";
+import { useEffect, useCallback, type PropsWithChildren } from "react";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
-import { CrossIcon } from "@/ui";
-import { DialogProps } from "./Dialog.types";
-import styles from "./Dialog.module.scss";
+import { CrossIcon } from "@/icons/cross-icon";
+import styles from "./dialog.module.scss";
 
-export const Dialog: FC<DialogProps> = ({ children, show, onHide }) => {
+type DialogProps = PropsWithChildren & {
+  show: boolean;
+  onHide: () => void;
+};
+
+export function Dialog({ children, show, onHide }: DialogProps) {
   const { isDark } = useTheme();
 
   const escapeListener = useCallback(
@@ -35,4 +39,4 @@ export const Dialog: FC<DialogProps> = ({ children, show, onHide }) => {
       </div>
     </div>
   );
-};
+}

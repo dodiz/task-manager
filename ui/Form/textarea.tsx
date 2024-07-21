@@ -1,16 +1,20 @@
-import { FC, useState } from "react";
+import { ComponentProps, useState } from "react";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
-import { InputProps } from "./Input.types";
-import formStyles from "../Form.module.scss";
+import formStyles from "../form.module.scss";
 
-export const Input: FC<InputProps> = ({
+type TextareaProps = ComponentProps<"textarea"> & {
+  label?: string;
+  error?: string;
+};
+
+export function Textarea({
   label,
   onBlur,
   onFocus,
   error,
   ...rest
-}) => {
+}: TextareaProps) {
   const { isDark } = useTheme();
   const [isFocused, setIsFocused] = useState(false);
   return (
@@ -28,7 +32,7 @@ export const Input: FC<InputProps> = ({
           error && formStyles.error
         )}
       >
-        <input
+        <textarea
           onFocus={(e) => {
             setIsFocused(true);
             onFocus && onFocus(e);
@@ -37,11 +41,11 @@ export const Input: FC<InputProps> = ({
             setIsFocused(false);
             onBlur && onBlur(e);
           }}
-          className={formStyles.input}
+          className={formStyles.textarea}
           {...rest}
         />
         {error && <p className={formStyles.errorMessage}>{error}</p>}
       </div>
     </label>
   );
-};
+}

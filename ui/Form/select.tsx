@@ -2,9 +2,20 @@ import { useState } from "react";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
 import { ArrowDownIcon } from "@/ui";
-import styles from "./Select.module.scss";
-import { SelectProps } from "./Select.types";
-import formStyles from "../Form.module.scss";
+import styles from "./select.module.scss";
+import formStyles from "./form.module.scss";
+
+type SelectProps<T> = {
+  items: T[];
+  valueField: keyof T;
+  labelField: (item: T) => string;
+  selected: T | null;
+  onSelect: (item: T) => void;
+  label?: string;
+  placeholder: string;
+  disabled?: boolean;
+  error?: string;
+};
 
 export const Select = <T,>({
   items,

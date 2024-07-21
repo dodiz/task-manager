@@ -1,6 +1,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { FC } from "react";
-import { Dialog, Typography, Button } from "@/ui";
+import { Dialog } from "@/ui/dialog";
+import { Typography } from "@/ui/typography";
+import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
 import { ModalProps } from "../Modal.types";
 import styles from "./DeleteModal.module.scss";

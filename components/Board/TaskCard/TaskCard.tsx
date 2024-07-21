@@ -1,7 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
-import { Typography } from "@/ui";
+import { Typography } from "@/ui/typography";
 import { TaskCardProps } from "./TaskCard.types";
 import styles from "./TaskCard.module.scss";
 

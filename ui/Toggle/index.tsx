@@ -1,9 +1,12 @@
-import { FC } from "react";
 import classNames from "classnames";
-import { ToggleProps } from "./Toggle.types";
-import styles from "./Toggle.module.scss";
+import styles from "./toggle.module.scss";
 
-export const Toggle: FC<ToggleProps> = ({ checked = false, onClick }) => {
+type ToggleProps = {
+  checked?: boolean;
+  onClick: () => void;
+};
+
+export function Toggle({ checked = false, onClick }: ToggleProps) {
   return (
     <div className={styles.toggle} onClick={onClick}>
       <div
@@ -11,4 +14,4 @@ export const Toggle: FC<ToggleProps> = ({ checked = false, onClick }) => {
       />
     </div>
   );
-};
+}

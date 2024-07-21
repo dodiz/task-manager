@@ -3,16 +3,14 @@ import { useParams } from "next/navigation";
 import classNames from "classnames";
 import { DeleteBoardModal, EditBoardModal, AddTaskModal } from "@/components";
 import { useTheme } from "@/hooks";
-import {
-  Button,
-  LogoDark,
-  LogoLight,
-  PlusIcon,
-  Typography,
-  Dropdown,
-  LogoMobile,
-  ArrowDownIcon,
-} from "@/ui";
+import { LogoDark } from "@/icons/logo-dark";
+import { LogoLight } from "@/icons/logo-light";
+import { LogoMobile } from "@/icons/logo-mobile";
+import { ArrowDownIcon } from "@/icons/arrow-down-icon";
+import { Button } from "@/ui/button";
+import { Typography } from "@/ui/typography";
+import { Dropdown } from "@/ui/dropdown";
+import { PlusIcon } from "@/icons/plus-icon";
 import { api } from "@/utils/api";
 import styles from "./Header.module.scss";
 

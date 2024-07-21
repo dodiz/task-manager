@@ -1,11 +1,15 @@
-import { FC } from "react";
 import classNames from "classnames";
 import { useTheme } from "@/hooks";
-import { CheckIcon } from "@/ui";
-import { SubTaskProps } from "./SubTask.types";
-import styles from "./SubTask.module.scss";
+import { CheckIcon } from "@/icons/check-icon";
+import styles from "./sub-task.module.scss";
 
-export const SubTask: FC<SubTaskProps> = ({ completed, onClick, label }) => {
+type SubTaskProps = {
+  completed: boolean;
+  label: string;
+  onClick: () => void;
+};
+
+export function SubTask({ completed, onClick, label }: SubTaskProps) {
   const { isDark } = useTheme();
   return (
     <div
@@ -20,4 +24,4 @@ export const SubTask: FC<SubTaskProps> = ({ completed, onClick, label }) => {
       </p>
     </div>
   );
-};
+}

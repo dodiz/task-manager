@@ -1,7 +1,8 @@
 "use client";
 
 import { useTheme } from "@/hooks";
-import { LoadingSpinner, Typography } from "@/ui";
+import { LoadingSpinner } from "@/ui/loading-spinner";
+import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
 
 export default function Page() {
