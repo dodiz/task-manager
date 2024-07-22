@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTheme } from "next-themes";
 import classNames from "classnames";
-import { useTheme } from "@/hooks/useTheme";
+import { useSidebar } from "@/hooks/use-sidebar";
 import { AddBoardModal } from "@/components/add-board-modal";
 import { BoardIcon } from "@/icons/board-icon";
 import { HideIcon } from "@/icons/hide-icon";
@@ -16,15 +17,9 @@ import { SunIcon } from "@/icons/sun-icon";
 import { Toggle } from "@/ui/toggle";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
-import { useTheme as useNextTheme } from "next-themes";
 
 export function Sidebar() {
-  const { toggleTheme } = useTheme();
-  const {
-    theme: nextTheme,
-    setTheme: setNextTheme,
-    systemTheme,
-  } = useNextTheme();
+  const { theme: nextTheme, setTheme, systemTheme } = useTheme();
   const theme = nextTheme === "system" ? systemTheme : nextTheme;
 
   const { boardId } = useParams();
@@ -34,7 +29,7 @@ export function Sidebar() {
     isSidebarHidden,
     showSidebarMobile,
     toggleSidebarMobile,
-  } = useTheme();
+  } = useSidebar();
   const [showAddBoard, setShowAddBoard] = useState(false);
 
   return (
@@ -104,10 +99,7 @@ export function Sidebar() {
             <SunIcon />
             <Toggle
               checked={theme === "dark"}
-              onClick={() => {
-                toggleTheme();
-                setNextTheme(theme === "dark" ? "light" : "dark");
-              }}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             />
             <MoonIcon />
           </div>

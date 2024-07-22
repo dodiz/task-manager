@@ -2,27 +2,13 @@
 
 import "@/styles/globals.css";
 import { ReactNode } from "react";
-import dynamic from "next/dynamic";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
-import { QueryProvider } from "./QueryProvider";
-import { NextThemeProvider } from "./next-theme-provider";
-
-const ThemeProvider = dynamic(
-  async () => {
-    const { ThemeProvider } = await import("@/context");
-    return ThemeProvider;
-  },
-  {
-    ssr: false,
-  }
-);
-
-const AuthProvider = dynamic(async () => {
-  const { AuthProvider } = await import("@/context");
-  return AuthProvider;
-});
+import { QueryProvider } from "@/providers/query-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { SidebarProvider } from "@/providers/sidebar-provider";
+import { AuthProvider } from "@/providers/auth-provider";
 
 const font = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -40,15 +26,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main className="h-full flex">
           <AuthProvider>
             <QueryProvider>
-              <NextThemeProvider>
-                <ThemeProvider>
+              <ThemeProvider>
+                <SidebarProvider>
                   <Sidebar />
                   <div className="flex-1 flex flex-col h-full overflow-clip">
                     <Header />
                     <div className="flex-1 overflow-auto">{children}</div>
                   </div>
-                </ThemeProvider>
-              </NextThemeProvider>
+                </SidebarProvider>
+              </ThemeProvider>
             </QueryProvider>
           </AuthProvider>
         </main>

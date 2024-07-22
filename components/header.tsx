@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { DeleteBoardModal } from "@/components/delete-board-modal";
 import { EditBoardModal } from "@/components/edit-board-modal";
 import { AddTaskModal } from "@/components/add-task-modal";
-import { useTheme } from "@/hooks/useTheme";
+import { useSidebar } from "@/hooks/use-sidebar";
 import { LogoMobile } from "@/icons/logo-mobile";
 import { Logo } from "@/icons/logo";
 import { ArrowDownIcon } from "@/icons/arrow-down-icon";
@@ -16,7 +16,7 @@ import { PlusIcon } from "@/icons/plus-icon";
 import { api } from "@/utils/api";
 
 export function Header() {
-  const { isSidebarHidden, toggleSidebarMobile } = useTheme();
+  const { isSidebarHidden, toggleSidebarMobile } = useSidebar();
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);

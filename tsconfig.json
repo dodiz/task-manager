@@ -27,6 +27,12 @@
       "@/variables": ["./styles/variables.module.scss"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "providers/sidebar-provider.tsx"
+  ],
   "exclude": ["node_modules"]
 }

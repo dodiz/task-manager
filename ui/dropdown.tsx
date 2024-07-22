@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import classNames from "classnames";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickOutside } from "@/hooks/use-click-outside";
 import { DotsIcon } from "@/icons/dots-icon";
 import { Typography } from "@/ui/typography";
 
