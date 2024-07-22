@@ -3,24 +3,20 @@
 import { use, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useTheme } from "next-themes";
 import classNames from "classnames";
+import {
+  RiAddFill,
+  RiEyeFill,
+  RiEyeOffLine,
+  RiLayoutLine,
+} from "@remixicon/react";
 import { AddBoardModal } from "@/components/add-board-modal";
-import { BoardIcon } from "@/icons/board-icon";
-import { HideIcon } from "@/icons/hide-icon";
-import { Logo } from "@/icons/logo";
-import { MoonIcon } from "@/icons/moon-icon";
-import { PlusIcon } from "@/icons/plus-icon";
-import { ShowIcon } from "@/icons/show-icon";
-import { SunIcon } from "@/icons/sun-icon";
-import { Toggle } from "@/ui/toggle";
+import { ToggleTheme } from "@/components/toggle-theme";
+import { SidebarContext } from "@/providers/sidebar-provider";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
-import { SidebarContext } from "@/providers/sidebar-provider";
 
 export function Sidebar() {
-  const { setTheme, resolvedTheme: theme } = useTheme();
-
   const { boardId } = useParams();
   const { data: boards, isError } = api.boards.getAll.useQuery();
   const {
@@ -46,7 +42,6 @@ export function Sidebar() {
         />
       )}
       <aside
-        suppressHydrationWarning
         className={classNames(
           "fixed rounded-xl top-[12rem] w-[26rem] left-1/2 -translate-x-1/2 flex-col justify-between bg-light-100 tablet:z-10 tablet:opacity-100 tablet:h-screen tablet:left-0 tablet:top-0 tablet:transform-none tablet:rounded-none tablet:border-r-[.1rem] tablet:border-r-light-300 tablet:flex desktop:w-[30rem] dark:bg-dark-200 dark:border-dark-100",
           showSidebarMobile ? "opacity-100 z-10" : "opacity-0 -z-10",
@@ -57,10 +52,9 @@ export function Sidebar() {
         }}
       >
         <div>
-          <Logo className="dark:fill-white fill-[#000112] hidden tablet:block mt-8 ml-8" />
           <div className="ml-6 mt-4 tablet:ml-8 tablet:mt-13">
-            <Typography variant="title-s">
-              ALL BOARDS ({boards?.length})
+            <Typography variant="title-s" className="text-[2rem] uppercase">
+              My boards ({boards?.length})
             </Typography>
           </div>
           <div className="mt-5 flex flex-col mr-6">
@@ -76,7 +70,7 @@ export function Sidebar() {
                       : "text-light-400"
                   )}
                 >
-                  <BoardIcon /> {board.name}
+                  <RiLayoutLine radius={20} className="size-5" /> {board.name}
                 </Link>
               ))}
             <div
@@ -86,27 +80,22 @@ export function Sidebar() {
                 isError && "opacity-50 cursor-not-allowed"
               )}
             >
-              <BoardIcon />
+              <RiLayoutLine radius={20} className="size-5" />
               <div className="flex items-center gap-2">
-                <PlusIcon /> Create new board
+                <RiAddFill />
+                Create new board
               </div>
             </div>
           </div>
         </div>
         <div>
-          <div className="m-6 flex p-4 justify-center items-center gap-6 bg-light-200 rounded-lg dark:bg-dark-300">
-            <SunIcon />
-            <Toggle
-              checked={theme === "dark"}
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            />
-            <MoonIcon />
-          </div>
+          <ToggleTheme />
           <div
             className="hidden items-center gap-4 text-light-400 text-base font-bold m-6 mb-9 cursor-pointer tablet:flex"
             onClick={() => toggleSidebar()}
           >
-            <HideIcon /> Hide Sidebar
+            <RiEyeOffLine className="size-5" />
+            Hide Sidebar
           </div>
         </div>
       </aside>
@@ -117,7 +106,7 @@ export function Sidebar() {
         )}
         onClick={toggleSidebar}
       >
-        <ShowIcon />
+        <RiEyeFill className="size-5" />
       </div>
     </>
   );

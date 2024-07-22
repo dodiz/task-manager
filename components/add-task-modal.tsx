@@ -3,9 +3,8 @@
 import { useParams } from "next/navigation";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { z } from "zod";
-import { PlusIcon } from "@/icons/plus-icon";
-import { CrossIcon } from "@/icons/cross-icon";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
@@ -108,8 +107,8 @@ export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
                     : ""
                 }
               />
-              <CrossIcon
-                className="cursor-pointer hover:fill-accent-200"
+              <RiCloseLine
+                className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "subTasks",
@@ -126,7 +125,7 @@ export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
               formik.setFieldValue("subTasks", [...formik.values.subTasks, ""])
             }
           >
-            <PlusIcon /> Add New SubTask
+            <RiAddFill /> Add New SubTask
           </Button>
           {board?.columns && (
             <Select

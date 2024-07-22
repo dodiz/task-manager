@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import classNames from "classnames";
-import { ArrowDownIcon } from "@/icons/arrow-down-icon";
+import { RiArrowDownSLine } from "@remixicon/react";
 
 type SelectProps<T> = {
   items: T[];
@@ -51,7 +51,7 @@ export const Select = <T,>({
             {error}
           </p>
         )}
-        <ArrowDownIcon />
+        <RiArrowDownSLine className="w-5 text-primary-200" />
       </div>
       <div
         aria-hidden={!show}

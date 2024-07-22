@@ -1,12 +1,12 @@
-import { ComponentProps, FC } from "react";
+import type { ComponentProps } from "react";
 
-export const LogoMobile: FC<ComponentProps<"svg">> = (props) => {
+export function Logo(props: ComponentProps<"svg">) {
   return (
     <svg
       width="24"
       height="25"
       xmlns="http://www.w3.org/2000/svg"
-      fill="#635FC7"
+      className="fill-primary-200"
       fillRule="evenodd"
       {...props}
     >
@@ -15,4 +15,4 @@ export const LogoMobile: FC<ComponentProps<"svg">> = (props) => {
       <rect opacity=".5" x="18" width="6" height="25" rx="2" />
     </svg>
   );
-};
+}

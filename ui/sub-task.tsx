@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon } from "@/icons/check-icon";
+import { RiCheckLine } from "@remixicon/react";
 
 type SubTaskProps = {
   completed: boolean;
@@ -18,7 +18,10 @@ export function SubTask({ completed, onClick, label }: SubTaskProps) {
         aria-checked={completed}
         className="flex items-center justify-center border border-[#828fa340] bg-light-100 rounded-[.2rem] w-4 h-4 cursor-pointer dark:bg-dark-200 aria-checked:bg-primary-200 aria-checked:dark:bg-primary-200"
       >
-        <CheckIcon className={completed ? "block" : "hidden"} />
+        <RiCheckLine
+          aria-checked={completed}
+          className={"w-4 text-white aria-checked:block hidden"}
+        />
       </div>
       <p
         aria-checked={completed}

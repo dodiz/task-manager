@@ -1,6 +1,6 @@
 "use client";
 
-import { SpinnerIcon } from "@/icons/spinner-icon";
+import { RiLoader4Fill } from "@remixicon/react";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
 
@@ -10,7 +10,7 @@ export default function Page() {
     <div className="dark:bg-dark-300 bg-light-200 h-full flex items-center justify-center">
       <div className="flex flex-col gap-8 items-center">
         {isLoading ? (
-          <SpinnerIcon />
+          <RiLoader4Fill className="animate-spin text-primary-200 size-10" />
         ) : (
           <Typography variant="title-m">
             {isError

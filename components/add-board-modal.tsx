@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
-import { PlusIcon } from "@/icons/plus-icon";
-import { CrossIcon } from "@/icons/cross-icon";
+import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
@@ -77,8 +76,8 @@ export function AddBoardModal({
                     : ""
                 }
               />
-              <CrossIcon
-                className="cursor-pointer hover:fill-accent-200"
+              <RiCloseLine
+                className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "columns",
@@ -95,7 +94,7 @@ export function AddBoardModal({
               formik.setFieldValue("columns", [...formik.values.columns, ""])
             }
           >
-            <PlusIcon /> Add New Column
+            <RiAddFill /> Add New Column
           </Button>
           <Button>Create New Board</Button>
         </div>

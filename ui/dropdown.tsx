@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import classNames from "classnames";
+import { RiMore2Fill } from "@remixicon/react";
 import { useClickOutside } from "@/hooks/use-click-outside";
-import { DotsIcon } from "@/icons/dots-icon";
 import { Typography } from "@/ui/typography";
 
 type DropdownProps = {
@@ -19,13 +19,16 @@ export function Dropdown({ items, align }: DropdownProps) {
   const [show, setShow] = useState(false);
   const ref = useClickOutside(() => setShow(false));
   return (
-    <div className="relative" onClick={() => setShow((p) => !p)}>
-      <DotsIcon className="cursor-pointer w-[3rem]" />
+    <div className="relative">
+      <RiMore2Fill
+        className="text-light-400 size-7 cursor-pointer hover:text-primary-200"
+        onClick={() => setShow(true)}
+      />
       <div
         ref={ref}
         aria-hidden={!show}
         className={classNames(
-          "flex aria-hidden:hidden z-10 absolute right-0 top-[200%] w-max rounded-xl bg-light-100 p-4 flex-col gap-4 shadow-lg dark:bg-dark-300",
+          "aria-hidden:hidden flex z-10 absolute right-0 top-[200%] w-max rounded-xl bg-light-100 p-4 flex-col gap-4 shadow-lg dark:bg-dark-300",
           align === "center" && "left-1/2 -translate-x-1/2"
         )}
       >

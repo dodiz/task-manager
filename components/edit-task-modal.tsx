@@ -3,9 +3,8 @@
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
+import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Task } from "@/server/types";
-import { PlusIcon } from "@/icons/plus-icon";
-import { CrossIcon } from "@/icons/cross-icon";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
@@ -109,8 +108,8 @@ export function EditTaskModal({
                         : ""
                     }
                   />
-                  <CrossIcon
-                    className="cursor-pointer hover:fill-accent-200"
+                  <RiCloseLine
+                    className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                     onClick={() => {
                       formik.setFieldValue(
                         "prevSubTasks",
@@ -139,8 +138,8 @@ export function EditTaskModal({
                     : ""
                 }
               />
-              <CrossIcon
-                className="cursor-pointer hover:fill-accent-200"
+              <RiCloseLine
+                className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "newSubTasks",
@@ -160,7 +159,7 @@ export function EditTaskModal({
               ])
             }
           >
-            <PlusIcon /> Add New Subtask
+            <RiAddFill /> Add New Subtask
           </Button>
           <Button>Save Changes</Button>
         </div>

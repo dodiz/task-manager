@@ -1,5 +1,5 @@
 import { useEffect, useCallback, type PropsWithChildren } from "react";
-import { CrossIcon } from "@/icons/cross-icon";
+import { RiCloseLine } from "@remixicon/react";
 
 type DialogProps = PropsWithChildren & {
   show: boolean;
@@ -31,9 +31,9 @@ export function Dialog({ children, show, onHide }: DialogProps) {
           className="relative w-[48rem] rounded-lg m-4 bg-light-100 tablet:p-8 p-5 dark:bg-dark-200"
           onClick={(e) => e.stopPropagation()}
         >
-          <CrossIcon
+          <RiCloseLine
             onClick={onHide}
-            className="absolute top-5 right-[1.8rem] cursor-pointer"
+            className="absolute top-2 right-2 text-light-400 size-7 hover:fill-accent-200 cursor-pointer"
           />
           {children}
         </div>

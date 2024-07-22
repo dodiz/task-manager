@@ -2,12 +2,11 @@
 
 import { FC, useState } from "react";
 import classNames from "classnames";
+import { RiAddFill, RiLoader4Fill } from "@remixicon/react";
 import { Column, Task } from "@/server/types";
 import { ViewTaskModal } from "@/components/view-task-modal";
 import { EditTaskModal } from "@/components/edit-task-modal";
 import { DeleteTaskModal } from "@/components/delete-task-modal";
-import { PlusIcon } from "@/icons/plus-icon";
-import { SpinnerIcon } from "@/icons/spinner-icon";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
@@ -25,9 +24,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     refetch,
   } = api.boards.getById.useQuery({ id: boardId });
   const { mutate: moveTask } = api.tasks.move.useMutation({
-    onSuccess: () => {
-      refetch();
-    },
+    onSuccess: refetch,
   });
 
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
@@ -46,7 +43,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
   if (isLoading)
     return (
       <div className="flex w-full items-center justify-center dark:bg-dark-300 h-full">
-        <SpinnerIcon />
+        <RiLoader4Fill className="animate-spin text-primary-200 size-10" />
       </div>
     );
 
@@ -163,7 +160,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
             </Typography>
             <div className="flex justify-center">
               <Button>
-                <PlusIcon /> Add New Column
+                <RiAddFill /> Add New Column
               </Button>
             </div>
           </div>
