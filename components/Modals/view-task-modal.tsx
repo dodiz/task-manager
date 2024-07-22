@@ -2,7 +2,7 @@
 
 import { Dialog } from "@/ui/dialog";
 import { Dropdown } from "@/ui/dropdown";
-import { Select } from "@/ui/form/select";
+import { Select } from "@/ui/select";
 import { SubTask } from "@/ui/sub-task";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";

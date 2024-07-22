@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import classNames from "classnames";
-import { useTheme } from "@/hooks/useTheme";
 import { ArrowDownIcon } from "@/icons/arrow-down-icon";
-import styles from "./select.module.scss";
-import formStyles from "./form.module.scss";
 
 type SelectProps<T> = {
   items: T[];
@@ -30,40 +27,43 @@ export const Select = <T,>({
   error,
 }: SelectProps<T>) => {
   const [show, setShow] = useState(false);
-  const { isDark } = useTheme();
 
   return (
     <label
       onClick={() => setShow((p) => !p)}
-      className={classNames(
-        formStyles.group,
-        styles.container,
-        isDark && styles.dark
-      )}
+      className="cursor-pointer relative select-none flex flex-col gap-2 w-full"
     >
-      {label && <h4 className={formStyles.label}>{label}</h4>}
+      {label && (
+        <h4 className="text-light-400 text-[1.2rem] font-bold dark:text-light-100">
+          {label}
+        </h4>
+      )}
       <div
         className={classNames(
-          formStyles.inputWrapper,
-          error && formStyles.error,
-          styles.selectBox,
-          show && styles.show
+          "bg-light-100 border-light-400/25 border-[0.15rem] rounded-[.4rem] py-3 px-4 font-medium text-[1.3rem] w-full transition-colors flex items-center justify-between dark:bg-dark-200 dark:text-light-100",
+          error && "border-accent-200",
+          show && "border-primary-200"
         )}
       >
         {selected ? labelField(selected) : placeholder}
         {error && (
-          <p className={classNames(formStyles.errorMessage, styles.error)}>
+          <p className="absolute right-[3.5rem] text-accent-200 font-medium text-[1.3rem]">
             {error}
           </p>
         )}
-        <ArrowDownIcon className={styles.arrow} />
+        <ArrowDownIcon />
       </div>
-      <div className={classNames(styles.items, show && styles.show)}>
+      <div
+        className={classNames(
+          "rounded-[.8rem] absolute w-full top-[7rem] p-4 flex-col gap-2 border border-light-300 dark:border-0 bg-light-100 dark:bg-dark-300 shadow-2xl",
+          show ? "flex" : "hidden"
+        )}
+      >
         {items.map((item) => (
           <div
             onClick={() => onSelect(item)}
             key={item[valueField] as string | number}
-            className={styles.item}
+            className="text-light-400 text-[1.3rem] font-medium leading-[2.3rem]"
           >
             {labelField(item)}
           </div>

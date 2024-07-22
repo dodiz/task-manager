@@ -8,7 +8,7 @@ import { PlusIcon } from "@/icons/plus-icon";
 import { CrossIcon } from "@/icons/cross-icon";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
-import { Input } from "@/ui/form/input";
+import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
 import styles from "./modals.module.scss";
