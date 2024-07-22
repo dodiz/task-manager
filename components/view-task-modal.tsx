@@ -6,7 +6,6 @@ import { Select } from "@/ui/select";
 import { SubTask } from "@/ui/sub-task";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
-import styles from "./modals.module.scss";
 import { Column, Task } from "@/server/types";
 
 type ViewTaskModalProps = {
@@ -43,8 +42,8 @@ export function ViewTaskModal({
 
   return (
     <Dialog onHide={onHide} show={show}>
-      <div className={styles.container}>
-        <div className={styles.header}>
+      <div className="flex flex-col gap-6">
+        <div className="flex pt-2 justify-between items-center">
           <Typography variant="title-l">{task.name}</Typography>
           <Dropdown
             align="center"
@@ -69,7 +68,7 @@ export function ViewTaskModal({
               SubTasks ({task.subTasks.filter((s) => s.completed).length} of{" "}
               {task.subTasks.length})
             </Typography>
-            <div className={styles.columns}>
+            <div className="flex flex-col gap-3">
               {task.subTasks.map((subTask) => (
                 <SubTask
                   key={subTask.id}

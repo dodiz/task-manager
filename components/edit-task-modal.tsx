@@ -12,7 +12,6 @@ import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
 import { api } from "@/utils/api";
-import styles from "./modals.module.scss";
 
 type EditTaskModalProps = {
   task: Task;
@@ -70,7 +69,7 @@ export function EditTaskModal({
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form onSubmit={formik.handleSubmit} className={styles.container}>
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
         <Typography variant="title-l">Edit Task</Typography>
         <Input
           name="name"
@@ -91,12 +90,12 @@ export function EditTaskModal({
           onBlur={formik.handleBlur}
           error={formik.touched.description ? formik.errors.description : ""}
         />
-        <div className={styles.columns}>
+        <div className="flex flex-col gap-3">
           <Typography variant="body-sm">SubTasks</Typography>
           {formik.values.prevSubTasks.map(
             (subTask, index) =>
               subTask.action !== "delete" && (
-                <div key={index} className={styles.column}>
+                <div key={index} className="flex items-center gap-4">
                   <Input
                     name={`prevSubTasks.${index}.name`}
                     value={subTask.name}
@@ -111,7 +110,7 @@ export function EditTaskModal({
                     }
                   />
                   <CrossIcon
-                    className={styles.deleteColumn}
+                    className="cursor-pointer hover:fill-accent-200"
                     onClick={() => {
                       formik.setFieldValue(
                         "prevSubTasks",
@@ -127,7 +126,7 @@ export function EditTaskModal({
               )
           )}
           {formik.values.newSubTasks.map((subTask, index) => (
-            <div key={index} className={styles.column}>
+            <div key={index} className="flex items-center gap-4">
               <Input
                 name={`newSubTasks.${index}`}
                 value={subTask}
@@ -141,7 +140,7 @@ export function EditTaskModal({
                 }
               />
               <CrossIcon
-                className={styles.deleteColumn}
+                className="cursor-pointer hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "newSubTasks",
@@ -163,8 +162,8 @@ export function EditTaskModal({
           >
             <PlusIcon /> Add New Subtask
           </Button>
+          <Button>Save Changes</Button>
         </div>
-        <Button>Save Changes</Button>
       </form>
     </Dialog>
   );

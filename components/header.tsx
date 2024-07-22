@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { DeleteBoardModal } from "@/components/modals/delete-board-modal";
-import { EditBoardModal } from "@/components/modals/edit-board-modal";
-import { AddTaskModal } from "@/components/modals/add-task-modal";
+import { DeleteBoardModal } from "@/components/delete-board-modal";
+import { EditBoardModal } from "@/components/edit-board-modal";
+import { AddTaskModal } from "@/components/add-task-modal";
 import { useTheme } from "@/hooks/useTheme";
 import { LogoMobile } from "@/icons/logo-mobile";
 import { Logo } from "@/icons/logo";

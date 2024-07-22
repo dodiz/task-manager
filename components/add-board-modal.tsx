@@ -11,7 +11,6 @@ import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
-import styles from "./modals.module.scss";
 
 export function AddBoardModal({
   show,
@@ -51,7 +50,7 @@ export function AddBoardModal({
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form className={styles.container} onSubmit={formik.handleSubmit}>
+      <form className="flex flex-col gap-6" onSubmit={formik.handleSubmit}>
         <Typography variant="title-l">Add New Board</Typography>
         <Input
           name="name"
@@ -62,10 +61,10 @@ export function AddBoardModal({
           onBlur={formik.handleBlur}
           error={formik.touched.name ? formik.errors.name : ""}
         />
-        <div className={styles.columns}>
+        <div className="flex flex-col gap-3">
           <Typography variant="body-sm">Columns</Typography>
           {formik.values.columns.map((column, index) => (
-            <div key={index} className={styles.column}>
+            <div key={index} className="flex items-center gap-4">
               <Input
                 name={`columns.${index}`}
                 value={column}
@@ -79,7 +78,7 @@ export function AddBoardModal({
                 }
               />
               <CrossIcon
-                className={styles.deleteColumn}
+                className="cursor-pointer hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "columns",
@@ -98,8 +97,8 @@ export function AddBoardModal({
           >
             <PlusIcon /> Add New Column
           </Button>
+          <Button>Create New Board</Button>
         </div>
-        <Button>Create New Board</Button>
       </form>
     </Dialog>
   );

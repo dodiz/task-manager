@@ -3,9 +3,9 @@
 import { FC, useMemo, useState } from "react";
 import classNames from "classnames";
 import { Column, Task } from "@/server/types";
-import { ViewTaskModal } from "@/components/modals/view-task-modal";
-import { EditTaskModal } from "@/components/modals/edit-task-modal";
-import { DeleteTaskModal } from "@/components/modals/delete-task-modal";
+import { ViewTaskModal } from "@/components/view-task-modal";
+import { EditTaskModal } from "@/components/edit-task-modal";
+import { DeleteTaskModal } from "@/components/delete-task-modal";
 import { PlusIcon } from "@/icons/plus-icon";
 import { SpinnerIcon } from "@/icons/spinner-icon";
 import { Typography } from "@/ui/typography";

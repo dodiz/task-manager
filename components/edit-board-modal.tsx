@@ -11,7 +11,6 @@ import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
-import styles from "./modals.module.scss";
 
 type EditBoardModalProps = {
   show: boolean;
@@ -72,7 +71,7 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form onSubmit={formik.handleSubmit} className={styles.container}>
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
         <Typography variant="title-l">Edit Board</Typography>
         <Input
           name="name"
@@ -83,12 +82,12 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
           onBlur={formik.handleBlur}
           error={formik.touched.name ? formik.errors.name : ""}
         />
-        <div className={styles.columns}>
+        <div className="flex flex-col gap-3">
           <Typography variant="body-sm">Board Columns</Typography>
           {formik.values.prevColumns.map(
             (column, index) =>
               column.action !== "delete" && (
-                <div key={index} className={styles.column}>
+                <div key={index} className="flex gap-4 items-center">
                   <Input
                     name={`prevColumns.${index}.name`}
                     value={column.name}
@@ -103,7 +102,7 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
                     }
                   />
                   <CrossIcon
-                    className={styles.deleteColumn}
+                    className="cursor-pointer hover:fill-accent-200"
                     onClick={() => {
                       formik.setFieldValue(
                         "prevColumns",
@@ -117,7 +116,7 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
               )
           )}
           {formik.values.newColumns.map((column, index) => (
-            <div key={index} className={styles.column}>
+            <div key={index} className="flex items-center gap-4">
               <Input
                 name={`newColumns.${index}`}
                 value={column}
@@ -131,7 +130,7 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
                 }
               />
               <CrossIcon
-                className={styles.deleteColumn}
+                className="cursor-pointer hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "newColumns",
@@ -153,8 +152,8 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
           >
             <PlusIcon /> Add New Column
           </Button>
+          <Button>Save Changes</Button>
         </div>
-        <Button>Save Changes</Button>
       </form>
     </Dialog>
   );

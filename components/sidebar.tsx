@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import classNames from "classnames";
 import { useTheme } from "@/hooks/useTheme";
-import { AddBoardModal } from "@/components/modals/add-board-modal";
+import { AddBoardModal } from "@/components/add-board-modal";
 import { BoardIcon } from "@/icons/board-icon";
 import { HideIcon } from "@/icons/hide-icon";
 import { Logo } from "@/icons/logo";

@@ -13,7 +13,6 @@ import { Button } from "@/ui/button";
 import { Select } from "@/ui/select";
 import { Textarea } from "@/ui/textarea";
 import { api } from "@/utils/api";
-import styles from "./modals.module.scss";
 
 type AddTaskModalProps = {
   show: boolean;
@@ -74,7 +73,7 @@ export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form onSubmit={formik.handleSubmit} className={styles.container}>
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
         <Typography variant="title-l">Add Task</Typography>
         <Input
           label="Title"
@@ -93,10 +92,10 @@ export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
-        <div className={styles.columns}>
+        <div className="flex flex-col gap-3">
           <Typography variant="body-sm">Subtasks</Typography>
           {formik.values.subTasks.map((subTask, index) => (
-            <div key={index} className={styles.column}>
+            <div key={index} className="flex items-center gap-4">
               <Input
                 name={`subTasks.${index}`}
                 value={subTask}
@@ -110,7 +109,7 @@ export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
                 }
               />
               <CrossIcon
-                className={styles.deleteColumn}
+                className="cursor-pointer hover:fill-accent-200"
                 onClick={() => {
                   formik.setFieldValue(
                     "subTasks",

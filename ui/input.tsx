@@ -21,11 +21,13 @@ export function Input({ label, error, ...rest }: InputProps) {
         )}
       >
         <input
-          className="bg-transparent border-none outline-none w-full placeholder:text-dark-400/25 font-semibold"
+          className="bg-transparent border-none outline-none w-full placeholder:text-dark-400/25 dark:placeholder:text-light-100/25 font-semibold"
           {...rest}
         />
         {error && (
-          <p className="text-accent-200 font-medium text-[1.3rem]">{error}</p>
+          <p className="text-accent-200 font-medium text-[1.3rem] text-nowrap">
+            {error}
+          </p>
         )}
       </div>
     </label>
