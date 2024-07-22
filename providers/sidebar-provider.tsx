@@ -1,46 +1,38 @@
 "use client";
 
-import {
-  FC,
-  PropsWithChildren,
-  createContext,
-  useCallback,
-  useState,
-} from "react";
-import { setCookie, getCookie } from "cookies-next";
+import { PropsWithChildren, createContext, useState } from "react";
+import { setCookie } from "cookies-next";
 
 export const SidebarContext = createContext({
-  isSidebarHidden: false,
+  showSidebarDesktop: false,
   showSidebarMobile: false,
   toggleSidebarMobile: () => {},
   toggleSidebar: () => {},
 });
 
-export const SidebarProvider: FC<PropsWithChildren> = ({ children }) => {
-  const initialSidebarStatus = getCookie("isSidebarHidden") === "true";
-
-  const [isSidebarHidden, setIsSidebarHidden] = useState(initialSidebarStatus);
+export function SidebarProvider({
+  children,
+  initialShowSidebar,
+}: PropsWithChildren & { initialShowSidebar: boolean }) {
+  const [showSidebarDesktop, setShowSidebarDesktop] =
+    useState(initialShowSidebar);
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
 
-  const toggleSidebar = useCallback(() => {
-    setCookie("isSidebarHidden", (!isSidebarHidden).toString());
-    setIsSidebarHidden((prev) => !prev);
-  }, [isSidebarHidden]);
-
-  const toggleSidebarMobile = useCallback(() => {
-    setShowSidebarMobile((prev) => !prev);
-  }, [setShowSidebarMobile]);
+  const toggleSidebar = () => {
+    setCookie("show_sidebar_desktop", showSidebarDesktop ? "false" : "true");
+    setShowSidebarDesktop((p) => !p);
+  };
 
   return (
     <SidebarContext.Provider
       value={{
-        toggleSidebar,
         showSidebarMobile,
-        toggleSidebarMobile,
-        isSidebarHidden,
+        showSidebarDesktop,
+        toggleSidebar,
+        toggleSidebarMobile: () => setShowSidebarMobile((p) => !p),
       }}
     >
       {children}
     </SidebarContext.Provider>
   );
-};
+}

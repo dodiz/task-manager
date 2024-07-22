@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useParams } from "next/navigation";
 import { DeleteBoardModal } from "@/components/delete-board-modal";
 import { EditBoardModal } from "@/components/edit-board-modal";
 import { AddTaskModal } from "@/components/add-task-modal";
-import { useSidebar } from "@/hooks/use-sidebar";
 import { LogoMobile } from "@/icons/logo-mobile";
 import { Logo } from "@/icons/logo";
 import { ArrowDownIcon } from "@/icons/arrow-down-icon";
+import { SidebarContext } from "@/providers/sidebar-provider";
 import { Button } from "@/ui/button";
 import { Typography } from "@/ui/typography";
 import { Dropdown } from "@/ui/dropdown";
@@ -16,7 +16,7 @@ import { PlusIcon } from "@/icons/plus-icon";
 import { api } from "@/utils/api";
 
 export function Header() {
-  const { isSidebarHidden, toggleSidebarMobile } = useSidebar();
+  const { showSidebarDesktop, toggleSidebarMobile } = use(SidebarContext);
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
@@ -47,7 +47,7 @@ export function Header() {
       )}
       <header className="flex items-center border-b-[.1rem] p-4 gap-2 tablet:py-8 tablet:px-6 bg-light-100 justify-between dark:bg-dark-200 dark:border-dark-100">
         <div className="tablet:flex hidden gap-5 items-center">
-          {isSidebarHidden ? (
+          {!showSidebarDesktop ? (
             <Logo className="dark:text-white text-[#000112]" />
           ) : null}
           <Typography variant="title-xl">

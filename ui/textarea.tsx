@@ -21,7 +21,7 @@ export function Textarea({ label, error, ...rest }: TextareaProps) {
         )}
       >
         <textarea
-          className="bg-transparent border-none outline-none w-full resize-none h-[11rem] leading-[2.3rem placeholder:text-dark-400/25 font-semibold"
+          className="bg-transparent border-none outline-none w-full resize-none h-[11rem] leading-[2.3rem] dark:placeholder:text-light-100/25 placeholder:text-dark-400/25 font-semibold"
           {...rest}
         />
         <p className="text-accent-200 font-medium text-[1.3rem]">{error}</p>

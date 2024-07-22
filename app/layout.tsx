@@ -1,5 +1,3 @@
-"use client";
-
 import "./globals.css";
 import { ReactNode } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
@@ -9,6 +7,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { AuthProvider } from "@/providers/auth-provider";
+import { cookies } from "next/headers";
 
 const font = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,6 +15,9 @@ const font = Plus_Jakarta_Sans({
 });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const cookiesStore = cookies();
+  const initialShowSidebar =
+    cookiesStore.get("show_sidebar_desktop")?.value === "true";
   return (
     <html lang="en">
       <head>
@@ -27,7 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <AuthProvider>
             <QueryProvider>
               <ThemeProvider>
-                <SidebarProvider>
+                <SidebarProvider initialShowSidebar={initialShowSidebar}>
                   <Sidebar />
                   <div className="flex-1 flex flex-col h-full overflow-clip">
                     <Header />

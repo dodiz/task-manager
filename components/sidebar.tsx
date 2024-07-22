@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import classNames from "classnames";
-import { useSidebar } from "@/hooks/use-sidebar";
 import { AddBoardModal } from "@/components/add-board-modal";
 import { BoardIcon } from "@/icons/board-icon";
 import { HideIcon } from "@/icons/hide-icon";
@@ -17,28 +16,27 @@ import { SunIcon } from "@/icons/sun-icon";
 import { Toggle } from "@/ui/toggle";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
+import { SidebarContext } from "@/providers/sidebar-provider";
 
 export function Sidebar() {
-  const { theme: nextTheme, setTheme, systemTheme } = useTheme();
-  const theme = nextTheme === "system" ? systemTheme : nextTheme;
+  const { setTheme, resolvedTheme: theme } = useTheme();
 
   const { boardId } = useParams();
   const { data: boards, isError } = api.boards.getAll.useQuery();
   const {
     toggleSidebar,
-    isSidebarHidden,
+    showSidebarDesktop,
     showSidebarMobile,
     toggleSidebarMobile,
-  } = useSidebar();
+  } = use(SidebarContext);
+
   const [showAddBoard, setShowAddBoard] = useState(false);
 
   return (
     <>
       <div
-        className={classNames(
-          "fixed top-0 left-0 w-full h-full bg-black/60 tablet:hidden",
-          showSidebarMobile ? "block" : "hidden"
-        )}
+        aria-hidden={!showSidebarMobile}
+        className="block aria-hidden:hidden fixed top-0 left-0 w-full h-full bg-black/60 tablet:hidden"
         onClick={toggleSidebarMobile}
       />
       {showAddBoard && (
@@ -48,13 +46,14 @@ export function Sidebar() {
         />
       )}
       <aside
+        suppressHydrationWarning
         className={classNames(
-          "fixed rounded-xl top-[12rem] w-[26rem] left-1/2 -translate-x-1/2 -z-10 flex-col justify-between bg-light-100 opacity-0 tablet:z-10 tablet:opacity-100 tablet:h-screen tablet:sticky tablet:left-0 tablet:top-0 tablet:transform-none tablet:rounded-none tablet:border-r-[.1rem] tablet:border-r-light-300 tablet:flex desktop:w-[30rem] dark:bg-dark-200 dark:border-dark-100",
-          showSidebarMobile && "opacity-100 z-10",
-          isSidebarHidden && "tablet:hidden"
+          "fixed rounded-xl top-[12rem] w-[26rem] left-1/2 -translate-x-1/2 flex-col justify-between bg-light-100 tablet:z-10 tablet:opacity-100 tablet:h-screen tablet:left-0 tablet:top-0 tablet:transform-none tablet:rounded-none tablet:border-r-[.1rem] tablet:border-r-light-300 tablet:flex desktop:w-[30rem] dark:bg-dark-200 dark:border-dark-100",
+          showSidebarMobile ? "opacity-100 z-10" : "opacity-0 -z-10",
+          showSidebarDesktop ? "tablet:sticky" : "tablet:hidden"
         )}
         style={{
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1);",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         }}
       >
         <div>
@@ -105,7 +104,7 @@ export function Sidebar() {
           </div>
           <div
             className="hidden items-center gap-4 text-light-400 text-base font-bold m-6 mb-9 cursor-pointer tablet:flex"
-            onClick={toggleSidebar}
+            onClick={() => toggleSidebar()}
           >
             <HideIcon /> Hide Sidebar
           </div>
@@ -114,7 +113,7 @@ export function Sidebar() {
       <div
         className={classNames(
           "hidden fixed bottom-6 left-0 bg-primary-200 rounded-r-[5rem] cursor-pointer py-5 px-6",
-          !isSidebarHidden ? "tablet:hidden" : "tablet:block"
+          showSidebarDesktop ? "tablet:hidden" : "tablet:block"
         )}
         onClick={toggleSidebar}
       >

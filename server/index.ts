@@ -5,5 +5,3 @@ export const appRouter = router({
   boards: boardsRouter,
   tasks: tasksRouter,
 });
-
-export type AppRouter = typeof appRouter;

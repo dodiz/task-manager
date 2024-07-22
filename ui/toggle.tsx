@@ -1,5 +1,3 @@
-import classNames from "classnames";
-
 type ToggleProps = {
   checked?: boolean;
   onClick: () => void;
@@ -12,10 +10,8 @@ export function Toggle({ checked = false, onClick }: ToggleProps) {
       onClick={onClick}
     >
       <div
-        className={classNames(
-          "absolute mx-[.34rem] left-0 w-[1.4rem] h-[1.4rem] rounded-full bg-white transition-all",
-          checked && "left-[2.6rem]"
-        )}
+        aria-checked={checked}
+        className="absolute mx-[.34rem] left-0 w-[1.4rem] h-[1.4rem] rounded-full bg-white transition-all aria-checked:left-[2.6rem]"
       />
     </div>
   );

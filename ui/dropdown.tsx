@@ -23,9 +23,9 @@ export function Dropdown({ items, align }: DropdownProps) {
       <DotsIcon className="cursor-pointer w-[3rem]" />
       <div
         ref={ref}
+        aria-hidden={!show}
         className={classNames(
-          "z-10 absolute right-0 top-[200%] w-max rounded-xl bg-light-100 p-4 flex-col gap-4 shadow-lg dark:bg-dark-300",
-          show ? "flex" : "hidden",
+          "flex aria-hidden:hidden z-10 absolute right-0 top-[200%] w-max rounded-xl bg-light-100 p-4 flex-col gap-4 shadow-lg dark:bg-dark-300",
           align === "center" && "left-1/2 -translate-x-1/2"
         )}
       >

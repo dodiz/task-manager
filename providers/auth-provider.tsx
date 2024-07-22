@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, PropsWithChildren, createContext, useMemo } from "react";
+import { PropsWithChildren, createContext, useMemo } from "react";
 import { setCookie, getCookie } from "cookies-next";
 import { v4 } from "uuid";
 
@@ -8,7 +8,7 @@ export const AuthContext = createContext({
   userId: "",
 });
 
-export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+export function AuthProvider({ children }: PropsWithChildren) {
   const userId = useMemo(() => {
     const uuid = getCookie("uuid");
     if (uuid) return uuid;
@@ -29,4 +29,4 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}

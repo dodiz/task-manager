@@ -1,4 +1,5 @@
-import classNames from "classnames";
+"use client";
+
 import { CheckIcon } from "@/icons/check-icon";
 
 type SubTaskProps = {
@@ -10,24 +11,18 @@ type SubTaskProps = {
 export function SubTask({ completed, onClick, label }: SubTaskProps) {
   return (
     <div
-      className={classNames(
-        "p-3 flex items-center gap-4 bg-light-200 rounded-[.4rem] cursor-pointer text-nowrap hover:bg-primary-200/25 dark:bg-dark-300"
-      )}
+      className="p-3 flex items-center gap-4 bg-light-200 rounded-[.4rem] cursor-pointer text-nowrap hover:bg-primary-200/25 dark:bg-dark-300"
       onClick={onClick}
     >
       <div
-        className={classNames(
-          "flex items-center justify-center border border-[#828fa340] bg-light-100 rounded-[.2rem] w-4 h-4 cursor-pointer dark:bg-dark-200",
-          completed && "bg-primary-200 dark:bg-primary-200"
-        )}
+        aria-checked={completed}
+        className="flex items-center justify-center border border-[#828fa340] bg-light-100 rounded-[.2rem] w-4 h-4 cursor-pointer dark:bg-dark-200 aria-checked:bg-primary-200 aria-checked:dark:bg-primary-200"
       >
-        <CheckIcon className={classNames(completed ? "block" : "hidden")} />
+        <CheckIcon className={completed ? "block" : "hidden"} />
       </div>
       <p
-        className={classNames(
-          "text-dark-400 dark:text-light-100 text-xs font-bold select-none",
-          completed && "line-through opacity-50"
-        )}
+        aria-checked={completed}
+        className="text-dark-400 dark:text-light-100 text-xs font-bold select-none aria-checked:line-through aria-checked:opacity-50"
       >
         {label}
       </p>

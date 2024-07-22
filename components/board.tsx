@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import classNames from "classnames";
 import { Column, Task } from "@/server/types";
 import { ViewTaskModal } from "@/components/view-task-modal";
@@ -35,22 +35,13 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [droppingColumn, setDroppingColumn] = useState<Column | null>(null);
 
-  const selectedTask = useMemo(() => {
-    if (!selectedTaskId) return null;
-    const task = board?.columns
+  const selectedTask =
+    board?.columns
       .flatMap((c) => c.tasks)
-      .find((t) => t.id === selectedTaskId);
-    return task;
-  }, [board, selectedTaskId]);
+      .find((t) => t.id === selectedTaskId) || null;
 
-  const columns = useMemo(() => {
-    return board?.columns || [];
-  }, [board]);
-
-  const selectedColumn = useMemo(() => {
-    if (!board || !selectedTask) return null;
-    return board.columns.find((c) => selectedTask.columnId === c.id) || null;
-  }, [selectedTask, board]);
+  const selectedColumn =
+    board?.columns.find((c) => selectedTask?.columnId === c.id) || null;
 
   if (isLoading)
     return (
@@ -82,7 +73,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
             setEditingTask(selectedTask);
             setSelectedTaskId(null);
           }}
-          columns={columns}
+          columns={board?.columns || []}
           selectedColumn={selectedColumn}
           show={!!selectedTask}
           onHide={() => setSelectedTaskId(null)}
