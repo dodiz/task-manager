@@ -1,7 +1,9 @@
+"use client";
+
 import { ComponentProps, useState } from "react";
 import classNames from "classnames";
-import { useTheme } from "@/hooks";
-import formStyles from "../form.module.scss";
+import { useTheme } from "@/hooks/useTheme";
+import formStyles from "./form.module.scss";
 
 type TextareaProps = ComponentProps<"textarea"> & {
   label?: string;

@@ -1,18 +1,22 @@
-import { FC } from "react";
-import classNames from "classnames";
-import { useTheme } from "@/hooks";
-import { Typography } from "@/ui/typography";
-import { TaskCardProps } from "./TaskCard.types";
-import styles from "./TaskCard.module.scss";
+"use client";
 
-export const TaskCard: FC<TaskCardProps> = ({
+import { Typography } from "@/ui/typography";
+
+type TaskCardProps = {
+  label: string;
+  subCompleted: number;
+  subTotal: number;
+  id: number;
+  onClick: () => void;
+};
+
+export function TaskCard({
   label,
   onClick,
   subCompleted,
   subTotal,
   id,
-}) => {
-  const { isDark } = useTheme();
+}: TaskCardProps) {
   return (
     <div
       draggable
@@ -20,7 +24,7 @@ export const TaskCard: FC<TaskCardProps> = ({
         e.dataTransfer.setData("taskId", id.toString());
       }}
       onClick={onClick}
-      className={classNames(styles.container, isDark && styles.dark)}
+      className="py-6 px-4 rounded-xl bg-light-100 flex flex-col gap-2 cursor-pointer dark:bg-dark-200"
     >
       <Typography variant="title-m">{label}</Typography>
       <Typography variant="body">
@@ -30,4 +34,4 @@ export const TaskCard: FC<TaskCardProps> = ({
       </Typography>
     </div>
   );
-};
+}

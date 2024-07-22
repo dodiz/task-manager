@@ -1,8 +1,5 @@
 import { useEffect, useCallback, type PropsWithChildren } from "react";
-import classNames from "classnames";
-import { useTheme } from "@/hooks";
 import { CrossIcon } from "@/icons/cross-icon";
-import styles from "./dialog.module.scss";
 
 type DialogProps = PropsWithChildren & {
   show: boolean;
@@ -10,8 +7,6 @@ type DialogProps = PropsWithChildren & {
 };
 
 export function Dialog({ children, show, onHide }: DialogProps) {
-  const { isDark } = useTheme();
-
   const escapeListener = useCallback(
     (e: KeyboardEvent) => e.key === "Escape" && onHide(),
     [onHide]
@@ -27,13 +22,19 @@ export function Dialog({ children, show, onHide }: DialogProps) {
   if (!show) return null;
 
   return (
-    <div className={styles.backdrop} onClick={onHide}>
-      <div className={styles.wrapper}>
+    <div
+      className="fixed top-0 left-0 z-[1000] w-full h-full overflow-x-hidden bg-black/50"
+      onClick={onHide}
+    >
+      <div className="w-full min-h-full flex items-center justify-center">
         <div
-          className={classNames(styles.modal, isDark && styles.dark)}
+          className="relative w-[48rem] rounded-lg m-4 bg-light-100 tablet:p-8 p-5 dark:bg-dark-200"
           onClick={(e) => e.stopPropagation()}
         >
-          <CrossIcon onClick={onHide} className={styles.closeIcon} />
+          <CrossIcon
+            onClick={onHide}
+            className="absolute top-5 right-[1.8rem] cursor-pointer"
+          />
           {children}
         </div>
       </div>

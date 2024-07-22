@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import classNames from "classnames";
-import { useTheme } from "@/hooks";
-import { ArrowDownIcon } from "@/ui";
+import { useTheme } from "@/hooks/useTheme";
+import { ArrowDownIcon } from "@/icons/arrow-down-icon";
 import styles from "./select.module.scss";
 import formStyles from "./form.module.scss";
 

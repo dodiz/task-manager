@@ -1,10 +1,26 @@
-import { FC } from "react";
-import { Dialog, Dropdown, Select, SubTask, Typography } from "@/ui";
-import { api } from "@/utils/api";
-import { ViewTaskModalProps } from "./Modal.types";
-import styles from "./Modals.module.scss";
+"use client";
 
-export const ViewTaskModal: FC<ViewTaskModalProps> = ({
+import { Dialog } from "@/ui/dialog";
+import { Dropdown } from "@/ui/dropdown";
+import { Select } from "@/ui/form/select";
+import { SubTask } from "@/ui/sub-task";
+import { Typography } from "@/ui/typography";
+import { api } from "@/utils/api";
+import styles from "./modals.module.scss";
+import { Column, Task } from "@/server/types";
+
+type ViewTaskModalProps = {
+  task: Task;
+  columns: Column[];
+  selectedColumn: Column | null;
+  onTaskUpdate: () => void;
+  onTaskDelete: () => void;
+  onTaskEdit: () => void;
+  show: boolean;
+  onHide: () => void;
+};
+
+export function ViewTaskModal({
   show,
   task,
   columns,
@@ -13,7 +29,7 @@ export const ViewTaskModal: FC<ViewTaskModalProps> = ({
   onTaskUpdate,
   onTaskDelete,
   onTaskEdit,
-}) => {
+}: ViewTaskModalProps) {
   const { mutate: completeTask } = api.tasks.completeSubTask.useMutation({
     onSuccess: () => {
       onTaskUpdate();
@@ -87,4 +103,4 @@ export const ViewTaskModal: FC<ViewTaskModalProps> = ({
       </div>
     </Dialog>
   );
-};
+}

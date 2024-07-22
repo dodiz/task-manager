@@ -1,6 +1,8 @@
+"use client";
+
 import { type ComponentProps, useState } from "react";
 import classNames from "classnames";
-import { useTheme } from "@/hooks";
+import { useTheme } from "@/hooks/useTheme";
 import formStyles from "./form.module.scss";
 
 type InputProps = ComponentProps<"input"> & {

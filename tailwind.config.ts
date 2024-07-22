@@ -3,9 +3,12 @@ const baseFontSize = 10;
 import { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "selector",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./ui/**/*.{js,ts,jsx,tsx,mdx}",
+    "./icons/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -43,13 +46,13 @@ const config: Config = {
         lg: [
           `${(16 * 1.125) / baseFontSize}rem` /* 18px */,
           {
-            lineHeight: `${(16 * 1.75) / baseFontSize}rem` /* 28px */,
+            lineHeight: `${(16 * 1.45) / baseFontSize}rem` /* 23px */,
           },
         ],
         xl: [
           `${(16 * 1.25) / baseFontSize}rem` /* 20px */,
           {
-            lineHeight: `${(16 * 1.75) / baseFontSize}rem` /* 28px */,
+            lineHeight: `${(16 * 1.88) / baseFontSize}rem` /* 30px */,
           },
         ],
         "2xl": [
@@ -125,7 +128,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
 
 export default config;

@@ -1,6 +1,6 @@
 import type { ComponentProps, PropsWithChildren } from "react";
 import cn from "classnames";
-import { useTheme } from "@/hooks";
+import { useTheme } from "@/hooks/useTheme";
 import styles from "./button.module.scss";
 
 type ButtonProps = PropsWithChildren & {

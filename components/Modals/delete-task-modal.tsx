@@ -1,22 +1,31 @@
-import { useParams, useRouter } from "next/navigation";
-import { FC } from "react";
+"use client";
+
+import { useParams } from "next/navigation";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
-import { ModalProps } from "../Modal.types";
-import styles from "./DeleteModal.module.scss";
+import styles from "./modals.module.scss";
 
-export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
-  const router = useRouter();
-  const getBoards = api.boards.getAll.useQuery();
+type DeleteTaskModalProps = {
+  taskId: number;
+  onHide: () => void;
+  show: boolean;
+};
+
+export function DeleteTaskModal({
+  show,
+  onHide,
+  taskId,
+}: DeleteTaskModalProps) {
   const { boardId } = useParams();
-  const { data } = api.boards.getById.useQuery({ id: +boardId });
-  const { mutate: deleteBoard } = api.boards.remove.useMutation({
+  const { refetch: refetchBoard } = api.boards.getById.useQuery({
+    id: +boardId,
+  });
+  const { mutate: deleteTask } = api.tasks.remove.useMutation({
     onSuccess: () => {
-      getBoards.refetch();
+      refetchBoard();
       onHide();
-      router.push("/");
     },
   });
 
@@ -24,16 +33,16 @@ export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
     <Dialog show={show} onHide={onHide}>
       <div className={styles.container}>
         <Typography className={styles.label} variant="title-l">
-          Delete this board?
+          Delete this task?
         </Typography>
         <Typography variant="body">
-          Are you sure you want to delete the '{data?.name}' board? This action
-          will remove all columns and tasks and cannot be reversed.
+          Are you sure you want to delete this task? This action cannot be
+          reversed.
         </Typography>
         <div className={styles.options}>
           <Button
             variant="destructive"
-            onClick={() => deleteBoard({ id: +boardId })}
+            onClick={() => deleteTask({ id: taskId })}
           >
             Delete
           </Button>
@@ -44,4 +53,4 @@ export const DeleteBoardModal: FC<ModalProps> = ({ show, onHide }) => {
       </div>
     </Dialog>
   );
-};
+}

@@ -1,8 +1,10 @@
+"use client";
+
 import { useState } from "react";
 import classNames from "classnames";
-import { useClickOutside, useTheme } from "@/hooks";
-import { DotsIcon, Typography } from "@/ui";
-import styles from "./dropdown.module.scss";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { DotsIcon } from "@/icons/dots-icon";
+import { Typography } from "@/ui/typography";
 
 type DropdownProps = {
   items: {
@@ -14,19 +16,17 @@ type DropdownProps = {
 };
 
 export function Dropdown({ items, align }: DropdownProps) {
-  const { isDark } = useTheme();
   const [show, setShow] = useState(false);
   const ref = useClickOutside(() => setShow(false));
   return (
-    <div className={styles.container} onClick={() => setShow((p) => !p)}>
-      <DotsIcon className={styles.dots} />
+    <div className="relative" onClick={() => setShow((p) => !p)}>
+      <DotsIcon className="cursor-pointer w-[3rem]" />
       <div
         ref={ref}
         className={classNames(
-          styles.items,
-          isDark && styles.dark,
-          show && styles.show,
-          align === "center" && styles.center
+          "z-10 absolute right-0 top-[200%] w-max rounded-xl bg-light-100 p-4 flex-col gap-4 shadow-lg dark:bg-dark-300",
+          show ? "flex" : "hidden",
+          align === "center" && "left-1/2 -translate-x-1/2"
         )}
       >
         {items.map(({ label, onClick, variant }, i) => (
@@ -34,8 +34,8 @@ export function Dropdown({ items, align }: DropdownProps) {
             <Typography
               variant="body"
               className={classNames(
-                styles.item,
-                variant === "danger" && styles.danger
+                "w-64 cursor-pointer",
+                variant === "danger" && "text-accent-200 dark:text-accent-200"
               )}
             >
               {label}

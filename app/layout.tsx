@@ -4,8 +4,10 @@ import "@/styles/globals.css";
 import { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { Header, Sidebar } from "@/components";
-import { QueryProvider } from "@/app/QueryProvider";
+import { Header } from "@/components/header";
+import { Sidebar } from "@/components/sidebar";
+import { QueryProvider } from "./QueryProvider";
+import { NextThemeProvider } from "./next-theme-provider";
 
 const ThemeProvider = dynamic(
   async () => {
@@ -38,13 +40,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main className="h-full flex">
           <AuthProvider>
             <QueryProvider>
-              <ThemeProvider>
-                <Sidebar />
-                <div className="flex-1 flex flex-col h-full overflow-clip">
-                  <Header />
-                  <div className="flex-1 overflow-auto">{children}</div>
-                </div>
-              </ThemeProvider>
+              <NextThemeProvider>
+                <ThemeProvider>
+                  <Sidebar />
+                  <div className="flex-1 flex flex-col h-full overflow-clip">
+                    <Header />
+                    <div className="flex-1 overflow-auto">{children}</div>
+                  </div>
+                </ThemeProvider>
+              </NextThemeProvider>
             </QueryProvider>
           </AuthProvider>
         </main>

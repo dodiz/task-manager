@@ -13,7 +13,6 @@
       cursor: pointer;
     }
   }
-
   .columns {
     display: flex;
     flex-direction: column;
@@ -29,5 +28,12 @@
         }
       }
     }
+  }
+  .label {
+    color: $accent-200;
+  }
+  .options {
+    display: flex;
+    gap: 1.6rem;
   }
 }

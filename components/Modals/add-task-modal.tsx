@@ -1,5 +1,6 @@
+"use client";
+
 import { useParams } from "next/navigation";
-import { FC } from "react";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
@@ -12,10 +13,14 @@ import { Button } from "@/ui/button";
 import { Select } from "@/ui/form/select";
 import { Textarea } from "@/ui/form/textarea";
 import { api } from "@/utils/api";
-import { ModalProps } from "./Modal.types";
-import styles from "./Modals.module.scss";
+import styles from "./modals.module.scss";
 
-export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
+type AddTaskModalProps = {
+  show: boolean;
+  onHide: () => void;
+};
+
+export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
   const { boardId } = useParams();
   const { data: board, refetch: refetchBoard } = api.boards.getById.useQuery({
     id: +boardId,
@@ -143,4 +148,4 @@ export const AddTaskModal: FC<ModalProps> = ({ show, onHide }) => {
       </form>
     </Dialog>
   );
-};
+}

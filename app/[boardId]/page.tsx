@@ -1,4 +1,4 @@
-import { Board } from "@/components";
+import { Board } from "@/components/board";
 
 export default function Page({
   params: { boardId },

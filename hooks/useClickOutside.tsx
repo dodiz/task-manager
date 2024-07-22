@@ -1,7 +1,9 @@
-import { type RefObject, useEffect, useRef, useCallback } from 'react';
+"use client";
+
+import { type RefObject, useEffect, useRef, useCallback } from "react";
 
 export const useClickOutside = (
-  callback: () => void,
+  callback: () => void
 ): RefObject<HTMLDivElement> => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -11,24 +13,24 @@ export const useClickOutside = (
         callback();
       }
     },
-    [callback],
+    [callback]
   );
 
   const handleEscape = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         callback();
       }
     },
-    [callback],
+    [callback]
   );
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    document.addEventListener('keydown', handleEscape);
+    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [callback, handleClickOutside, handleEscape]);
 

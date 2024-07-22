@@ -1,22 +1,16 @@
 "use client";
 
-import { useTheme } from "@/hooks";
-import { LoadingSpinner } from "@/ui/loading-spinner";
+import { SpinnerIcon } from "@/icons/spinner-icon";
 import { Typography } from "@/ui/typography";
 import { api } from "@/utils/api";
 
 export default function Page() {
-  const { isDark } = useTheme();
   const { isError, isLoading } = api.boards.getAll.useQuery();
   return (
-    <div
-      className={`${
-        isDark ? "bg-dark-300" : "bg-light-200"
-      } h-full flex items-center justify-center`}
-    >
+    <div className="dark:bg-dark-300 bg-light-200h-full flex items-center justify-center">
       <div className="flex flex-col gap-8 items-center">
         {isLoading ? (
-          <LoadingSpinner />
+          <SpinnerIcon />
         ) : (
           <Typography variant="title-m">
             {isError

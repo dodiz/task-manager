@@ -1,19 +1,23 @@
+"use client";
+
 import { FC, useMemo, useState } from "react";
 import classNames from "classnames";
 import { Column, Task } from "@/server/types";
-import { DeleteTaskModal, EditTaskModal, ViewTaskModal } from "@/components";
-import { useTheme } from "@/hooks";
+import { ViewTaskModal } from "@/components/modals/view-task-modal";
+import { EditTaskModal } from "@/components/modals/edit-task-modal";
+import { DeleteTaskModal } from "@/components/modals/delete-task-modal";
 import { PlusIcon } from "@/icons/plus-icon";
-import { LoadingSpinner } from "@/ui/loading-spinner";
+import { SpinnerIcon } from "@/icons/spinner-icon";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
-import { TaskCard } from "./TaskCard";
-import { BoardProps } from "./Board.types";
-import styles from "./Board.module.scss";
+import { TaskCard } from "@/components/task-card";
+
+type BoardProps = {
+  boardId: number;
+};
 
 export const Board: FC<BoardProps> = ({ boardId }) => {
-  const { isDark } = useTheme();
   const {
     data: board,
     isLoading,
@@ -48,17 +52,16 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     return board.columns.find((c) => selectedTask.columnId === c.id) || null;
   }, [selectedTask, board]);
 
-  if (isLoading) {
+  if (isLoading)
     return (
-      <div className={classNames(styles.loadingWrapper, isDark && styles.dark)}>
-        <LoadingSpinner />
+      <div className="flex w-full items-center justify-center dark:bg-dark-300 h-full">
+        <SpinnerIcon />
       </div>
     );
-  }
 
-  if (isError) {
+  if (isError)
     return (
-      <div className={classNames(styles.errorWrapper, isDark && styles.dark)}>
+      <div className="flex flex-col gap-4 w-full items-center justify-center dark:bg-dark-300 h-full">
         <Typography variant="title-l">Something went wrong.</Typography>
         <Typography variant="body">
           No board was found with id "{boardId}".
@@ -66,7 +69,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
         <Typography variant="body">Database might be offline.</Typography>
       </div>
     );
-  }
+
   return (
     <>
       {selectedTask && (
@@ -105,9 +108,9 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
           taskId={deletingTaskId}
         />
       )}
-      <div className={classNames(styles.wrapper, isDark && styles.dark)}>
+      <div className="min-w-full w-max-content overflow-auto bg-light-200 h-full dark:bg-dark-300">
         {board!.columns.length ? (
-          <div className={styles.columns}>
+          <div className="flex gap-6 p-8">
             {board!.columns.map((column, i) => (
               <div
                 onDragOver={(e) => {
@@ -126,26 +129,26 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                 }}
                 key={column.id}
                 className={classNames(
-                  styles.column,
-                  droppingColumn === column && styles.dropping
+                  "w-[28rem] flex flex-col gap-6 transition-all",
+                  droppingColumn === column && "p-1 rounded-xl shadow-2xl"
                 )}
               >
-                <div className={styles.columnHeader}>
+                <div className="flex items-center gap-3">
                   <div
                     className={classNames(
-                      styles.columnDot,
+                      "w-4 h-4 rounded-full",
                       i % 3 === 0
                         ? "bg-accent-100"
                         : i % 2 === 0
-                        ? "bg-green-400"
-                        : "bg-yellow-200"
+                          ? "bg-green-400"
+                          : "bg-yellow-200"
                     )}
                   />
                   <Typography variant="title-s">
                     {column.name?.toUpperCase()} ({column.tasks.length})
                   </Typography>
                 </div>
-                <div className={styles.tasks}>
+                <div className="flex flex-col gap-5">
                   {column.tasks.map((task) => (
                     <TaskCard
                       key={task.id}
@@ -163,7 +166,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
             ))}
           </div>
         ) : (
-          <div className={styles.empty}>
+          <div className="flex flex-col gap-8 items-center justify-center h-full">
             <Typography variant="title-l">
               The board is empty. Create a new column to get started.
             </Typography>

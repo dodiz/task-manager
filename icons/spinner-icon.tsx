@@ -9,6 +9,7 @@ export const SpinnerIcon: FC<ComponentProps<"svg">> = ({ fill, ...props }) => {
       fill="none"
       width="3rem"
       xmlns="http://www.w3.org/2000/svg"
+      className="animate-spin text-primary-200"
       {...props}
     >
       <defs>
@@ -36,14 +37,6 @@ export const SpinnerIcon: FC<ComponentProps<"svg">> = ({ fill, ...props }) => {
           d="M 12 100 A 88 88 0 0 1 12 98"
         />
       </g>
-      <animateTransform
-        from="0 0 0"
-        to="360 0 0"
-        attributeName="transform"
-        type="rotate"
-        repeatCount="indefinite"
-        dur="1300ms"
-      />
     </svg>
   );
 };

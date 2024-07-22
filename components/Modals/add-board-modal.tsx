@@ -1,4 +1,5 @@
-import { FC } from "react";
+"use client";
+
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
@@ -10,10 +11,15 @@ import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/form/input";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
-import { ModalProps } from "./Modal.types";
-import styles from "./Modals.module.scss";
+import styles from "./modals.module.scss";
 
-export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
+export function AddBoardModal({
+  show,
+  onHide,
+}: {
+  show: boolean;
+  onHide: () => void;
+}) {
   const router = useRouter();
   const getBoards = api.boards.getAll.useQuery();
   const addBoard = api.boards.add.useMutation({
@@ -97,4 +103,4 @@ export const AddBoardModal: FC<ModalProps> = ({ show, onHide }) => {
       </form>
     </Dialog>
   );
-};
+}

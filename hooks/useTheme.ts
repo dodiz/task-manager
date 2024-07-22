@@ -1,3 +1,5 @@
+"use client";
+
 import { ThemeContext } from "@/context";
 import { useContext } from "react";
 
