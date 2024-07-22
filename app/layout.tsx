@@ -1,6 +1,6 @@
 "use client";
 
-import "@/styles/globals.css";
+import "./globals.css";
 import { ReactNode } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header } from "@/components/header";
