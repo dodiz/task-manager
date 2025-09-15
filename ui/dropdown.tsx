@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import classNames from "classnames";
+import { cn } from "@/utils/cn";
 import { RiMore2Fill } from "@remixicon/react";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { Typography } from "@/ui/typography";
@@ -27,7 +27,7 @@ export function Dropdown({ items, align }: DropdownProps) {
       <div
         ref={ref}
         aria-hidden={!show}
-        className={classNames(
+        className={cn(
           "aria-hidden:hidden flex z-10 absolute right-0 top-[200%] w-max rounded-xl bg-light-100 p-4 flex-col gap-4 shadow-lg dark:bg-dark-300",
           align === "center" && "left-1/2 -translate-x-1/2"
         )}
@@ -36,7 +36,7 @@ export function Dropdown({ items, align }: DropdownProps) {
           <div key={i} onClick={onClick}>
             <Typography
               variant="body"
-              className={classNames(
+              className={cn(
                 "w-64 cursor-pointer",
                 variant === "danger" && "text-accent-200 dark:text-accent-200"
               )}

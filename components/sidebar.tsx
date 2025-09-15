@@ -3,7 +3,7 @@
 import { use, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import classNames from "classnames";
+import { cn } from "@/utils/cn";
 import {
   RiAddFill,
   RiEyeFill,
@@ -42,7 +42,7 @@ export function Sidebar() {
         />
       )}
       <aside
-        className={classNames(
+        className={cn(
           "fixed rounded-xl top-[12rem] w-[26rem] left-1/2 -translate-x-1/2 flex-col justify-between bg-light-100 tablet:z-10 tablet:opacity-100 tablet:h-screen tablet:left-0 tablet:top-0 tablet:transform-none tablet:rounded-none tablet:border-r-[.1rem] tablet:border-r-light-300 tablet:flex desktop:w-[30rem] dark:bg-dark-200 dark:border-dark-100",
           showSidebarMobile ? "opacity-100 z-10" : "opacity-0 -z-10",
           showSidebarDesktop ? "tablet:sticky" : "tablet:hidden"
@@ -63,9 +63,9 @@ export function Sidebar() {
                 <Link
                   href={`/${board.id}`}
                   key={board.id}
-                  className={classNames(
+                  className={cn(
                     "transition-all flex items-center gap-4 py-4 pl-8 cursor-pointer text-base font-bold rounded-r-[10rem]",
-                    +boardId === board.id
+                    +boardId! === board.id
                       ? "bg-primary-200 text-light-200"
                       : "text-light-400"
                   )}
@@ -75,7 +75,7 @@ export function Sidebar() {
               ))}
             <div
               onClick={() => !isError && setShowAddBoard(true)}
-              className={classNames(
+              className={cn(
                 "transition-all flex items-center gap-4 py-4 pl-8 cursor-pointer text-base font-bold rounded-r-[10rem] text-primary-200",
                 isError && "opacity-50 cursor-not-allowed"
               )}
@@ -100,7 +100,7 @@ export function Sidebar() {
         </div>
       </aside>
       <div
-        className={classNames(
+        className={cn(
           "hidden fixed bottom-6 left-0 bg-primary-200 rounded-r-[5rem] cursor-pointer py-5 px-6",
           showSidebarDesktop ? "tablet:hidden" : "tablet:block"
         )}

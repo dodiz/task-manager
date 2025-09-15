@@ -1,7 +1,6 @@
 "use client";
 
 import { useFormik } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Task } from "@/server/types";
@@ -39,28 +38,26 @@ export function EditTaskModal({
       })),
       newSubTasks: [] as string[],
     },
-    validationSchema: toFormikValidationSchema(
-      z.object({
-        name: z.string({
-          required_error: "Can't be empty",
-        }),
-        description: z.string().optional(),
-        prevSubTasks: z.array(
-          z.object({
-            name: z.string({
-              required_error: "Can't be empty",
-            }),
-            action: z.enum(["delete", "update"]),
-            id: z.number(),
-          })
-        ),
-        newSubTasks: z.array(
-          z.string({
+    validationSchema: z.object({
+      name: z.string({
+        required_error: "Can't be empty",
+      }),
+      description: z.string().optional(),
+      prevSubTasks: z.array(
+        z.object({
+          name: z.string({
             required_error: "Can't be empty",
-          })
-        ),
-      })
-    ),
+          }),
+          action: z.enum(["delete", "update"]),
+          id: z.number(),
+        })
+      ),
+      newSubTasks: z.array(
+        z.string({
+          required_error: "Can't be empty",
+        })
+      ),
+    }),
     onSubmit: (values) => {
       editTask({ id: task.id, ...values });
     },

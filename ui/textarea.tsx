@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import classNames from "classnames";
+import { cn } from "@/utils/cn";
 
 type TextareaProps = ComponentProps<"textarea"> & {
   label?: string;
@@ -15,7 +15,7 @@ export function Textarea({ label, error, ...rest }: TextareaProps) {
         </h4>
       )}
       <div
-        className={classNames(
+        className={cn(
           "bg-light-100 border-[.15rem] rounded-[.4rem] py-3 px-4 font-medium text-[1.3rem] w-full transition-colors flex items-center justify-between dark:bg-dark-200  focus-within:border-primary-200 border-light-400/25",
           error && "border-accent-200"
         )}

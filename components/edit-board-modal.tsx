@@ -1,8 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useFormik } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Dialog } from "@/ui/dialog";
@@ -14,13 +12,13 @@ import { api } from "@/utils/api";
 type EditBoardModalProps = {
   show: boolean;
   onHide: () => void;
+  boardId: number;
 };
 
-export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
+export function EditBoardModal({ show, onHide, boardId }: EditBoardModalProps) {
   const { refetch: refetchAll } = api.boards.getAll.useQuery();
-  const { boardId } = useParams();
   const { data: board, refetch: refetch } = api.boards.getById.useQuery(
-    { id: +boardId },
+    { id: boardId },
     { enabled: !!boardId }
   );
   const editBoard = api.boards.update.useMutation({
@@ -41,27 +39,25 @@ export function EditBoardModal({ show, onHide }: EditBoardModalProps) {
         })) ?? [],
       newColumns: [] as string[],
     },
-    validationSchema: toFormikValidationSchema(
-      z.object({
-        name: z.string({
-          required_error: "Can't be empty",
-        }),
-        prevColumns: z.array(
-          z.object({
-            name: z.string({
-              required_error: "Can't be empty",
-            }),
-            action: z.enum(["delete", "update"]),
-            id: z.number(),
-          })
-        ),
-        newColumns: z.array(
-          z.string({
+    validationSchema: z.object({
+      name: z.string({
+        required_error: "Can't be empty",
+      }),
+      prevColumns: z.array(
+        z.object({
+          name: z.string({
             required_error: "Can't be empty",
-          })
-        ),
-      })
-    ),
+          }),
+          action: z.enum(["delete", "update"]),
+          id: z.number(),
+        })
+      ),
+      newColumns: z.array(
+        z.string({
+          required_error: "Can't be empty",
+        })
+      ),
+    }),
     enableReinitialize: true,
     onSubmit: (values) => {
       editBoard.mutate({ id: +boardId, ...values });

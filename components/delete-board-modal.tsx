@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
@@ -9,13 +9,17 @@ import { api } from "@/utils/api";
 type DeleteBoardModalProps = {
   show: boolean;
   onHide: () => void;
+  boardId: number;
 };
 
-export function DeleteBoardModal({ show, onHide }: DeleteBoardModalProps) {
+export function DeleteBoardModal({
+  show,
+  onHide,
+  boardId,
+}: DeleteBoardModalProps) {
   const router = useRouter();
   const getBoards = api.boards.getAll.useQuery();
-  const { boardId } = useParams();
-  const { data } = api.boards.getById.useQuery({ id: +boardId });
+  const { data } = api.boards.getById.useQuery({ id: boardId });
   const { mutate: deleteBoard } = api.boards.remove.useMutation({
     onSuccess: () => {
       getBoards.refetch();

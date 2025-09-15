@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import classNames from "classnames";
+import { cn } from "@/utils/cn";
 import { RiAddFill, RiLoader4Fill } from "@remixicon/react";
 import { Column, Task } from "@/server/types";
 import { ViewTaskModal } from "@/components/view-task-modal";
@@ -91,6 +91,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
       )}
       {deletingTaskId && (
         <DeleteTaskModal
+          boardId={boardId}
           show={!!deletingTaskId}
           onHide={() => setDeletingTaskId(null)}
           taskId={deletingTaskId}
@@ -116,14 +117,14 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                   setDroppingColumn(null);
                 }}
                 key={column.id}
-                className={classNames(
+                className={cn(
                   "w-[28rem] flex flex-col gap-6 transition-all",
                   droppingColumn === column && "p-1 rounded-xl shadow-2xl"
                 )}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={classNames(
+                    className={cn(
                       "w-4 h-4 rounded-full",
                       i % 3 === 0
                         ? "bg-accent-100"

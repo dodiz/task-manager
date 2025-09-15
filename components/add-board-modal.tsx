@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
 import { z } from "zod";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Dialog } from "@/ui/dialog";
@@ -32,18 +31,16 @@ export function AddBoardModal({
       name: "",
       columns: [""],
     },
-    validationSchema: toFormikValidationSchema(
-      z.object({
-        name: z.string({
+    validationSchema: z.object({
+      name: z.string({
+        required_error: "Can't be empty",
+      }),
+      columns: z.array(
+        z.string({
           required_error: "Can't be empty",
-        }),
-        columns: z.array(
-          z.string({
-            required_error: "Can't be empty",
-          })
-        ),
-      })
-    ),
+        })
+      ),
+    }),
     onSubmit: (values) => addBoard.mutate(values),
   });
 

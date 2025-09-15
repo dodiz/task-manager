@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import classNames from "classnames";
+import { cn } from "@/utils/cn";
 import { RiArrowDownSLine } from "@remixicon/react";
 
 type SelectProps<T> = {
@@ -40,8 +40,8 @@ export const Select = <T,>({
       )}
       <div
         aria-hidden={!show}
-        className={classNames(
-          "bg-light-100 border-light-400/25 border-[0.15rem] rounded-[.4rem] border-primary-200 aria-hidden:border-light-400/25 py-3 px-4 font-medium text-[1.3rem] w-full transition-colors flex items-center justify-between dark:bg-dark-200 dark:text-light-100",
+        className={cn(
+          "bg-light-100 border-[0.15rem] rounded-[.4rem] border-primary-200 aria-hidden:border-light-400/25 py-3 px-4 font-medium text-[1.3rem] w-full transition-colors flex items-center justify-between dark:bg-dark-200 dark:text-light-100",
           error && "border-accent-200"
         )}
       >

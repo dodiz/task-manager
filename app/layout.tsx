@@ -14,12 +14,16 @@ const font = Plus_Jakarta_Sans({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
 });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  const cookiesStore = cookies();
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const cookiesStore = await cookies();
   const initialShowSidebar =
     cookiesStore.get("show_sidebar_desktop")?.value === "true";
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <title>Task Manager</title>
       </head>

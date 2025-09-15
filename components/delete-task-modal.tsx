@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
@@ -10,16 +9,17 @@ type DeleteTaskModalProps = {
   taskId: number;
   onHide: () => void;
   show: boolean;
+  boardId: number;
 };
 
 export function DeleteTaskModal({
   show,
   onHide,
+  boardId,
   taskId,
 }: DeleteTaskModalProps) {
-  const { boardId } = useParams();
   const { refetch: refetchBoard } = api.boards.getById.useQuery({
-    id: +boardId,
+    id: boardId,
   });
   const { mutate: deleteTask } = api.tasks.remove.useMutation({
     onSuccess: () => {

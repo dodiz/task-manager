@@ -1,5 +1,5 @@
 import { type PropsWithChildren } from "react";
-import classNames from "classnames";
+import { cn } from "@/utils/cn";
 
 type TypographyProps = PropsWithChildren & {
   variant: "title-xl" | "title-l" | "title-m" | "title-s" | "body" | "body-sm";
@@ -11,7 +11,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
     case "title-xl":
       return (
         <h1
-          className={classNames(
+          className={cn(
             "font-bold text-xl dark:text-light-100 text-dark-400",
             className
           )}
@@ -22,7 +22,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
     case "title-l":
       return (
         <h2
-          className={classNames(
+          className={cn(
             "font-bold text-lg text-dark-400 dark:text-light-100",
             className
           )}
@@ -33,7 +33,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
     case "title-m":
       return (
         <h3
-          className={classNames(
+          className={cn(
             "font-bold text-base leading-[1.9rem] text-dark-400 dark:text-light-100",
             className
           )}
@@ -44,7 +44,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
     case "title-s":
       return (
         <h4
-          className={classNames(
+          className={cn(
             "text-xs leading-[1.5rem] font-extrabold text-light-400 tracking-[0.24rem]",
             className
           )}
@@ -55,7 +55,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
     case "body-sm":
       return (
         <p
-          className={classNames(
+          className={cn(
             "font-bold text-xs leading-[1.5rem] text-light-400 dark:text-light-100",
             className
           )}
@@ -66,7 +66,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
     default: //body-m
       return (
         <p
-          className={classNames(
+          className={cn(
             "text-[1.3rem] font-medium leading-[2.3rem] text-light-400",
             className
           )}

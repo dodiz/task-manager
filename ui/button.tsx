@@ -1,5 +1,5 @@
 import type { ComponentProps, PropsWithChildren } from "react";
-import cn from "classnames";
+import { cn } from "@/utils/cn";
 
 type ButtonProps = PropsWithChildren & {
   variant?: "primary" | "secondary" | "destructive";

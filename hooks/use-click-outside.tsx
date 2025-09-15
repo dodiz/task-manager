@@ -1,11 +1,9 @@
 "use client";
 
-import { type RefObject, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, ComponentRef } from "react";
 
-export const useClickOutside = (
-  callback: () => void
-): RefObject<HTMLDivElement> => {
-  const ref = useRef<HTMLDivElement>(null);
+export const useClickOutside = (callback: () => void) => {
+  const ref = useRef<ComponentRef<"div">>(null);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {

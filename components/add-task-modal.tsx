@@ -1,8 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useFormik } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { z } from "zod";
 import { Dialog } from "@/ui/dialog";
@@ -16,12 +14,12 @@ import { api } from "@/utils/api";
 type AddTaskModalProps = {
   show: boolean;
   onHide: () => void;
+  boardId: number;
 };
 
-export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
-  const { boardId } = useParams();
+export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
   const { data: board, refetch: refetchBoard } = api.boards.getById.useQuery({
-    id: +boardId,
+    id: boardId,
   });
   const addTask = api.tasks.add.useMutation({
     onSuccess: () => {
@@ -39,28 +37,26 @@ export function AddTaskModal({ show, onHide }: AddTaskModalProps) {
         name: string;
       } | null,
     },
-    validationSchema: toFormikValidationSchema(
-      z.object({
-        name: z.string({
+    validationSchema: z.object({
+      name: z.string({
+        required_error: "Can't be empty",
+      }),
+      description: z.string().optional(),
+      subTasks: z.array(
+        z.string({
           required_error: "Can't be empty",
-        }),
-        description: z.string().optional(),
-        subTasks: z.array(
-          z.string({
-            required_error: "Can't be empty",
-          })
-        ),
-        column: z.object(
-          {
-            id: z.number(),
-            name: z.string(),
-          },
-          {
-            invalid_type_error: "Can't be empty",
-          }
-        ),
-      })
-    ),
+        })
+      ),
+      column: z.object(
+        {
+          id: z.number(),
+          name: z.string(),
+        },
+        {
+          invalid_type_error: "Can't be empty",
+        }
+      ),
+    }),
     onSubmit: ({ name, description, subTasks, column }) =>
       addTask.mutate({
         name,

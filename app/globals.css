@@ -1,6 +1,54 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&: is(.dark *));
+
+@theme inline {
+  --spacing: 4px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --text-xs: 1.2rem; /* 12px */
+  --text-xs--line-height: 1.6rem; /* 16px */
+  --text-sm: 1.4rem; /* 14px */
+  --text-sm--line-height: 2rem; /* 20px */
+  --text-base: 1.6rem; /* 16px */
+  --text-base--line-height: 2.4rem; /* 24px */
+  --text-lg: 1.8rem; /* 18px */
+  --text-lg--line-height: 2.3rem; /* 23px */
+  --text-xl: 2rem; /* 20px */
+  --text-xl--line-height: 3rem; /* 30px */
+  --text-2xl: 2.4rem; /* 24px */
+  --text-2xl--line-height: 3.2rem; /* 32px */
+  --text-3xl: 3rem; /* 30px */
+  --text-3xl--line-height: 3.6rem; /* 36px */
+  --text-4xl: 3.6rem; /* 36px */
+  --text-4xl--line-height: 4rem; /* 40px */
+  --text-5xl: 4.8rem; /* 48px */
+  --text-5xl--line-height: 4.8rem; /* 48px */
+  --text-6xl: 6rem; /* 60px */
+  --text-6xl--line-height: 6rem; /* 60px */
+  --text-7xl: 7.2rem; /* 72px */
+  --text-7xl--line-height: 7.2rem; /* 72px */
+  --text-8xl: 9.6rem; /* 96px */
+  --text-8xl--line-height: 9.6rem; /* 96px */
+  --text-9xl: 12.8rem; /* 128px */
+  --text-9xl--line-height: 12.8rem; /* 128px */
+
+  --color-dark-100: #3e3f4e;
+  --color-dark-200: #2b2c37;
+  --color-dark-300: #20212c;
+  --color-dark-400: #000112;
+
+  --color-light-100: #ffffff;
+  --color-light-200: #f4f7fd;
+  --color-light-300: #e4ebfa;
+  --color-light-400: #828fa3;
+
+  --color-primary-100: #635fc7;
+  --color-primary-200: #a8a4ff;
+  --color-accent-100: #ea5555;
+  --color-accent-200: #ff9898;
+}
 
 *,
 *::before,

@@ -20,25 +20,28 @@ export function Header() {
   const [isAddingTask, setIsAddingTask] = useState(false);
   const { boardId } = useParams();
   const { data: board } = api.boards.getById.useQuery(
-    { id: +boardId },
+    { id: +boardId! },
     { enabled: !!boardId }
   );
   return (
     <>
       {isDeletingBoard && (
         <DeleteBoardModal
+          boardId={+boardId!}
           show={isDeletingBoard}
           onHide={() => setIsDeletingBoard(false)}
         />
       )}
       {isEditingBoard && (
         <EditBoardModal
+          boardId={+boardId!}
           show={isEditingBoard}
           onHide={() => setIsEditingBoard(false)}
         />
       )}
       {isAddingTask && (
         <AddTaskModal
+          boardId={+boardId!}
           show={isAddingTask}
           onHide={() => setIsAddingTask(false)}
         />
