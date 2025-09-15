@@ -43,7 +43,7 @@ export function Sidebar() {
       )}
       <aside
         className={cn(
-          "fixed rounded-xl top-[12rem] w-[26rem] left-1/2 -translate-x-1/2 flex-col justify-between bg-light-100 tablet:z-10 tablet:opacity-100 tablet:h-screen tablet:left-0 tablet:top-0 tablet:transform-none tablet:rounded-none tablet:border-r-[.1rem] tablet:border-r-light-300 tablet:flex desktop:w-[30rem] dark:bg-dark-200 dark:border-dark-100",
+          "fixed rounded-xl top-[12rem] w-[26rem] left-1/2 flex-col justify-between bg-light-100 tablet:z-10 tablet:opacity-100 tablet:h-screen tablet:left-0 tablet:top-0 tablet:transform-none tablet:rounded-none tablet:border-r-[.1rem] tablet:border-r-light-300 tablet:flex desktop:w-[30rem] dark:bg-dark-200 dark:border-dark-100",
           showSidebarMobile ? "opacity-100 z-10" : "opacity-0 -z-10",
           showSidebarDesktop ? "tablet:sticky" : "tablet:hidden"
         )}
