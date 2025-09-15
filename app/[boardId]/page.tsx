@@ -1,9 +1,10 @@
 import { Board } from "@/components/board";
 
-export default function Page({
-  params: { boardId },
+export default async function Page({
+  params,
 }: {
-  params: { boardId: string };
+  params: Promise<{ boardId: string }>;
 }) {
+  const { boardId } = await params;
   return <Board boardId={+boardId} />;
 }

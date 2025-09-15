@@ -52,7 +52,7 @@ Users should be able to:
 - [TRPC] (https://trpc.io/)
 - [Drizzle] (https://orm.drizzle.team/)
 - [NextAuth] (https://next-auth.js.org/)
-- [Formik] (https://formik.org/)
+- [Hook Form] (https://react-hook-form.com/)
 - [Zod] (https://zod.dev/)
 
 ### Author

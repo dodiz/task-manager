@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormik } from "formik";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { z } from "zod";
 import { Dialog } from "@/ui/dialog";
@@ -10,6 +9,8 @@ import { Button } from "@/ui/button";
 import { Select } from "@/ui/select";
 import { Textarea } from "@/ui/textarea";
 import { api } from "@/utils/api";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type AddTaskModalProps = {
   show: boolean;
@@ -27,8 +28,14 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
       onHide();
     },
   });
-  const formik = useFormik({
-    initialValues: {
+  const {
+    watch,
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
       name: "",
       description: "",
       subTasks: [""],
@@ -37,78 +44,73 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
         name: string;
       } | null,
     },
-    validationSchema: z.object({
-      name: z.string({
-        required_error: "Can't be empty",
-      }),
-      description: z.string().optional(),
-      subTasks: z.array(
-        z.string({
+    resolver: zodResolver(
+      z.object({
+        name: z.string({
           required_error: "Can't be empty",
-        })
-      ),
-      column: z.object(
-        {
-          id: z.number(),
-          name: z.string(),
-        },
-        {
-          invalid_type_error: "Can't be empty",
-        }
-      ),
-    }),
-    onSubmit: ({ name, description, subTasks, column }) =>
-      addTask.mutate({
-        name,
-        description,
-        subTasks,
-        columnId: column!.id,
-      }),
+        }),
+        description: z.string().optional(),
+        subTasks: z.array(
+          z.string({
+            required_error: "Can't be empty",
+          })
+        ),
+        column: z
+          .object(
+            {
+              id: z.number(),
+              name: z.string(),
+            },
+            {
+              invalid_type_error: "Can't be empty",
+            }
+          )
+          .nullable(),
+      })
+    ),
   });
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
+      <form
+        onSubmit={handleSubmit(({ name, description, subTasks, column }) =>
+          addTask.mutate({
+            name,
+            description: description || "",
+            subTasks,
+            columnId: column!.id,
+          })
+        )}
+        className="flex flex-col gap-6"
+      >
         <Typography variant="title-l">Add Task</Typography>
         <Input
           label="Title"
-          name="name"
-          value={formik.values.name}
+          {...register("name")}
           placeholder="e.g. Groceries"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name ? formik.errors.name : ""}
+          error={errors.name?.message}
         />
         <Textarea
-          name="description"
-          value={formik.values.description}
           label="Description"
           placeholder="e.g. Design a website for a client"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+          {...register("description")}
         />
         <div className="flex flex-col gap-3">
           <Typography variant="body-sm">Subtasks</Typography>
-          {formik.values.subTasks.map((subTask, index) => (
+          {watch("subTasks").map((subTask, index) => (
             <div key={index} className="flex items-center gap-4">
               <Input
-                name={`subTasks.${index}`}
                 value={subTask}
                 placeholder="e.g. Todo"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  (formik.touched.subTasks as boolean[] | undefined)?.[index]
-                    ? formik.errors.subTasks?.[index]
-                    : ""
-                }
+                {...register(`subTasks.${index}`)}
+                error={errors?.subTasks?.[index]?.message}
               />
               <RiCloseLine
                 className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
-                  formik.setFieldValue(
+                  setValue(
                     "subTasks",
-                    formik.values.subTasks.filter((_, i) => i !== index)
+                    watch("subTasks").filter((_, i) => i !== index)
                   );
                 }}
               />
@@ -117,9 +119,7 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
           <Button
             type="button"
             variant="secondary"
-            onClick={() =>
-              formik.setFieldValue("subTasks", [...formik.values.subTasks, ""])
-            }
+            onClick={() => setValue("subTasks", [...watch("subTasks"), ""])}
           >
             <RiAddFill /> Add New SubTask
           </Button>
@@ -130,11 +130,9 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
               labelField={(item) => item.name}
               placeholder="Select a status"
               label="Status"
-              onSelect={(column) => {
-                formik.setFieldValue("column", column);
-              }}
-              error={formik.touched.column ? formik.errors.column : ""}
-              selected={formik.values.column}
+              onSelect={(column) => setValue("column", column)}
+              error={errors.column?.message}
+              selected={watch("column")}
             />
           )}
         </div>

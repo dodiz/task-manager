@@ -1,14 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useFormik } from "formik";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
+import { useForm } from "react-hook-form";
 
 export function AddBoardModal({
   show,
@@ -26,59 +27,60 @@ export function AddBoardModal({
       router.push(`/${id}`);
     },
   });
-  const formik = useFormik({
-    initialValues: {
+  const {
+    register,
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
       name: "",
       columns: [""],
     },
-    validationSchema: z.object({
-      name: z.string({
-        required_error: "Can't be empty",
-      }),
-      columns: z.array(
-        z.string({
+    resolver: zodResolver(
+      z.object({
+        name: z.string({
           required_error: "Can't be empty",
-        })
-      ),
-    }),
-    onSubmit: (values) => addBoard.mutate(values),
+        }),
+        columns: z.array(
+          z.string({
+            required_error: "Can't be empty",
+          })
+        ),
+      })
+    ),
   });
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form className="flex flex-col gap-6" onSubmit={formik.handleSubmit}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={handleSubmit((v) => addBoard.mutate(v))}
+      >
         <Typography variant="title-l">Add New Board</Typography>
         <Input
-          name="name"
-          value={formik.values.name}
+          {...register("name")}
           label="Name"
           placeholder="e.g. Web Design"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name ? formik.errors.name : ""}
+          error={errors.name?.message}
         />
         <div className="flex flex-col gap-3">
           <Typography variant="body-sm">Columns</Typography>
-          {formik.values.columns.map((column, index) => (
+          {watch("columns").map((column, index) => (
             <div key={index} className="flex items-center gap-4">
               <Input
-                name={`columns.${index}`}
+                {...register(`columns.${index}`)}
                 value={column}
                 placeholder="e.g. Todo"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  (formik.touched.columns as boolean[] | undefined)?.[index]
-                    ? formik.errors.columns?.[index]
-                    : ""
-                }
+                error={errors.columns?.[index]?.message}
               />
               <RiCloseLine
                 className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
-                  formik.setFieldValue(
+                  setValue(
                     "columns",
-                    formik.values.columns.filter((_, i) => i !== index)
+                    watch("columns").filter((_, i) => i !== index)
                   );
                 }}
               />
@@ -87,9 +89,7 @@ export function AddBoardModal({
           <Button
             type="button"
             variant="secondary"
-            onClick={() =>
-              formik.setFieldValue("columns", [...formik.values.columns, ""])
-            }
+            onClick={() => setValue("columns", [...watch("columns"), ""])}
           >
             <RiAddFill /> Add New Column
           </Button>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormik } from "formik";
 import { z } from "zod";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Dialog } from "@/ui/dialog";
@@ -8,6 +7,8 @@ import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { api } from "@/utils/api";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type EditBoardModalProps = {
   show: boolean;
@@ -28,8 +29,14 @@ export function EditBoardModal({ show, onHide, boardId }: EditBoardModalProps) {
       onHide();
     },
   });
-  const formik = useFormik({
-    initialValues: {
+  const {
+    register,
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
       name: board?.name ?? "",
       prevColumns:
         board?.columns?.map((column) => ({
@@ -39,69 +46,65 @@ export function EditBoardModal({ show, onHide, boardId }: EditBoardModalProps) {
         })) ?? [],
       newColumns: [] as string[],
     },
-    validationSchema: z.object({
-      name: z.string({
-        required_error: "Can't be empty",
-      }),
-      prevColumns: z.array(
-        z.object({
-          name: z.string({
-            required_error: "Can't be empty",
-          }),
-          action: z.enum(["delete", "update"]),
-          id: z.number(),
-        })
-      ),
-      newColumns: z.array(
-        z.string({
+    resolver: zodResolver(
+      z.object({
+        name: z.string({
           required_error: "Can't be empty",
-        })
-      ),
-    }),
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      editBoard.mutate({ id: +boardId, ...values });
-    },
+        }),
+        prevColumns: z.array(
+          z.object({
+            name: z.string({
+              required_error: "Can't be empty",
+            }),
+            action: z.enum(["delete", "update"]),
+            id: z.number(),
+          })
+        ),
+        newColumns: z.array(
+          z.string({
+            required_error: "Can't be empty",
+          })
+        ),
+      })
+    ),
   });
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
+      <form
+        onSubmit={handleSubmit((values) =>
+          editBoard.mutate({
+            id: boardId,
+            ...values,
+          })
+        )}
+        className="flex flex-col gap-6"
+      >
         <Typography variant="title-l">Edit Board</Typography>
         <Input
-          name="name"
-          value={formik.values.name}
           label="Board Name"
           placeholder="e.g. Web Design"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name ? formik.errors.name : ""}
+          {...register("name")}
+          error={errors.name?.message}
         />
         <div className="flex flex-col gap-3">
           <Typography variant="body-sm">Board Columns</Typography>
-          {formik.values.prevColumns.map(
+          {watch("prevColumns").map(
             (column, index) =>
               column.action !== "delete" && (
                 <div key={index} className="flex gap-4 items-center">
                   <Input
-                    name={`prevColumns.${index}.name`}
                     value={column.name}
                     placeholder="e.g. Todo"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.prevColumns?.[index]?.name
-                        ? //@ts-ignore
-                          formik.errors.prevColumns?.[index]!.name
-                        : ""
-                    }
+                    {...register(`prevColumns.${index}.name`)}
+                    error={errors.prevColumns?.[index]?.name?.message}
                   />
                   <RiCloseLine
                     className="text-light-400 size-9 hover:fill-accent-200"
                     onClick={() => {
-                      formik.setFieldValue(
+                      setValue(
                         "prevColumns",
-                        formik.values.prevColumns.map((column, i) =>
+                        watch("prevColumns").map((column, i) =>
                           i === index ? { ...column, action: "delete" } : column
                         )
                       );
@@ -110,26 +113,20 @@ export function EditBoardModal({ show, onHide, boardId }: EditBoardModalProps) {
                 </div>
               )
           )}
-          {formik.values.newColumns.map((column, index) => (
+          {watch("newColumns").map((column, index) => (
             <div key={index} className="flex items-center gap-4">
               <Input
-                name={`newColumns.${index}`}
                 value={column}
                 placeholder="e.g. Todo"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  (formik.touched.newColumns as boolean[] | undefined)?.[index]
-                    ? formik.errors.newColumns?.[index]
-                    : ""
-                }
+                {...register(`newColumns.${index}`)}
+                error={errors.newColumns?.[index]?.message}
               />
               <RiCloseLine
                 className="text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
-                  formik.setFieldValue(
+                  setValue(
                     "newColumns",
-                    formik.values.newColumns.filter((_, i) => i !== index)
+                    watch("newColumns").filter((_, i) => i !== index)
                   );
                 }}
               />
@@ -138,12 +135,7 @@ export function EditBoardModal({ show, onHide, boardId }: EditBoardModalProps) {
           <Button
             type="button"
             variant="secondary"
-            onClick={() =>
-              formik.setFieldValue("newColumns", [
-                ...formik.values.newColumns,
-                "",
-              ])
-            }
+            onClick={() => setValue("newColumns", [...watch("newColumns"), ""])}
           >
             <RiAddFill /> Add New Column
           </Button>

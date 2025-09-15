@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormik } from "formik";
 import { z } from "zod";
 import { RiAddFill, RiCloseLine } from "@remixicon/react";
 import { Task } from "@/server/types";
@@ -10,6 +9,8 @@ import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
 import { api } from "@/utils/api";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type EditTaskModalProps = {
   task: Task;
@@ -27,8 +28,14 @@ export function EditTaskModal({
   const { mutate: editTask } = api.tasks.update.useMutation({
     onSuccess: onTaskUpdate,
   });
-  const formik = useFormik({
-    initialValues: {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
       name: task.name,
       description: task.description ?? "",
       prevSubTasks: task.subTasks.map((subTask) => ({
@@ -38,79 +45,77 @@ export function EditTaskModal({
       })),
       newSubTasks: [] as string[],
     },
-    validationSchema: z.object({
-      name: z.string({
-        required_error: "Can't be empty",
-      }),
-      description: z.string().optional(),
-      prevSubTasks: z.array(
-        z.object({
-          name: z.string({
-            required_error: "Can't be empty",
-          }),
-          action: z.enum(["delete", "update"]),
-          id: z.number(),
-        })
-      ),
-      newSubTasks: z.array(
-        z.string({
+    resolver: zodResolver(
+      z.object({
+        name: z.string({
           required_error: "Can't be empty",
-        })
-      ),
-    }),
-    onSubmit: (values) => {
-      editTask({ id: task.id, ...values });
-    },
+        }),
+        description: z.string().optional(),
+        prevSubTasks: z.array(
+          z.object({
+            name: z.string({
+              required_error: "Can't be empty",
+            }),
+            action: z.enum(["delete", "update"]),
+            id: z.number(),
+          })
+        ),
+        newSubTasks: z.array(
+          z.string({
+            required_error: "Can't be empty",
+          })
+        ),
+      })
+    ),
   });
 
   return (
     <Dialog show={show} onHide={onHide}>
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6">
+      <form
+        onSubmit={handleSubmit(
+          ({ name, newSubTasks, description, prevSubTasks }) =>
+            editTask({
+              id: task.id,
+              name,
+              description: description || "",
+              newSubTasks,
+              prevSubTasks,
+            })
+        )}
+        className="flex flex-col gap-6"
+      >
         <Typography variant="title-l">Edit Task</Typography>
         <Input
-          name="name"
-          value={formik.values.name}
           label="Title"
           placeholder="e.g. Groceries"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name ? formik.errors.name : ""}
+          {...register("name")}
+          error={errors.name?.message}
         />
         <Textarea
-          name="description"
-          value={formik.values.description}
           label="Description"
           placeholder="e.g. It's always good to take a break. This 15 minute break will
           recharge the batteries a little."
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.description ? formik.errors.description : ""}
+          {...register("description")}
+          error={errors.description?.message}
         />
         <div className="flex flex-col gap-3">
           <Typography variant="body-sm">SubTasks</Typography>
-          {formik.values.prevSubTasks.map(
+          {watch("prevSubTasks").map(
             (subTask, index) =>
               subTask.action !== "delete" && (
                 <div key={index} className="flex items-center gap-4">
                   <Input
-                    name={`prevSubTasks.${index}.name`}
                     value={subTask.name}
                     placeholder="e.g. Todo"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.prevSubTasks?.[index]?.name
-                        ? //@ts-ignore
-                          formik.errors.prevSubTasks?.[index]!.name
-                        : ""
-                    }
+                    {...register(`prevSubTasks.${index}.name`)}
+                    error={errors.prevSubTasks?.[index]?.message}
                   />
                   <RiCloseLine
                     className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                     onClick={() => {
-                      formik.setFieldValue(
+                      setValue(
                         "prevSubTasks",
-                        formik.values.prevSubTasks.map((subTask, i) =>
+                        watch("prevSubTasks").map((subTask, i) =>
                           i === index
                             ? { ...subTask, action: "delete" }
                             : subTask
@@ -121,26 +126,20 @@ export function EditTaskModal({
                 </div>
               )
           )}
-          {formik.values.newSubTasks.map((subTask, index) => (
+          {watch("newSubTasks").map((subTask, index) => (
             <div key={index} className="flex items-center gap-4">
               <Input
-                name={`newSubTasks.${index}`}
                 value={subTask}
                 placeholder="e.g. Todo"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  (formik.touched.newSubTasks as boolean[] | undefined)?.[index]
-                    ? formik.errors.newSubTasks?.[index]
-                    : ""
-                }
+                {...register(`newSubTasks.${index}`)}
+                error={errors.newSubTasks?.[index]?.message}
               />
               <RiCloseLine
                 className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
-                  formik.setFieldValue(
+                  setValue(
                     "newSubTasks",
-                    formik.values.newSubTasks.filter((_, i) => i !== index)
+                    watch("newSubTasks").filter((_, i) => i !== index)
                   );
                 }}
               />
@@ -150,10 +149,7 @@ export function EditTaskModal({
             type="button"
             variant="secondary"
             onClick={() =>
-              formik.setFieldValue("newSubTasks", [
-                ...formik.values.newSubTasks,
-                "",
-              ])
+              setValue("newSubTasks", [...watch("newSubTasks"), ""])
             }
           >
             <RiAddFill /> Add New Subtask
