@@ -10,6 +10,7 @@ export function Button({
   children,
   variant = "primary",
   size = "medium",
+  className,
   ...rest
 }: ButtonProps) {
   return (
@@ -22,7 +23,8 @@ export function Button({
           "bg-primary-200/10 text-primary-200 hover:bg-primary/25 dark:bg-light-100",
         variant === "destructive" &&
           "bg-accent-200 text-light-100 hover:bg-accent-100",
-        size === "large" ? "text-[1.5rem]" : "text-[1.3rem]"
+        size === "large" ? "text-[1.5rem]" : "text-[1.3rem]",
+        className
       )}
       {...rest}
     >
