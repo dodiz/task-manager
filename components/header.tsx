@@ -10,7 +10,7 @@ import { Logo } from "@/components/logo";
 import { SidebarContext } from "@/providers/sidebar-provider";
 import { Button } from "@/ui/button";
 import { Typography } from "@/ui/typography";
-import { Dropdown } from "@/ui/dropdown";
+import { DropdownMenu } from "@/ui/dropdown-menu";
 import { api } from "@/utils/api";
 
 export function Header() {
@@ -78,7 +78,7 @@ export function Header() {
             <div className="hidden tablet:block">Add New Task</div>
           </Button>
           {board && (
-            <Dropdown
+            <DropdownMenu
               items={[
                 {
                   label: "Edit Board",

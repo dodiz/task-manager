@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog } from "@/ui/dialog";
-import { Dropdown } from "@/ui/dropdown";
+import { DropdownMenu } from "@/ui/dropdown-menu";
 import { Select } from "@/ui/select";
 import { SubTask } from "@/ui/sub-task";
 import { Typography } from "@/ui/typography";
@@ -41,12 +41,11 @@ export function ViewTaskModal({
   });
 
   return (
-    <Dialog onHide={onHide} show={show}>
+    <Dialog open={show} onOpenChange={onHide}>
       <div className="flex flex-col gap-6">
         <div className="flex pt-2 justify-between items-center">
           <Typography variant="title-l">{task.name}</Typography>
-          <Dropdown
-            align="center"
+          <DropdownMenu
             items={[
               {
                 label: "Edit Task",

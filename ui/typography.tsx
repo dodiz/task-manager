@@ -1,12 +1,17 @@
-import { type PropsWithChildren } from "react";
+import { ComponentProps } from "react";
 import { cn } from "@/utils/cn";
 
-type TypographyProps = PropsWithChildren & {
+interface TypographyProps extends ComponentProps<"p"> {
   variant: "title-xl" | "title-l" | "title-m" | "title-s" | "body" | "body-sm";
   className?: string;
-};
+}
 
-export function Typography({ children, variant, className }: TypographyProps) {
+export function Typography({
+  children,
+  variant,
+  className,
+  ...props
+}: TypographyProps) {
   switch (variant) {
     case "title-xl":
       return (
@@ -15,6 +20,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
             "font-bold text-xl dark:text-light-100 text-dark-400",
             className
           )}
+          {...props}
         >
           {children}
         </h1>
@@ -26,6 +32,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
             "font-bold text-lg text-dark-400 dark:text-light-100",
             className
           )}
+          {...props}
         >
           {children}
         </h2>
@@ -37,6 +44,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
             "font-bold text-base leading-[1.9rem] text-dark-400 dark:text-light-100",
             className
           )}
+          {...props}
         >
           {children}
         </h3>
@@ -48,6 +56,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
             "text-xs leading-[1.5rem] font-extrabold text-light-400 tracking-[0.24rem]",
             className
           )}
+          {...props}
         >
           {children}
         </h4>
@@ -59,6 +68,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
             "font-bold text-xs leading-[1.5rem] text-light-400 dark:text-light-100",
             className
           )}
+          {...props}
         >
           {children}
         </p>
@@ -70,6 +80,7 @@ export function Typography({ children, variant, className }: TypographyProps) {
             "text-[1.3rem] font-medium leading-[2.3rem] text-light-400",
             className
           )}
+          {...props}
         >
           {children}
         </p>

@@ -70,7 +70,7 @@ export function EditBoardModal({ show, onHide, boardId }: EditBoardModalProps) {
   });
 
   return (
-    <Dialog show={show} onHide={onHide}>
+    <Dialog open={show} onOpenChange={onHide}>
       <form
         onSubmit={handleSubmit((values) =>
           editBoard.mutate({

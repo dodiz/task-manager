@@ -71,7 +71,7 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
   });
 
   return (
-    <Dialog show={show} onHide={onHide}>
+    <Dialog open={show} onOpenChange={onHide}>
       <form
         onSubmit={handleSubmit(({ name, description, subTasks, column }) =>
           addTask.mutate({

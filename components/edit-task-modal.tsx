@@ -70,7 +70,7 @@ export function EditTaskModal({
   });
 
   return (
-    <Dialog show={show} onHide={onHide}>
+    <Dialog open={show} onOpenChange={onHide}>
       <form
         onSubmit={handleSubmit(
           ({ name, newSubTasks, description, prevSubTasks }) =>

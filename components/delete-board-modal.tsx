@@ -29,7 +29,7 @@ export function DeleteBoardModal({
   });
 
   return (
-    <Dialog show={show} onHide={onHide}>
+    <Dialog open={show} onOpenChange={onHide}>
       <div className="flex flex-col gap-6">
         <Typography className="text-accent-200" variant="title-l">
           Delete this board?

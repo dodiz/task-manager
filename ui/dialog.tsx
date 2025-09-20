@@ -1,43 +1,52 @@
-import { useEffect, useCallback, type PropsWithChildren } from "react";
-import { RiCloseLine } from "@remixicon/react";
+import {
+  Root,
+  Trigger,
+  Portal,
+  Overlay,
+  Close,
+  Content,
+  DialogTitle,
+} from "@radix-ui/react-dialog";
+import { XIcon } from "lucide-react";
+import { cn } from "@/utils/cn";
 
-type DialogProps = PropsWithChildren & {
-  show: boolean;
-  onHide: () => void;
+type DialogProps = {
+  children: React.ReactNode;
+  open?: boolean;
+  trigger?: React.ReactNode;
+  onOpenChange?: (open: boolean) => void;
 };
 
-export function Dialog({ children, show, onHide }: DialogProps) {
-  const escapeListener = useCallback(
-    (e: KeyboardEvent) => e.key === "Escape" && onHide(),
-    [onHide]
-  );
-
-  useEffect(() => {
-    if (show) document.addEventListener("keydown", escapeListener);
-    else document.removeEventListener("keydown", escapeListener);
-
-    return () => document.removeEventListener("keydown", escapeListener);
-  }, [onHide, show, escapeListener]);
-
-  if (!show) return null;
-
+export function Dialog({ children, trigger, open, onOpenChange }: DialogProps) {
   return (
-    <div
-      className="fixed top-0 left-0 z-[1000] w-full h-full overflow-x-hidden bg-black/50"
-      onClick={onHide}
-    >
-      <div className="w-full min-h-full flex items-center justify-center">
-        <div
-          className="relative w-[48rem] rounded-lg m-4 bg-light-100 tablet:p-8 p-5 dark:bg-dark-200"
-          onClick={(e) => e.stopPropagation()}
+    <Root data-slot="dialog" open={open} onOpenChange={onOpenChange}>
+      {trigger && (
+        <Trigger data-slot="dialog-trigger" asChild>
+          {trigger}
+        </Trigger>
+      )}
+      <Portal data-slot="dialog-portal">
+        <Overlay
+          data-slot="dialog-overlay"
+          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50"
+        />
+        <Content
+          data-slot="dialog-content"
+          className={cn(
+            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-1/2 left-1/2 z-50 w-full max-w-[calc(100%-2rem)] -translate-1/2 gap-4 desktop:max-w-120 shadow-lg duration-200 rounded-lg bg-light-100 tablet:p-8 p-5 dark:bg-dark-200"
+          )}
         >
-          <RiCloseLine
-            onClick={onHide}
-            className="absolute top-2 right-2 text-light-400 size-7 hover:fill-accent-200 cursor-pointer"
-          />
+          <DialogTitle />
+          <Close
+            data-slot="dialog-close"
+            className="absolute top-4 right-4 transition-colors hover:text-accent-200  text-light-400 size-7 cursor-pointer"
+          >
+            <XIcon />
+            <span className="sr-only">Close</span>
+          </Close>
           {children}
-        </div>
-      </div>
-    </div>
+        </Content>
+      </Portal>
+    </Root>
   );
 }

@@ -16,7 +16,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "rounded-[2.4rem] flex items-center justify-center gap-3 select-none whitespace-nowrap leading-normal font-bold w-full disabled:opacity/25 disabled:cursor-not-allowed py-[1rem] px-4 tablet:py-[1.4rem] tablet:px-6",
+        "rounded-[2.4rem] flex items-center justify-center gap-3 select-none whitespace-nowrap leading-normal font-bold w-full disabled:opacity-25 disabled:cursor-not-allowed py-1 px-4 tablet:py-[1.4rem] tablet:px-6 transition-all duration-300",
         variant === "primary" &&
           "bg-primary-200 text-light-100 hover:bg-primary-100",
         variant === "secondary" &&
