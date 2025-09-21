@@ -1,47 +1,43 @@
 "use client";
 
 import { use, useState } from "react";
-import { useParams } from "next/navigation";
-import { RiAddFill, RiArrowDownSLine } from "@remixicon/react";
+import { PlusIcon, ChevronDown } from "lucide-react";
 import { DeleteBoardModal } from "@/components/delete-board-modal";
 import { EditBoardModal } from "@/components/edit-board-modal";
 import { AddTaskModal } from "@/components/add-task-modal";
 import { Logo } from "@/components/logo";
-import { SidebarContext } from "@/providers/sidebar-provider";
+import { SidebarContext } from "@/app/sidebar-provider";
 import { Button } from "@/ui/button";
 import { Typography } from "@/ui/typography";
 import { DropdownMenu } from "@/ui/dropdown-menu";
-import { api } from "@/utils/api";
+import { useBoardsStore } from "@/hooks/use-boards-store";
 
 export function Header() {
   const { toggleSidebarMobile } = use(SidebarContext);
+  const { selectedBoard } = useBoardsStore();
+  const board = selectedBoard!;
   const [isDeletingBoard, setIsDeletingBoard] = useState(false);
   const [isEditingBoard, setIsEditingBoard] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
-  const { boardId } = useParams();
-  const { data: board } = api.boards.getById.useQuery(
-    { id: +boardId! },
-    { enabled: !!boardId }
-  );
   return (
     <>
       {isDeletingBoard && (
         <DeleteBoardModal
-          boardId={+boardId!}
+          boardId={board.id}
           show={isDeletingBoard}
           onHide={() => setIsDeletingBoard(false)}
         />
       )}
       {isEditingBoard && (
         <EditBoardModal
-          boardId={+boardId!}
+          boardId={board.id}
           show={isEditingBoard}
           onHide={() => setIsEditingBoard(false)}
         />
       )}
       {isAddingTask && (
         <AddTaskModal
-          boardId={+boardId!}
+          boardId={board.id}
           show={isAddingTask}
           onHide={() => setIsAddingTask(false)}
         />
@@ -62,9 +58,9 @@ export function Header() {
             variant="title-l"
             className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[13rem]"
           >
-            {board?.name || "Select a board"}{" "}
+            {board?.name || "Select a board"}
           </Typography>
-          <RiArrowDownSLine className="w-5 text-primary-200" />
+          <ChevronDown className="w-5 text-primary-200" />
         </div>
         <div className="flex items-center gap-3 tablet:gap-4">
           <Button
@@ -74,7 +70,7 @@ export function Header() {
             onClick={() => setIsAddingTask(true)}
             className="flex items-center justify-center"
           >
-            <RiAddFill />
+            <PlusIcon />
             <div className="hidden tablet:block">Add New Task</div>
           </Button>
           {board && (

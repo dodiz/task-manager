@@ -3,30 +3,20 @@
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
-import { api } from "@/utils/api";
+import { useBoardsStore } from "@/hooks/use-boards-store";
 
 type DeleteTaskModalProps = {
-  taskId: number;
   onHide: () => void;
   show: boolean;
-  boardId: number;
+  taskId: string;
 };
 
 export function DeleteTaskModal({
   show,
   onHide,
-  boardId,
   taskId,
 }: DeleteTaskModalProps) {
-  const { refetch: refetchBoard } = api.boards.getById.useQuery({
-    id: boardId,
-  });
-  const { mutate: deleteTask } = api.tasks.remove.useMutation({
-    onSuccess: () => {
-      refetchBoard();
-      onHide();
-    },
-  });
+  const { deleteTask } = useBoardsStore();
 
   return (
     <Dialog open={show} onOpenChange={onHide}>
@@ -39,10 +29,7 @@ export function DeleteTaskModal({
           reversed.
         </Typography>
         <div className="flex gap-4">
-          <Button
-            variant="destructive"
-            onClick={() => deleteTask({ id: taskId })}
-          >
+          <Button variant="destructive" onClick={() => deleteTask(taskId)}>
             Delete
           </Button>
           <Button variant="secondary" onClick={onHide}>

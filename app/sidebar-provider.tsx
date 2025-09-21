@@ -1,7 +1,6 @@
 "use client";
 
 import { PropsWithChildren, createContext, useState } from "react";
-import { setCookie } from "cookies-next";
 
 export const SidebarContext = createContext({
   showSidebarDesktop: false,
@@ -19,7 +18,6 @@ export function SidebarProvider({
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
 
   const toggleSidebar = () => {
-    setCookie("show_sidebar_desktop", showSidebarDesktop ? "false" : "true");
     setShowSidebarDesktop((p) => !p);
   };
 

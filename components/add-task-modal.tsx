@@ -1,6 +1,6 @@
 "use client";
 
-import { RiAddFill, RiCloseLine } from "@remixicon/react";
+import { XIcon, PlusIcon } from "lucide-react";
 import { z } from "zod";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
@@ -8,41 +8,31 @@ import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { Select } from "@/ui/select";
 import { Textarea } from "@/ui/textarea";
-import { api } from "@/utils/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useBoardsStore } from "@/hooks/use-boards-store";
 
 type AddTaskModalProps = {
   show: boolean;
   onHide: () => void;
-  boardId: number;
+  boardId: string;
 };
 
 export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
-  const { data: board, refetch: refetchBoard } = api.boards.getById.useQuery({
-    id: boardId,
-  });
-  const addTask = api.tasks.add.useMutation({
-    onSuccess: () => {
-      refetchBoard();
-      onHide();
-    },
-  });
+  const { addTask, selectedBoard: board } = useBoardsStore();
   const {
     watch,
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
       name: "",
       description: "",
       subTasks: [""],
-      column: null as {
-        id: number;
-        name: string;
-      } | null,
+      column: "",
     },
     resolver: zodResolver(
       z.object({
@@ -55,17 +45,7 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
             required_error: "Can't be empty",
           })
         ),
-        column: z
-          .object(
-            {
-              id: z.number(),
-              name: z.string(),
-            },
-            {
-              invalid_type_error: "Can't be empty",
-            }
-          )
-          .nullable(),
+        column: z.string(),
       })
     ),
   });
@@ -74,11 +54,12 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
     <Dialog open={show} onOpenChange={onHide}>
       <form
         onSubmit={handleSubmit(({ name, description, subTasks, column }) =>
-          addTask.mutate({
+          addTask({
+            boardId,
             name,
             description: description || "",
-            subTasks,
-            columnId: column!.id,
+            subTasks: [],
+            column,
           })
         )}
         className="flex flex-col gap-6"
@@ -105,12 +86,12 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
                 {...register(`subTasks.${index}`)}
                 error={errors?.subTasks?.[index]?.message}
               />
-              <RiCloseLine
+              <XIcon
                 className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
                 onClick={() => {
                   setValue(
                     "subTasks",
-                    watch("subTasks").filter((_, i) => i !== index)
+                    getValues("subTasks").filter((_, i) => i !== index)
                   );
                 }}
               />
@@ -121,13 +102,11 @@ export function AddTaskModal({ show, onHide, boardId }: AddTaskModalProps) {
             variant="secondary"
             onClick={() => setValue("subTasks", [...watch("subTasks"), ""])}
           >
-            <RiAddFill /> Add New SubTask
+            <PlusIcon /> Add New SubTask
           </Button>
           {board?.columns && (
             <Select
               items={board.columns}
-              valueField="id"
-              labelField={(item) => item.name}
               placeholder="Select a status"
               label="Status"
               onSelect={(column) => setValue("column", column)}

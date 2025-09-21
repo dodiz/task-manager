@@ -1,86 +1,72 @@
 "use client";
 
 import { z } from "zod";
-import { RiAddFill, RiCloseLine } from "@remixicon/react";
-import { Task } from "@/server/types";
+import { PlusIcon, XIcon } from "lucide-react";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
-import { api } from "@/utils/api";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useBoardsStore, type Task } from "@/hooks/use-boards-store";
+import { uuidv7 } from "uuidv7";
 
 type EditTaskModalProps = {
   task: Task;
-  onTaskUpdate: () => void;
   show: boolean;
   onHide: () => void;
 };
 
-export function EditTaskModal({
-  show,
-  task,
-  onHide,
-  onTaskUpdate,
-}: EditTaskModalProps) {
-  const { mutate: editTask } = api.tasks.update.useMutation({
-    onSuccess: onTaskUpdate,
-  });
+const schema = z.object({
+  name: z.string({
+    required_error: "Can't be empty",
+  }),
+  description: z.string().optional(),
+  subTasks: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string({
+        required_error: "Can't be empty",
+      }),
+      completed: z.boolean(),
+    })
+  ),
+});
+
+export function EditTaskModal({ show, task, onHide }: EditTaskModalProps) {
+  const { editTask } = useBoardsStore();
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
     formState: { errors },
+    control,
   } = useForm({
     defaultValues: {
       name: task.name,
       description: task.description ?? "",
-      prevSubTasks: task.subTasks.map((subTask) => ({
-        name: subTask.name,
-        id: subTask.id,
-        action: "update" as "update" | "delete",
-      })),
-      newSubTasks: [] as string[],
+      subTasks: task.subTasks,
     },
-    resolver: zodResolver(
-      z.object({
-        name: z.string({
-          required_error: "Can't be empty",
-        }),
-        description: z.string().optional(),
-        prevSubTasks: z.array(
-          z.object({
-            name: z.string({
-              required_error: "Can't be empty",
-            }),
-            action: z.enum(["delete", "update"]),
-            id: z.number(),
-          })
-        ),
-        newSubTasks: z.array(
-          z.string({
-            required_error: "Can't be empty",
-          })
-        ),
-      })
-    ),
+    resolver: zodResolver(schema),
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "subTasks",
   });
 
   return (
     <Dialog open={show} onOpenChange={onHide}>
       <form
-        onSubmit={handleSubmit(
-          ({ name, newSubTasks, description, prevSubTasks }) =>
-            editTask({
-              id: task.id,
-              name,
-              description: description || "",
-              newSubTasks,
-              prevSubTasks,
-            })
+        onSubmit={handleSubmit(({ name, description, subTasks }) =>
+          editTask({
+            id: task.id,
+            boardId: task.boardId,
+            column: task.column,
+            name,
+            description: description || "",
+            subTasks,
+          })
         )}
         className="flex flex-col gap-6"
       >
@@ -100,59 +86,26 @@ export function EditTaskModal({
         />
         <div className="flex flex-col gap-3">
           <Typography variant="body-sm">SubTasks</Typography>
-          {watch("prevSubTasks").map(
-            (subTask, index) =>
-              subTask.action !== "delete" && (
-                <div key={index} className="flex items-center gap-4">
-                  <Input
-                    value={subTask.name}
-                    placeholder="e.g. Todo"
-                    {...register(`prevSubTasks.${index}.name`)}
-                    error={errors.prevSubTasks?.[index]?.message}
-                  />
-                  <RiCloseLine
-                    className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
-                    onClick={() => {
-                      setValue(
-                        "prevSubTasks",
-                        watch("prevSubTasks").map((subTask, i) =>
-                          i === index
-                            ? { ...subTask, action: "delete" }
-                            : subTask
-                        )
-                      );
-                    }}
-                  />
-                </div>
-              )
-          )}
-          {watch("newSubTasks").map((subTask, index) => (
+          {fields.map((subTask, index) => (
             <div key={index} className="flex items-center gap-4">
               <Input
-                value={subTask}
+                value={subTask.name}
                 placeholder="e.g. Todo"
-                {...register(`newSubTasks.${index}`)}
-                error={errors.newSubTasks?.[index]?.message}
+                {...register(`subTasks.${index}.name`)}
+                error={errors.subTasks?.[index]?.name?.message}
               />
-              <RiCloseLine
+              <XIcon
                 className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
-                onClick={() => {
-                  setValue(
-                    "newSubTasks",
-                    watch("newSubTasks").filter((_, i) => i !== index)
-                  );
-                }}
+                onClick={() => remove(index)}
               />
             </div>
           ))}
           <Button
             type="button"
             variant="secondary"
-            onClick={() =>
-              setValue("newSubTasks", [...watch("newSubTasks"), ""])
-            }
+            onClick={() => append({ id: uuidv7(), name: "", completed: false })}
           >
-            <RiAddFill /> Add New Subtask
+            <PlusIcon /> Add New Subtask
           </Button>
           <Button>Save Changes</Button>
         </div>

@@ -5,40 +5,26 @@ import { DropdownMenu } from "@/ui/dropdown-menu";
 import { Select } from "@/ui/select";
 import { SubTask } from "@/ui/sub-task";
 import { Typography } from "@/ui/typography";
-import { api } from "@/utils/api";
-import { Column, Task } from "@/server/types";
+import { Board, Task, useBoardsStore } from "@/hooks/use-boards-store";
 
 type ViewTaskModalProps = {
-  task: Task;
-  columns: Column[];
-  selectedColumn: Column | null;
-  onTaskUpdate: () => void;
-  onTaskDelete: () => void;
-  onTaskEdit: () => void;
   show: boolean;
   onHide: () => void;
+  board: Board;
+  task: Task;
+  onTaskDelete: () => void;
+  onTaskEdit: () => void;
 };
 
 export function ViewTaskModal({
   show,
+  board,
   task,
-  columns,
-  selectedColumn,
   onHide,
-  onTaskUpdate,
   onTaskDelete,
   onTaskEdit,
 }: ViewTaskModalProps) {
-  const { mutate: completeTask } = api.tasks.completeSubTask.useMutation({
-    onSuccess: () => {
-      onTaskUpdate();
-    },
-  });
-  const { mutate: moveTask } = api.tasks.move.useMutation({
-    onSuccess: () => {
-      onTaskUpdate();
-    },
-  });
+  const { completeSubTask, moveTask } = useBoardsStore();
 
   return (
     <Dialog open={show} onOpenChange={onHide}>
@@ -72,10 +58,7 @@ export function ViewTaskModal({
                 <SubTask
                   key={subTask.id}
                   onClick={() =>
-                    completeTask({
-                      id: subTask.id,
-                      completed: !subTask.completed,
-                    })
+                    completeSubTask(task.id, subTask.id, !subTask.completed)
                   }
                   label={subTask.name}
                   completed={!!subTask.completed}
@@ -85,17 +68,10 @@ export function ViewTaskModal({
           </>
         )}
         <Select
-          labelField={(column) => column.name}
-          valueField="id"
-          onSelect={(column) =>
-            moveTask({
-              taskId: task.id,
-              columnId: column.id,
-            })
-          }
+          items={board.columns}
+          onSelect={(column) => moveTask(task.id, column)}
           placeholder="Select a status"
-          items={columns}
-          selected={selectedColumn}
+          selected={task.column}
           label="Status"
         />
       </div>

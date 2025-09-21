@@ -3,10 +3,8 @@ import { ReactNode } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
-import { QueryProvider } from "@/providers/query-provider";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { SidebarProvider } from "@/providers/sidebar-provider";
-import { AuthProvider } from "@/providers/auth-provider";
+import { ThemeProvider } from "@/app/theme-provider";
+import { SidebarProvider } from "@/app/sidebar-provider";
 import { cookies } from "next/headers";
 
 const font = Plus_Jakarta_Sans({
@@ -30,19 +28,15 @@ export default async function RootLayout({
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <body className={font.className}>
         <main className="h-full flex">
-          <AuthProvider>
-            <QueryProvider>
-              <ThemeProvider>
-                <SidebarProvider initialShowSidebar={initialShowSidebar}>
-                  <Sidebar />
-                  <div className="flex-1 flex flex-col h-full overflow-clip">
-                    <Header />
-                    <div className="flex-1 overflow-auto">{children}</div>
-                  </div>
-                </SidebarProvider>
-              </ThemeProvider>
-            </QueryProvider>
-          </AuthProvider>
+          <ThemeProvider>
+            <SidebarProvider initialShowSidebar={initialShowSidebar}>
+              <Sidebar />
+              <div className="flex-1 flex flex-col h-full overflow-clip">
+                <Header />
+                <div className="flex-1 overflow-auto">{children}</div>
+              </div>
+            </SidebarProvider>
+          </ThemeProvider>
         </main>
       </body>
     </html>

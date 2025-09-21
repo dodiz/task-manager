@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { RiMoonFill, RiSunFill } from "@remixicon/react";
+import { Sun, Moon } from "lucide-react";
 
 export function ToggleTheme() {
   const { setTheme, resolvedTheme: theme } = useTheme();
@@ -11,7 +11,7 @@ export function ToggleTheme() {
 
   return (
     <div className="m-6 flex p-4 justify-center items-center gap-6 bg-light-200 rounded-lg dark:bg-dark-300">
-      <RiSunFill className="size-5 text-light-400" />
+      <Sun className="size-5 text-light-400" />
       <div
         className="p-1 bg-primary-200 rounded-[5rem] w-12 cursor-pointer relative h-[2.1rem]"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -25,7 +25,7 @@ export function ToggleTheme() {
           <div className="absolute left-1/2 -translate-x-1/2 w-[1rem] h-[1rem] rounded-full bg-white" />
         )}
       </div>
-      <RiMoonFill className="size-5 text-light-400" />
+      <Moon className="size-5 text-light-400" />
     </div>
   );
 }

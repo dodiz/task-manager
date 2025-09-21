@@ -1,60 +1,32 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/utils/cn";
-import { RiAddFill, RiLoader4Fill } from "@remixicon/react";
-import { Column, Task } from "@/server/types";
+import { PlusIcon } from "lucide-react";
 import { ViewTaskModal } from "@/components/view-task-modal";
 import { EditTaskModal } from "@/components/edit-task-modal";
 import { DeleteTaskModal } from "@/components/delete-task-modal";
 import { Typography } from "@/ui/typography";
 import { Button } from "@/ui/button";
-import { api } from "@/utils/api";
-import { TaskCard } from "@/components/task-card";
+import { useBoardsStore, type Task } from "@/hooks/use-boards-store";
 
-type BoardProps = {
-  boardId: number;
-};
+export function Board() {
+  const { selectedBoard, selectedTasks, moveTask } = useBoardsStore();
+  const board = selectedBoard!;
 
-export const Board: FC<BoardProps> = ({ boardId }) => {
-  const {
-    data: board,
-    isLoading,
-    isError,
-    refetch,
-  } = api.boards.getById.useQuery({ id: boardId });
-  const { mutate: moveTask } = api.tasks.move.useMutation({
-    onSuccess: refetch,
-  });
-
-  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
-  const [deletingTaskId, setDeletingTaskId] = useState<number | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const [droppingColumn, setDroppingColumn] = useState<Column | null>(null);
+  const [droppingColumnId, setDroppingColumnId] = useState<string | null>(null);
 
   const selectedTask =
-    board?.columns
-      .flatMap((c) => c.tasks)
-      .find((t) => t.id === selectedTaskId) || null;
+    Object.values(selectedTasks).find((t) => t.id === selectedTaskId) || null;
 
-  const selectedColumn =
-    board?.columns.find((c) => selectedTask?.columnId === c.id) || null;
-
-  if (isLoading)
-    return (
-      <div className="flex w-full items-center justify-center dark:bg-dark-300 h-full">
-        <RiLoader4Fill className="animate-spin text-primary-200 size-10" />
-      </div>
-    );
-
-  if (isError)
+  if (!board)
     return (
       <div className="flex flex-col gap-4 w-full items-center justify-center dark:bg-dark-300 h-full">
         <Typography variant="title-l">Something went wrong.</Typography>
-        <Typography variant="body">
-          No board was found with id "{boardId}".
-        </Typography>
-        <Typography variant="body">Database might be offline.</Typography>
+        <Typography variant="body">No board was found this id.</Typography>
       </div>
     );
 
@@ -62,6 +34,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
     <>
       {selectedTask && (
         <ViewTaskModal
+          board={board}
           onTaskDelete={() => {
             setDeletingTaskId(selectedTask.id);
             setSelectedTaskId(null);
@@ -70,12 +43,9 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
             setEditingTask(selectedTask);
             setSelectedTaskId(null);
           }}
-          columns={board?.columns || []}
-          selectedColumn={selectedColumn}
           show={!!selectedTask}
           onHide={() => setSelectedTaskId(null)}
           task={selectedTask}
-          onTaskUpdate={refetch}
         />
       )}
       {editingTask && (
@@ -83,15 +53,10 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
           show={!!editingTask}
           onHide={() => setEditingTask(null)}
           task={editingTask}
-          onTaskUpdate={() => {
-            setEditingTask(null);
-            refetch();
-          }}
         />
       )}
       {deletingTaskId && (
         <DeleteTaskModal
-          boardId={boardId}
           show={!!deletingTaskId}
           onHide={() => setDeletingTaskId(null)}
           taskId={deletingTaskId}
@@ -102,24 +67,21 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
           <div className="flex gap-6 p-8">
             {board!.columns.map((column, i) => (
               <div
+                key={column}
                 onDragOver={(e) => {
                   e.preventDefault();
-                  setDroppingColumn(column);
+                  setDroppingColumnId(column);
                 }}
-                onDragLeave={() => setDroppingColumn(null)}
+                onDragLeave={() => setDroppingColumnId(null)}
                 onDrop={(e) => {
                   e.preventDefault();
-                  const taskId = +e.dataTransfer.getData("taskId");
-                  moveTask({
-                    taskId,
-                    columnId: column.id,
-                  });
-                  setDroppingColumn(null);
+                  const taskId = e.dataTransfer.getData("taskId");
+                  moveTask(taskId, column);
+                  setDroppingColumnId(null);
                 }}
-                key={column.id}
                 className={cn(
                   "w-[28rem] flex flex-col gap-6 transition-all",
-                  droppingColumn === column && "p-1 rounded-xl shadow-2xl"
+                  droppingColumnId === column && "p-1 rounded-xl shadow-2xl"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -134,21 +96,28 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
                     )}
                   />
                   <Typography variant="title-s">
-                    {column.name?.toUpperCase()} ({column.tasks.length})
+                    {column.toUpperCase()} (
+                    {selectedTasks.filter((t) => t.column === column).length})
                   </Typography>
                 </div>
                 <div className="flex flex-col gap-5">
-                  {column.tasks.map((task) => (
-                    <TaskCard
+                  {selectedTasks.map((task) => (
+                    <div
                       key={task.id}
-                      id={task.id}
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData("taskId", task.id);
+                      }}
                       onClick={() => setSelectedTaskId(task.id)}
-                      label={task.name}
-                      subCompleted={
-                        task.subTasks.filter((t) => t.completed).length
-                      }
-                      subTotal={task.subTasks.length}
-                    />
+                      className="py-6 px-4 rounded-xl bg-light-100 flex flex-col gap-2 cursor-pointer dark:bg-dark-200"
+                    >
+                      <Typography variant="title-m">{task.name}</Typography>
+                      <Typography variant="body">
+                        {task.subTasks.length === 0
+                          ? "No subtasks"
+                          : `${task.subTasks.filter((t) => t.completed).length} of ${task.subTasks.length} subtasks`}
+                      </Typography>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -161,7 +130,7 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
             </Typography>
             <div className="flex justify-center">
               <Button>
-                <RiAddFill /> Add New Column
+                <PlusIcon /> Add New Column
               </Button>
             </div>
           </div>
@@ -169,4 +138,4 @@ export const Board: FC<BoardProps> = ({ boardId }) => {
       </div>
     </>
   );
-};
+}

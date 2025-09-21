@@ -1,19 +1,16 @@
 "use client";
 
 import { use } from "react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 import { cn } from "@/utils/cn";
-import { RiEyeFill, RiEyeOffLine, RiLayoutLine } from "@remixicon/react";
+import { KanbanSquare, EyeClosed, Eye } from "lucide-react";
 import { AddBoardModal } from "@/components/add-board-modal";
 import { ToggleTheme } from "@/components/toggle-theme";
-import { SidebarContext } from "@/providers/sidebar-provider";
+import { SidebarContext } from "@/app/sidebar-provider";
 import { Typography } from "@/ui/typography";
-import { api } from "@/utils/api";
+import { useBoardsStore } from "@/hooks/use-boards-store";
 
 export function Sidebar() {
-  const { boardId } = useParams();
-  const { data: boards } = api.boards.getAll.useQuery();
+  const { boards, selectedBoard, selectBoard } = useBoardsStore();
   const {
     toggleSidebar,
     showSidebarDesktop,
@@ -41,25 +38,24 @@ export function Sidebar() {
         <div>
           <div className="ml-6 mt-4 tablet:ml-8 tablet:mt-13">
             <Typography variant="title-s" className="text-[2rem] uppercase">
-              My boards ({boards?.length})
+              My boards ({Object.keys(boards).length})
             </Typography>
           </div>
           <div className="mt-5 flex flex-col mr-6">
-            {boards &&
-              boards.map((board) => (
-                <Link
-                  href={`/${board.id}`}
-                  key={board.id}
-                  className={cn(
-                    "transition-all flex items-center gap-4 py-4 pl-8 cursor-pointer text-base font-bold rounded-r-[10rem]",
-                    +boardId! === board.id
-                      ? "bg-primary-200 text-light-200"
-                      : "text-light-400"
-                  )}
-                >
-                  <RiLayoutLine radius={20} className="size-5" /> {board.name}
-                </Link>
-              ))}
+            {Object.values(boards).map((board) => (
+              <span
+                onClick={() => selectBoard(board.id)}
+                key={board.id}
+                className={cn(
+                  "transition-all flex items-center gap-4 py-4 pl-8 cursor-pointer text-base font-bold rounded-r-[10rem]",
+                  selectedBoard?.id === board.id
+                    ? "bg-primary-200 text-light-200"
+                    : "text-light-400"
+                )}
+              >
+                <KanbanSquare className="size-5" /> {board.name}
+              </span>
+            ))}
 
             <AddBoardModal />
           </div>
@@ -70,7 +66,7 @@ export function Sidebar() {
             className="hidden items-center gap-4 text-light-400 text-base font-bold m-6 mb-9 cursor-pointer tablet:flex"
             onClick={() => toggleSidebar()}
           >
-            <RiEyeOffLine className="size-5" />
+            <EyeClosed className="size-5" />
             Hide Sidebar
           </div>
         </div>
@@ -82,7 +78,7 @@ export function Sidebar() {
         )}
         onClick={toggleSidebar}
       >
-        <RiEyeFill className="size-5" />
+        <Eye className="size-5" />
       </div>
     </>
   );

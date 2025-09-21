@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "providers/sidebar-provider.tsx"
+    "app/sidebar-provider.tsx"
   ],
   "exclude": ["node_modules"]
 }

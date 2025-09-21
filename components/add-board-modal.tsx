@@ -1,61 +1,65 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RiAddFill, RiCloseLine, RiLayoutLine } from "@remixicon/react";
+import { SquareKanban } from "lucide-react";
 import { Dialog } from "@/ui/dialog";
 import { Typography } from "@/ui/typography";
 import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
-import { api } from "@/utils/api";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { cn } from "@/utils/cn";
-import { Plus } from "lucide-react";
+import { Plus, XIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { useBoardsStore } from "@/hooks/use-boards-store";
 
 interface AddBoardModalProps {
   disabled?: boolean;
 }
 
+const schema = z.object({
+  name: z.string({
+    required_error: "Can't be empty",
+  }),
+  columns: z.array(
+    z.object({
+      name: z.string({
+        required_error: "Can't be empty",
+      }),
+    })
+  ),
+});
+
 export function AddBoardModal({ disabled }: AddBoardModalProps) {
-  const router = useRouter();
+  const { addBoard } = useBoardsStore();
   const [open, setOpen] = useState(false);
-  const getBoards = api.boards.getAll.useQuery();
-  const addBoard = api.boards.add.useMutation({
-    onSuccess: ({ id }) => {
-      getBoards.refetch();
-      setOpen(true);
-      router.push(`/${id}`);
-    },
-  });
   const {
     register,
-    watch,
     handleSubmit,
-    setValue,
-    getValues,
+    reset,
     formState: { errors },
+    control,
   } = useForm({
     defaultValues: {
       name: "",
-      columns: [""],
+      columns: [{ name: "" }],
     },
-    resolver: zodResolver(
-      z.object({
-        name: z.string({
-          required_error: "Can't be empty",
-        }),
-        columns: z.array(
-          z.string({
-            required_error: "Can't be empty",
-          })
-        ),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
-  const columns = watch("columns");
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "columns",
+  });
+
+  const onSubmit: (data: z.infer<typeof schema>) => void = (data) => {
+    addBoard({
+      name: data.name,
+      columns: data.columns.map((col) => col.name),
+    });
+    reset();
+    setOpen(false);
+  };
 
   return (
     <>
@@ -66,17 +70,14 @@ export function AddBoardModal({ disabled }: AddBoardModalProps) {
         )}
         onClick={() => !disabled && setOpen(true)}
       >
-        <RiLayoutLine radius={20} className="size-5" />
+        <SquareKanban className="size-5" />
         <div className="flex items-center gap-2">
           <Plus />
           Create new board
         </div>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <form
-          className="flex flex-col gap-6"
-          onSubmit={handleSubmit((v) => addBoard.mutate(v))}
-        >
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
           <Typography variant="title-l">Add New Board</Typography>
           <Input
             {...register("name")}
@@ -86,33 +87,24 @@ export function AddBoardModal({ disabled }: AddBoardModalProps) {
           />
           <div className="flex flex-col gap-3">
             <Typography variant="body-sm">Columns</Typography>
-            {columns.map((_, index) => (
-              <div key={index} className="flex items-center gap-4">
+            {fields.map((column, index) => (
+              <div key={column.id} className="flex items-center gap-4">
                 <Input
-                  {...register(`columns.${index}`)}
-                  placeholder="e.g. Todo"
+                  {...register(`columns.${index}.name`)}
                   error={errors.columns?.[index]?.message}
                 />
-                <RiCloseLine
-                  className="cursor-pointer text-light-400 size-9 hover:fill-accent-200"
-                  onClick={() => {
-                    setValue(
-                      "columns",
-                      getValues("columns").filter((_, i) => i !== index)
-                    );
-                  }}
+                <XIcon
+                  className="cursor-pointer text-light-400 size-9 hover:text-accent-200"
+                  onClick={() => remove(index)}
                 />
               </div>
             ))}
             <Button
               type="button"
               variant="secondary"
-              disabled={
-                columns.length >= 5 || columns.some((col) => col.trim() === "")
-              }
-              onClick={() => setValue("columns", [...getValues("columns"), ""])}
+              onClick={() => append({ name: "" })}
             >
-              <RiAddFill /> Add New Column
+              <PlusIcon /> Add New Column
             </Button>
             <Button>Create New Board</Button>
           </div>

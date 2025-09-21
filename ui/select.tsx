@@ -2,23 +2,29 @@
 
 import { useState } from "react";
 import { cn } from "@/utils/cn";
-import { RiArrowDownSLine } from "@remixicon/react";
+import { ChevronDown } from "lucide-react";
 
-type SelectProps<T> = {
+type SelectProps<T extends Record<string, unknown> | string> = {
   items: T[];
-  valueField: keyof T;
-  labelField: (item: T) => string;
-  selected: T | null;
-  onSelect: (item: T) => void;
+  selected: NoInfer<T> | null;
+  onSelect: (item: NoInfer<T>) => void;
   label?: string;
   placeholder: string;
   disabled?: boolean;
   error?: string;
-};
+} & (T extends string
+  ? {
+      idField?: never;
+      labelField?: never;
+    }
+  : {
+      idField: keyof T;
+      labelField: (item: T) => string;
+    });
 
-export const Select = <T,>({
+export const Select = <T extends Record<string, unknown> | string>({
   items,
-  valueField,
+  idField,
   labelField,
   onSelect,
   selected,
@@ -27,6 +33,12 @@ export const Select = <T,>({
   error,
 }: SelectProps<T>) => {
   const [show, setShow] = useState(false);
+
+  const getLabel = (item: T) =>
+    typeof item === "string" ? item : labelField?.(item);
+
+  const getId = (item: T) =>
+    typeof item === "string" ? item : (item[idField!] as string);
 
   return (
     <label
@@ -45,25 +57,25 @@ export const Select = <T,>({
           error && "border-accent-200"
         )}
       >
-        {selected ? labelField(selected) : placeholder}
+        {selected ? getLabel(selected) : placeholder}
         {error && (
           <p className="absolute right-[3.5rem] text-accent-200 font-medium text-[1.3rem]">
             {error}
           </p>
         )}
-        <RiArrowDownSLine className="w-5 text-primary-200" />
+        <ChevronDown className="w-5 text-primary-200" />
       </div>
       <div
         aria-hidden={!show}
         className="flex aria-hidden:hidden rounded-[.8rem] absolute w-full top-[7rem] p-4 flex-col gap-2 border border-light-300 dark:border-0 bg-light-100 dark:bg-dark-300 shadow-2xl"
       >
-        {items.map((item) => (
+        {items.map((item, i) => (
           <div
             onClick={() => onSelect(item)}
-            key={item[valueField] as string | number}
+            key={getId(item)}
             className="text-light-400 text-[1.3rem] font-medium leading-[2.3rem]"
           >
-            {labelField(item)}
+            {getLabel(item)}
           </div>
         ))}
       </div>
